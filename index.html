@@ -1267,7 +1267,7 @@ async function generate() {
   const extra = g('genPrompt');
   const userMsg = extra ? `${OUT_INSTRUCTIONS[selectedOutput]}\n\nContexto adicional: ${extra}` : OUT_INSTRUCTIONS[selectedOutput];
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch('/api/chat', {
       method: 'POST', headers: {'Content-Type':'application/json'},
       body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:1000, system: buildSys(brand), messages:[{role:'user',content:userMsg}] })
     });
@@ -1301,7 +1301,7 @@ async function sendChat() {
   const tid = addTyping();
   document.getElementById('sendBtn').disabled = true;
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch('/api/chat', {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:1000, system: buildSys(brand), messages:[{role:'user',content:msg}] })
     });
@@ -1780,7 +1780,7 @@ ${competitors ? `Competidores a investigar: ${competitors}` : ''}
 Investigá el mercado y generá la propuesta estratégica completa. Sé específico y accionable.`;
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch('/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -1803,7 +1803,7 @@ Investigá el mercado y generá la propuesta estratégica completa. Sé específ
     hideResearch();
     // Fallback without web search
     try {
-      const res2 = await fetch('https://api.anthropic.com/v1/messages', {
+      const res2 = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -1951,7 +1951,7 @@ async function generateAssist(panelId, sectionName, fieldsHint) {
   const prompt = sectionPrompts[panelId] || `Sugerí contenido para la sección "${sectionName}" de la marca "${brand.name}".`;
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch('/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
