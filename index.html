@@ -213,6 +213,25 @@ main { flex: 1; min-width: 0; padding: 44px 52px 100px; max-width: 800px; }
 .btn-nav.p:hover { background: rgba(255,255,255,.12); }
 
 
+
+/* ── SUBQUESTIONS & PICKERS ───────────────── */
+.subq-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 8px; }
+.subq-item { display: flex; flex-direction: column; gap: 6px; }
+.subq-label { font-size: 11px; color: var(--dim); line-height: 1.4; }
+.subq-item textarea { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 6px; padding: 10px 13px; color: var(--text); font-family: var(--mono); font-size: 12px; outline: none; resize: none; width: 100%; line-height: 1.5; transition: border-color .18s; }
+.subq-item textarea:focus { border-color: var(--border2); }
+.subq-item textarea::placeholder { color: var(--muted); }
+
+.values-picker-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+.value-chip { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 20px; padding: 6px 14px; font-family: var(--mono); font-size: 11px; color: var(--dim); cursor: pointer; transition: all .15s; }
+.value-chip:hover { border-color: var(--border2); color: var(--text); }
+.value-chip.selected { background: rgba(2,255,251,0.08); border-color: rgba(2,255,251,0.35); color: var(--accent); }
+
+.slider-row { display: flex; align-items: center; gap: 12px; }
+.slider-l, .slider-r { font-size: 10px; color: var(--muted); width: 72px; letter-spacing: .04em; }
+.slider-r { text-align: right; }
+.pers-slider { flex: 1; accent-color: var(--accent); cursor: pointer; height: 3px; }
+
 /* ── STRATEGY SESSION ─────────────────────── */
 .strategy-wrap { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
 .strategy-top { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
@@ -395,7 +414,7 @@ main { flex: 1; min-width: 0; padding: 44px 52px 100px; max-width: 800px; }
       <div class="strategy-top">
         <div class="strategy-top-left">
           <div class="ai-dot"></div>
-          <span class="strategy-status" id="strategy-status-label">Brand Strategy Session · Step <span id="s-step-num">1</span> of 6</span>
+          <span class="strategy-status" id="strategy-status-label">Brand Strategy Session · Step <span id="s-step-num">1</span> of 7</span>
         </div>
         <div class="strategy-step-indicator" id="step-dots"></div>
       </div>
@@ -1494,77 +1513,88 @@ function clearAll() {
 const STRATEGY_QUESTIONS = [
   {
     id: 'brand_name_q',
-    question: 'What is the brand name and what industry does it operate in?',
-    sub: 'This information enables real-time competitive context research.',
-    options: null, // Free text only
+    question: "Let's start with the basics.",
+    sub: 'What is the brand name, and what industry or market does it operate in?',
+    options: null,
     freeText: true,
-    freeTextPlaceholder: 'e.g. "Brandiv, a SaaS branding tool for designers in LATAM"',
+    freeTextPlaceholder: 'e.g. "Brandiv — a SaaS branding tool for designers and agencies in LATAM"',
     research: false,
   },
   {
-    id: 'stage',
-    question: 'What stage is the business at?',
-    sub: 'Brand strategy varies significantly depending on the stage of the company.',
-    options: [
-      { letter:'A', title:'Pre-launch', desc:'The brand has not yet gone to market. We are defining the initial positioning.' },
-      { letter:'B', title:'Early stage', desc:'We just launched. We have first users but positioning is still being consolidated.' },
-      { letter:'C', title:'Growth', desc:'We have traction. We want to scale and need a more robust brand system.' },
-      { letter:'D', title:'Rebrand / Refresh', desc:'The brand exists but needs to evolve — repositioning, new audience, or change of direction.' },
+    id: 'purpose',
+    question: 'Why does this brand exist beyond making money?',
+    sub: 'Answer as many as feel relevant. There are no wrong answers — just think out loud.',
+    options: null,
+    freeText: false,
+    subQuestions: [
+      { id: 'p1', label: 'What does your product or service actually do?' },
+      { id: 'p2', label: 'What changes in someone's life after using it?' },
+      { id: 'p3', label: 'Why does that change matter to the world?' },
+      { id: 'p4', label: 'If this brand disappeared tomorrow, what would be lost?' },
     ],
-    freeText: true,
-    freeTextPlaceholder: 'Additional context about the business stage...',
-    research: false,
-  },
-  {
-    id: 'differentiator',
-    question: 'What is the real difference between this brand and market alternatives?',
-    sub: 'Not what the brand does, but why someone would choose this brand over others.',
-    options: [
-      { letter:'A', title:'Price / accessibility', desc:'We do the same as market leaders but more accessible or affordable.' },
-      { letter:'B', title:'Superior experience', desc:'The product or service is better — easier, faster, better designed.' },
-      { letter:'C', title:'Specific niche', desc:'We are not for everyone. We serve a very specific segment that the big players ignore.' },
-      { letter:'D', title:'Purpose / values', desc:'The difference is ideological — what we believe and how we operate.' },
-    ],
-    freeText: true,
-    freeTextPlaceholder: 'Describe the differentiator in your own words...',
     research: false,
   },
   {
     id: 'audience',
-    question: 'Who does this brand primarily speak to?',
-    sub: 'The more specific the audience, the more effective the positioning strategy.',
-    options: [
-      { letter:'A', title:'Independent professionals', desc:'Freelancers, consultants, solopreneurs. They make decisions alone and seek efficiency.' },
-      { letter:'B', title:'Startup teams', desc:'Small teams with limited resources and the need to move fast.' },
-      { letter:'C', title:'Mid-size / corporate', desc:'Established teams with defined processes. Longer decision cycles.' },
-      { letter:'D', title:'End consumer', desc:'B2C — people, not companies. Emotion and identity matter more than logic.' },
-    ],
-    freeText: true,
-    freeTextPlaceholder: 'Describe your ideal audience in detail...',
-    research: false,
-  },
-  {
-    id: 'personality_q',
-    question: 'How should the brand feel when interacting with it?',
-    sub: 'The perceived character defines the entire communication system.',
-    options: [
-      { letter:'A', title:'Expert and trustworthy', desc:'Like a senior consultant. Knows its craft, speaks with authority, builds immediate trust.' },
-      { letter:'B', title:'Warm and accessible', desc:'Like a brilliant colleague. Direct, unpretentious, makes complexity simple.' },
-      { letter:'C', title:'Innovative and disruptive', desc:'Like a frontier startup. Challenges conventions, has strong opinions, does not sound like everyone else.' },
-      { letter:'D', title:'Inspirational and aspirational', desc:'Like a lifestyle brand. Elevates the user, projects a better future, creates belonging.' },
-    ],
-    freeText: true,
-    freeTextPlaceholder: 'Describe how you want the brand to feel...',
-    research: false,
-  },
-  {
-    id: 'competitors',
-    question: 'Who are the main competitors or industry references?',
-    sub: 'This enables analysis of the competitive landscape and finding real differentiation spaces.',
+    question: 'Who is this really for?',
+    sub: 'The more specific you are, the stronger the strategy. Don't try to describe everyone.',
     options: null,
-    freeText: true,
-    freeTextPlaceholder: 'e.g. "Direkto, Frontify, Canva Brand Kit, Figma — and also traditional branding agencies"',
-    research: true, // This triggers web search
+    freeText: false,
+    subQuestions: [
+      { id: 'a1', label: 'Who is the one person that needs this the most?' },
+      { id: 'a2', label: 'What keeps them up at night?' },
+      { id: 'a3', label: 'What do they want to achieve that they can't right now?' },
+      { id: 'a4', label: 'Where do they look for solutions today?' },
+    ],
+    research: false,
+  },
+  {
+    id: 'differentiator',
+    question: 'What makes you the only option?',
+    sub: 'Be honest — this is the hardest question in strategy, and the most important one.',
+    options: null,
+    freeText: false,
+    subQuestions: [
+      { id: 'd1', label: 'Who are your main competitors or references?' },
+      { id: 'd2', label: 'What do they do well?' },
+      { id: 'd3', label: 'What do they consistently fail to deliver?' },
+      { id: 'd4', label: 'What can you claim that none of them can?' },
+    ],
+    research: true,
+  },
+  {
+    id: 'values',
+    question: 'What do you choose, even when it's hard?',
+    sub: 'Select 3–5 values that feel genuinely true — not aspirational, not generic. Then for each one you'll define what you choose it over.',
+    options: null,
+    freeText: false,
+    isValuesPicker: true,
+    research: false,
+  },
+  {
+    id: 'personality',
+    question: 'If your brand walked into a room, how would people describe them?',
+    sub: 'Gut feeling is valid here. Go with what resonates.',
+    options: null,
+    freeText: false,
+    isPersonality: true,
+    subQuestions: [
+      { id: 'per1', label: 'Who is this brand NOT? What would feel completely off-brand?' },
+    ],
+    research: false,
+  },
+  {
+    id: 'promise',
+    question: 'What can your audience always count on you for?',
+    sub: 'A brand promise is a commitment — functional, emotional, or both.',
+    options: null,
+    freeText: false,
+    subQuestions: [
+      { id: 'pr1', label: 'What's the one functional thing you always deliver?' },
+      { id: 'pr2', label: 'What's the emotional feeling you leave people with?' },
+      { id: 'pr3', label: 'How would a happy customer describe you to a friend in one sentence?' },
+    ],
+    research: false,
   },
 ];
 
@@ -1595,44 +1625,168 @@ function renderStrategyStep() {
   document.getElementById('s-progress-label').textContent = `${strategyStep + 1} / ${STRATEGY_QUESTIONS.length}`;
 
   const savedAnswer = strategyAnswers[q.id] || {};
-  const savedOption = savedAnswer.option || '';
-  const savedCustom = savedAnswer.custom || '';
 
-  let optionsHtml = '';
-  if (q.options) {
-    optionsHtml = `<div class="strategy-options">` +
-      q.options.map(o => `
-        <button class="strategy-option ${savedOption === o.letter ? 'selected' : ''}" onclick="selectOption('${q.id}','${o.letter}',this)">
-          <div class="option-letter">${o.letter}</div>
-          <div class="option-content">
-            <div class="option-title">${o.title}</div>
-            <div class="option-desc">${o.desc}</div>
-          </div>
-        </button>`).join('') +
-    `</div>`;
+  let html = `<div class="strategy-question">${q.question}</div>
+    <div class="strategy-subq">${q.sub}</div>`;
+
+  // SUB-QUESTIONS (multi text inputs)
+  if (q.subQuestions) {
+    html += `<div class="subq-list">`;
+    q.subQuestions.forEach(sq => {
+      const saved = savedAnswer[sq.id] || '';
+      html += `<div class="subq-item">
+        <div class="subq-label">${sq.label}</div>
+        <textarea id="sq-${q.id}-${sq.id}" placeholder="Your answer..." rows="2">${saved}</textarea>
+      </div>`;
+    });
+    html += `</div>`;
+    // Optional free text if question also has freeText
+    if (q.freeText !== false && q.freeTextPlaceholder) {
+      const savedCustom = savedAnswer.custom || '';
+      html += `<div class="strategy-custom" style="margin-top:12px">
+        <div class="strategy-custom-label">Anything else you'd like to add</div>
+        <textarea id="s-custom-${q.id}" placeholder="${q.freeTextPlaceholder}" rows="2">${savedCustom}</textarea>
+      </div>`;
+    }
   }
 
-  const customLabel = q.options ? 'O describilo con tus palabras (opcional)' : 'Tu respuesta';
-  body.innerHTML = `
-    <div class="strategy-question">${q.question}</div>
-    <div class="strategy-subq">${q.sub}</div>
-    ${optionsHtml}
-    <div class="strategy-custom">
-      <div class="strategy-custom-label">${customLabel}</div>
-      <textarea id="s-custom-${q.id}" placeholder="${q.freeTextPlaceholder}" rows="2">${savedCustom}</textarea>
-    </div>
-  `;
+  // VALUES PICKER
+  if (q.isValuesPicker) {
+    const VALUES_LIST = [
+      'Trust','Transparency','Excellence','Humanity','Commitment',
+      'Curiosity','Empathy','Authenticity','Professionalism','Adaptability',
+      'Honesty','Collaboration','Innovation','Ambition','Clarity',
+      'Integrity','Vision','Passion','Rigor','Simplicity',
+      'Boldness','Inclusion','Sustainability','Craftsmanship','Independence'
+    ];
+    const selected = savedAnswer.values || [];
+    html += `<div class="values-picker-grid" id="values-grid">`;
+    VALUES_LIST.forEach(v => {
+      const isSel = selected.includes(v);
+      html += `<button class="value-chip ${isSel ? 'selected' : ''}" onclick="toggleValue('${v}',this)">${v}</button>`;
+    });
+    html += `</div>`;
+    html += `<div class="subq-list" id="values-over-list" style="margin-top:16px">`;
+    selected.forEach(v => {
+      const savedOver = savedAnswer[`over_${v}`] || '';
+      html += `<div class="subq-item">
+        <div class="subq-label">We choose <strong>${v}</strong> over...</div>
+        <textarea id="sq-over-${v}" placeholder="e.g. speed, short-term gains, appearance..." rows="1">${savedOver}</textarea>
+      </div>`;
+    });
+    html += `</div>`;
+  }
 
-  // Show/hide back button
+  // PERSONALITY
+  if (q.isPersonality) {
+    const SLIDERS = [
+      { id:'serious', l:'Serious', r:'Playful' },
+      { id:'classic', l:'Classic', r:'Innovative' },
+      { id:'corporate', l:'Corporate', r:'Human' },
+      { id:'exclusive', l:'Exclusive', r:'Accessible' },
+    ];
+    const WORDS = [
+      'Bold','Warm','Sharp','Calm','Energetic','Trustworthy',
+      'Disruptive','Elegant','Approachable','Visionary','Grounded','Playful',
+      'Minimal','Expressive','Precise','Empathetic','Ambitious','Refined'
+    ];
+    html += `<div class="subq-list" style="margin-bottom:20px">`;
+    SLIDERS.forEach(s => {
+      const val = savedAnswer[`sl_${s.id}`] || 5;
+      html += `<div class="subq-item" style="padding-bottom:8px">
+        <div class="slider-row">
+          <span class="slider-l">${s.l}</span>
+          <input type="range" min="1" max="10" value="${val}" class="pers-slider" id="sl-${s.id}"
+            oninput="saveSlider('${q.id}','${s.id}',this.value)">
+          <span class="slider-r">${s.r}</span>
+        </div>
+      </div>`;
+    });
+    html += `</div>`;
+    const selWords = savedAnswer.words || [];
+    html += `<div class="subq-label" style="margin-bottom:10px">Pick 3 words that describe the brand's character</div>
+      <div class="values-picker-grid" id="words-grid">`;
+    WORDS.forEach(w => {
+      const isSel = selWords.includes(w);
+      html += `<button class="value-chip ${isSel ? 'selected' : ''}" onclick="toggleWord('${w}',this,'${q.id}')">${w}</button>`;
+    });
+    html += `</div>`;
+    // Sub questions (not brand)
+    if (q.subQuestions) {
+      html += `<div class="subq-list" style="margin-top:16px">`;
+      q.subQuestions.forEach(sq => {
+        const saved = savedAnswer[sq.id] || '';
+        html += `<div class="subq-item">
+          <div class="subq-label">${sq.label}</div>
+          <textarea id="sq-${q.id}-${sq.id}" placeholder="Your answer..." rows="2">${saved}</textarea>
+        </div>`;
+      });
+      html += `</div>`;
+    }
+  }
+
+  // PLAIN FREE TEXT (step 1)
+  if (!q.subQuestions && !q.isValuesPicker && !q.isPersonality) {
+    const savedCustom = savedAnswer.custom || '';
+    html += `<div class="strategy-custom">
+      <textarea id="s-custom-${q.id}" placeholder="${q.freeTextPlaceholder || 'Your answer...'}" rows="3">${savedCustom}</textarea>
+    </div>`;
+  }
+
+  body.innerHTML = html;
+
   const backBtn = document.getElementById('btn-s-back');
   if (backBtn) backBtn.style.display = strategyStep > 0 ? 'block' : 'none';
 
-  // Update next button text
   const nextTxt = document.getElementById('s-next-txt');
   if (nextTxt) nextTxt.textContent = strategyStep === STRATEGY_QUESTIONS.length - 1 ? '◈ Generate strategy →' : 'Continue →';
 
   renderStepDots();
 }
+
+function toggleValue(v, el) {
+  const q = STRATEGY_QUESTIONS[strategyStep];
+  if (!strategyAnswers[q.id]) strategyAnswers[q.id] = {};
+  let selected = strategyAnswers[q.id].values || [];
+  if (selected.includes(v)) {
+    selected = selected.filter(x => x !== v);
+    el.classList.remove('selected');
+  } else if (selected.length < 5) {
+    selected.push(v);
+    el.classList.add('selected');
+  }
+  strategyAnswers[q.id].values = selected;
+  // Rebuild "over" list
+  const overList = document.getElementById('values-over-list');
+  if (overList) {
+    overList.innerHTML = selected.map(val => {
+      const savedOver = strategyAnswers[q.id][`over_${val}`] || '';
+      return `<div class="subq-item">
+        <div class="subq-label">We choose <strong>${val}</strong> over...</div>
+        <textarea id="sq-over-${val}" placeholder="e.g. speed, short-term gains, appearance..." rows="1">${savedOver}</textarea>
+      </div>`;
+    }).join('');
+  }
+}
+
+function toggleWord(w, el, qId) {
+  if (!strategyAnswers[qId]) strategyAnswers[qId] = {};
+  let words = strategyAnswers[qId].words || [];
+  if (words.includes(w)) {
+    words = words.filter(x => x !== w);
+    el.classList.remove('selected');
+  } else if (words.length < 3) {
+    words.push(w);
+    el.classList.add('selected');
+  }
+  strategyAnswers[qId].words = words;
+}
+
+function saveSlider(qId, slId, val) {
+  if (!strategyAnswers[qId]) strategyAnswers[qId] = {};
+  strategyAnswers[qId][`sl_${slId}`] = val;
+}
+
 
 function selectOption(qId, letter, el) {
   document.querySelectorAll(`#strategy-body .strategy-option`).forEach(o => o.classList.remove('selected'));
@@ -1652,20 +1806,69 @@ function selectOption(qId, letter, el) {
 
 function getStepAnswer() {
   const q = STRATEGY_QUESTIONS[strategyStep];
-  const customEl = document.getElementById(`s-custom-${q.id}`);
-  const custom = customEl ? customEl.value.trim() : '';
-  const option = strategyAnswers[q.id]?.option || '';
+  const saved = strategyAnswers[q.id] || {};
+  let parts = [];
 
-  // Find option title if selected
-  let optionTitle = '';
-  if (option && q.options) {
-    const found = q.options.find(o => o.letter === option);
-    if (found) optionTitle = found.title + ' — ' + found.desc;
+  if (q.subQuestions) {
+    q.subQuestions.forEach(sq => {
+      const el = document.getElementById(`sq-${q.id}-${sq.id}`);
+      if (el && el.value.trim()) parts.push(`${sq.label}: ${el.value.trim()}`);
+      // Save to answers
+      if (!strategyAnswers[q.id]) strategyAnswers[q.id] = {};
+      if (el) strategyAnswers[q.id][sq.id] = el.value.trim();
+    });
   }
 
-  const answer = [optionTitle, custom].filter(Boolean).join('. ');
-  return answer;
+  if (q.isValuesPicker) {
+    const values = saved.values || [];
+    if (values.length) {
+      parts.push(`Selected values: ${values.join(', ')}`);
+      values.forEach(v => {
+        const el = document.getElementById(`sq-over-${v}`);
+        if (el && el.value.trim()) {
+          if (!strategyAnswers[q.id]) strategyAnswers[q.id] = {};
+          strategyAnswers[q.id][`over_${v}`] = el.value.trim();
+          parts.push(`${v} over: ${el.value.trim()}`);
+        }
+      });
+    }
+  }
+
+  if (q.isPersonality) {
+    const SLIDERS = ['serious','classic','corporate','exclusive'];
+    SLIDERS.forEach(s => {
+      const el = document.getElementById(`sl-${s}`);
+      if (el) {
+        if (!strategyAnswers[q.id]) strategyAnswers[q.id] = {};
+        strategyAnswers[q.id][`sl_${s}`] = el.value;
+        parts.push(`${s} slider: ${el.value}/10`);
+      }
+    });
+    const words = saved.words || [];
+    if (words.length) parts.push(`Character words: ${words.join(', ')}`);
+    if (q.subQuestions) {
+      q.subQuestions.forEach(sq => {
+        const el = document.getElementById(`sq-${q.id}-${sq.id}`);
+        if (el && el.value.trim()) {
+          if (!strategyAnswers[q.id]) strategyAnswers[q.id] = {};
+          strategyAnswers[q.id][sq.id] = el.value.trim();
+          parts.push(`${sq.label}: ${el.value.trim()}`);
+        }
+      });
+    }
+  }
+
+  // Plain free text
+  const customEl = document.getElementById(`s-custom-${q.id}`);
+  if (customEl && customEl.value.trim()) {
+    if (!strategyAnswers[q.id]) strategyAnswers[q.id] = {};
+    strategyAnswers[q.id].custom = customEl.value.trim();
+    parts.push(customEl.value.trim());
+  }
+
+  return parts.join('\n');
 }
+
 
 async function strategyNext() {
   const answer = getStepAnswer();
@@ -1726,50 +1929,65 @@ async function generateStrategy() {
 
   // Build answers summary
   const answersSummary = STRATEGY_QUESTIONS.map(q => {
-    const a = strategyAnswers[q.id]?.final || strategyAnswers[q.id]?.custom || '(sin responder)';
-    return `${q.question}\nRespuesta: ${a}`;
+    const a = strategyAnswers[q.id] || {};
+    let answerText = '';
+    if (a.custom) answerText = a.custom;
+    if (a.values) answerText += `\nValues selected: ${a.values.join(', ')}`;
+    if (a.words) answerText += `\nPersonality words: ${a.words.join(', ')}`;
+    // Collect sub-question answers
+    Object.keys(a).forEach(k => {
+      if (k.startsWith('p') || k.startsWith('a') || k.startsWith('d') || k.startsWith('pr') || k.startsWith('per')) {
+        if (a[k]) answerText += `\n- ${a[k]}`;
+      }
+      if (k.startsWith('sl_')) answerText += `\n${k.replace('sl_','')}: ${a[k]}/10`;
+      if (k.startsWith('over_')) answerText += `\n${k.replace('over_','')} over: ${a[k]}`;
+    });
+    if (a.final) answerText = a.final;
+    return `QUESTION: ${q.question}\nANSWER:\n${answerText || '(not answered)'}`;
   }).join('\n\n');
 
   const brandName = strategyAnswers['brand_name_q']?.custom || 'esta marca';
   const competitors = strategyAnswers['competitors']?.custom || '';
 
-  const systemPrompt = `Sos un estratega senior de marca con 20 años de experiencia en brand positioning, branding de startups y estrategia de negocio. Tenés acceso a web search para investigar en tiempo real.
+  const systemPrompt = `You are a senior brand strategist with 20 years of experience in brand positioning, startup branding, and narrative strategy. You have access to web search for real-time research.
 
-Tu tarea: basándote en las respuestas del usuario y en investigación real del mercado, generar una propuesta estratégica completa y accionable para "${brandName}".
+Your task: based on the user's answers and real market research, generate a complete and actionable brand strategy proposal for this brand.
 
-La propuesta debe incluir estas secciones EXACTAS, claramente separadas con el prefijo [SECCIÓN]:
+The answers were gathered through a guided discovery session with questions inspired by Simon Sinek's Golden Circle, Marty Neumeier's brand thinking, and Seth Godin's approach to audience and differentiation.
+
+Include these EXACT sections, clearly separated with the prefix [SECTION]:
 
 [BRAND ESSENCE]
-La idea central de la marca en una frase potente.
+The central idea of the brand in one powerful sentence.
 
 [BRAND PURPOSE]
-Por qué existe la marca. Start with Why.
+Why the brand exists. Start with Why.
 
-[POSICIONAMIENTO]
-Dónde se ubica la marca en el mercado respecto a la competencia. Qué espacio ocupa.
+[POSITIONING]
+Where the brand sits in the market relative to competitors. What space it owns.
 
-[MISIÓN]
-Qué hace la marca hoy, para quién, y con qué resultado concreto.
+[MISSION]
+What the brand does today, for whom, and with what concrete result.
 
-[VISIÓN]
-Cómo se ve el mundo en 5-10 años gracias a esta marca.
+[VISION]
+What the world looks like in 5-10 years because of this brand.
 
-[VALORES]
-4 valores core con nombre y descripción de 1 oración cada uno.
+[VALUES]
+The 4 core values with name and 1-sentence description of how each manifests in practice. Include "We choose ___ over ___" framing.
 
-[PERSONALIDAD]
-3-4 rasgos de personalidad. Somos / No somos (5 palabras cada uno).
+[PERSONALITY]
+3-4 personality traits. We are / We are not (5 words each). One person analogy.
 
-[PROMESAS DE MARCA]
-3 promesas específicas y verificables que la marca hace a su audiencia.
+[BRAND PROMISES]
+3 specific and verifiable promises the brand makes to its audience.
 
-[TONO DE VOZ]
-Cómo habla la marca. Qué usa, qué evita.
+[TONE OF VOICE]
+How the brand communicates. What it always does, what it always avoids.
 
-[DIFERENCIACIÓN]
-Por qué elegir esta marca y no las alternativas. Específico, no genérico.
+[DIFFERENTIATOR]
+Why choose this brand over the alternatives. Specific, not generic.
 
-Investigá los competidores mencionados. Sé específico, directo y estratégico. Nada de clichés.`;
+Research any competitors mentioned. Be specific, direct, and strategic. No clichés. Speak to a sophisticated brand designer audience.`;
 
   const userMsg = `Respuestas del cliente:
 
