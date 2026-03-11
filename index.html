@@ -214,6 +214,55 @@ main { flex: 1; min-width: 0; padding: 44px 52px 100px; max-width: 800px; }
 
 
 
+
+/* ── BRAND CORE ───────────────────────────── */
+.bc-wrap { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; background: var(--bg2); }
+.bc-loading { padding: 48px 28px; display: flex; align-items: center; justify-content: center; }
+.bc-loading-inner { display: flex; align-items: center; gap: 12px; font-size: 13px; color: var(--dim); }
+.bc-content { padding: 0; }
+
+.bc-section { padding: 24px 28px; border-bottom: 1px solid var(--border); }
+.bc-section:last-child { border-bottom: none; }
+.bc-section-label { font-size: 9px; letter-spacing: .14em; text-transform: uppercase; color: var(--dim); margin-bottom: 16px; }
+.bc-sublabel { font-size: 9px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+.bc-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+/* Golden Circle grid */
+.bc-gc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.bc-gc-item { display: flex; flex-direction: column; gap: 8px; }
+.bc-gc-ring { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 8px; font-family: var(--mono); font-weight: 600; letter-spacing: .08em; }
+.bc-gc-ring.why { background: rgba(2,255,251,0.12); color: var(--accent); border: 1px solid rgba(2,255,251,0.3); }
+.bc-gc-ring.how { background: rgba(255,255,255,0.06); color: var(--text); border: 1px solid var(--border2); }
+.bc-gc-ring.what { background: rgba(255,255,255,0.04); color: var(--dim); border: 1px solid var(--border); }
+.bc-gc-ring.who { background: rgba(255,255,255,0.03); color: var(--muted); border: 1px solid var(--border); }
+.bc-gc-label { font-size: 10px; color: var(--muted); }
+
+/* Inline editable fields */
+.bc-field { background: rgba(255,255,255,0.02); border: 1px solid transparent; border-radius: 8px; padding: 12px 14px; cursor: pointer; transition: all .15s; position: relative; }
+.bc-field:hover { border-color: var(--border); background: rgba(255,255,255,0.04); }
+.bc-field.editing { border-color: rgba(2,255,251,0.25); background: rgba(2,255,251,0.02); cursor: default; }
+.bc-field-text { font-size: 13px; color: var(--text); line-height: 1.65; font-weight: 300; }
+.bc-field-text.large { font-size: 16px; letter-spacing: -.01em; }
+.bc-field-text.placeholder { color: var(--muted); font-style: italic; }
+.bc-field-input { display: none; width: 100%; background: transparent; border: none; color: var(--text); font-family: var(--mono); font-size: 13px; line-height: 1.65; outline: none; resize: none; font-weight: 300; }
+.bc-field.editing .bc-field-text { display: none; }
+.bc-field.editing .bc-field-input { display: block; }
+.bc-field-large .bc-field-input { font-size: 16px; letter-spacing: -.01em; }
+
+/* Values list */
+.bc-values-list { display: flex; flex-direction: column; gap: 10px; }
+.bc-value-item { display: flex; align-items: baseline; gap: 12px; padding: 10px 14px; background: rgba(255,255,255,0.02); border: 1px solid transparent; border-radius: 8px; cursor: pointer; transition: all .15s; }
+.bc-value-item:hover { border-color: var(--border); }
+.bc-value-item.editing { border-color: rgba(2,255,251,0.2); cursor: default; }
+.bc-value-name { font-size: 12px; color: var(--accent); font-family: var(--mono); width: 120px; flex-shrink: 0; }
+.bc-value-over { font-size: 12px; color: var(--dim); flex: 1; line-height: 1.5; }
+.bc-value-over-input { display: none; background: transparent; border: none; color: var(--dim); font-family: var(--mono); font-size: 12px; outline: none; width: 100%; }
+.bc-value-item.editing .bc-value-over { display: none; }
+.bc-value-item.editing .bc-value-over-input { display: block; }
+
+/* Edit hint */
+.bc-edit-hint { display: flex; align-items: center; gap: 6px; font-size: 10px; color: var(--muted); padding: 12px 28px; border-top: 1px solid var(--border); }
+
 /* ── SUBQUESTIONS & PICKERS ───────────────── */
 .subq-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 8px; }
 .subq-item { display: flex; flex-direction: column; gap: 6px; }
@@ -455,12 +504,121 @@ main { flex: 1; min-width: 0; padding: 44px 52px 100px; max-width: 800px; }
       </div>
       <div class="strategy-result-footer">
         <button class="btn-restart-strategy" onclick="restartStrategy()">← Start over</button>
-        <button class="btn-apply-strategy" onclick="applyStrategy()">◈ Apply to brand book →</button>
+        <button class="btn-apply-strategy" onclick="applyStrategy()">◈ Build Brand Core →</button>
       </div>
     </div>
   </div>
 
-  <div class="panel-footer"><div></div><button class="btn-nav p" onclick="go('intro')">Continue to form →</button></div>
+  <div class="panel-footer"><div></div><button class="btn-nav p" onclick="go('brandcore');generateBrandCore()">Continue to Brand Core →</button></div>
+</div>
+
+<!-- BRAND CORE -->
+<div class="panel" id="panel-brandcore">
+  <div class="panel-eyebrow">Brand Foundation</div>
+  <div class="panel-title">Brand <em style="font-style:normal;color:var(--dim)">Core</em></div>
+  <div class="panel-desc">This is what we built together. Review each section — click any block to edit inline. When it feels right, confirm and move forward.</div>
+
+  <div class="bc-wrap" id="bc-wrap">
+    <div class="bc-loading" id="bc-loading">
+      <div class="bc-loading-inner">
+        <div class="ai-dot"></div>
+        <span>Building your Brand Core...</span>
+      </div>
+    </div>
+
+    <div class="bc-content" id="bc-content" style="display:none">
+
+      <!-- Golden Circle -->
+      <div class="bc-section">
+        <div class="bc-section-label">Golden Circle</div>
+        <div class="bc-gc-grid">
+          <div class="bc-gc-item">
+            <div class="bc-gc-ring why">WHY</div>
+            <div class="bc-gc-label">Why you exist</div>
+            <div class="bc-field" data-field="gc_why" onclick="editField(this)">
+              <div class="bc-field-text" id="bcf-gc_why">Click to edit</div>
+              <textarea class="bc-field-input" id="bci-gc_why" onblur="saveField('gc_why',this)" rows="3"></textarea>
+            </div>
+          </div>
+          <div class="bc-gc-item">
+            <div class="bc-gc-ring how">HOW</div>
+            <div class="bc-gc-label">How you do it differently</div>
+            <div class="bc-field" data-field="gc_how" onclick="editField(this)">
+              <div class="bc-field-text" id="bcf-gc_how">Click to edit</div>
+              <textarea class="bc-field-input" id="bci-gc_how" onblur="saveField('gc_how',this)" rows="3"></textarea>
+            </div>
+          </div>
+          <div class="bc-gc-item">
+            <div class="bc-gc-ring what">WHAT</div>
+            <div class="bc-gc-label">What you actually do</div>
+            <div class="bc-field" data-field="gc_what" onclick="editField(this)">
+              <div class="bc-field-text" id="bcf-gc_what">Click to edit</div>
+              <textarea class="bc-field-input" id="bci-gc_what" onblur="saveField('gc_what',this)" rows="3"></textarea>
+            </div>
+          </div>
+          <div class="bc-gc-item">
+            <div class="bc-gc-ring who">WHO</div>
+            <div class="bc-gc-label">Who it's for</div>
+            <div class="bc-field" data-field="gc_who" onclick="editField(this)">
+              <div class="bc-field-text" id="bcf-gc_who">Click to edit</div>
+              <textarea class="bc-field-input" id="bci-gc_who" onblur="saveField('gc_who',this)" rows="3"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Essence -->
+      <div class="bc-section">
+        <div class="bc-section-label">Brand Essence</div>
+        <div class="bc-field bc-field-large" data-field="bc_essence" onclick="editField(this)">
+          <div class="bc-field-text large" id="bcf-bc_essence">Click to edit</div>
+          <textarea class="bc-field-input" id="bci-bc_essence" onblur="saveField('bc_essence',this)" rows="2"></textarea>
+        </div>
+      </div>
+
+      <!-- Values -->
+      <div class="bc-section">
+        <div class="bc-section-label">Values</div>
+        <div id="bc-values-list" class="bc-values-list"></div>
+      </div>
+
+      <!-- Differentiator -->
+      <div class="bc-section">
+        <div class="bc-section-label">Differentiator</div>
+        <div class="bc-field" data-field="bc_diff" onclick="editField(this)">
+          <div class="bc-field-text" id="bcf-bc_diff">Click to edit</div>
+          <textarea class="bc-field-input" id="bci-bc_diff" onblur="saveField('bc_diff',this)" rows="3"></textarea>
+        </div>
+      </div>
+
+      <!-- Mission / Vision -->
+      <div class="bc-section">
+        <div class="bc-section-label">Mission & Vision</div>
+        <div class="bc-two-col">
+          <div>
+            <div class="bc-sublabel">Mission — today</div>
+            <div class="bc-field" data-field="bc_mission" onclick="editField(this)">
+              <div class="bc-field-text" id="bcf-bc_mission">Click to edit</div>
+              <textarea class="bc-field-input" id="bci-bc_mission" onblur="saveField('bc_mission',this)" rows="3"></textarea>
+            </div>
+          </div>
+          <div>
+            <div class="bc-sublabel">Vision — 5-10 years</div>
+            <div class="bc-field" data-field="bc_vision" onclick="editField(this)">
+              <div class="bc-field-text" id="bcf-bc_vision">Click to edit</div>
+              <textarea class="bc-field-input" id="bci-bc_vision" onblur="saveField('bc_vision',this)" rows="3"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="panel-footer">
+    <button class="btn-nav" onclick="go('strategy')">← Back to Discovery</button>
+    <button class="btn-nav p" id="bc-confirm-btn" onclick="confirmBrandCore()" style="display:none">This looks right → Brand Expression</button>
+  </div>
 </div>
 
 <!-- 00 INTRO -->
@@ -2131,7 +2289,8 @@ function applyStrategy() {
 
   // Confirm and navigate
   alert('✓ Strategy applied to brand book. Review and adjust each section.');
-  go('intro');
+  go('brandcore');
+  generateBrandCore();
 }
 
 // ─────────────────────────────────────────────
@@ -2199,6 +2358,217 @@ function applyAssist(panelId) {
   const chatIn = document.getElementById('chatIn');
   if (chatIn) chatIn.value = `I want to apply these suggestions for ${panelId}: ${result.substring(0, 200)}...`;
   go('ai');
+}
+
+
+// ─────────────────────────────────────────────
+// BRAND CORE
+// ─────────────────────────────────────────────
+let brandCoreData = {};
+let brandCoreGenerated = false;
+
+function editField(el) {
+  if (el.classList.contains('editing')) return;
+  el.classList.add('editing');
+  const fieldId = el.dataset.field;
+  const input = document.getElementById('bci-' + fieldId);
+  if (input) {
+    input.value = brandCoreData[fieldId] || '';
+    input.focus();
+    input.setSelectionRange(input.value.length, input.value.length);
+  }
+}
+
+function saveField(fieldId, input) {
+  brandCoreData[fieldId] = input.value.trim();
+  const textEl = document.getElementById('bcf-' + fieldId);
+  const fieldEl = input.closest('.bc-field');
+  if (textEl) {
+    if (input.value.trim()) {
+      textEl.textContent = input.value.trim();
+      textEl.classList.remove('placeholder');
+    } else {
+      textEl.textContent = 'Click to edit';
+      textEl.classList.add('placeholder');
+    }
+  }
+  if (fieldEl) fieldEl.classList.remove('editing');
+}
+
+function renderBrandCore(parsed) {
+  // Fill Golden Circle
+  const fields = {
+    gc_why: parsed.why || '',
+    gc_how: parsed.how || '',
+    gc_what: parsed.what || '',
+    gc_who: parsed.who || '',
+    bc_essence: parsed.essence || '',
+    bc_diff: parsed.differentiator || '',
+    bc_mission: parsed.mission || '',
+    bc_vision: parsed.vision || '',
+  };
+
+  Object.keys(fields).forEach(key => {
+    brandCoreData[key] = fields[key];
+    const textEl = document.getElementById('bcf-' + key);
+    const inputEl = document.getElementById('bci-' + key);
+    if (textEl && fields[key]) {
+      textEl.textContent = fields[key];
+      textEl.classList.remove('placeholder');
+    }
+    if (inputEl) inputEl.value = fields[key];
+  });
+
+  // Values
+  const valuesList = document.getElementById('bc-values-list');
+  if (valuesList && parsed.values && parsed.values.length) {
+    valuesList.innerHTML = parsed.values.map((v, i) => `
+      <div class="bc-value-item" onclick="editValueItem(this,${i})">
+        <div class="bc-value-name">${v.name}</div>
+        <div class="bc-value-over">We choose this over <em>${v.over || '...'}</em></div>
+        <input class="bc-value-over-input" id="bvi-${i}" value="${v.over || ''}"
+          onblur="saveValueItem(${i}, this)" placeholder="we choose this over...">
+      </div>
+    `).join('');
+    brandCoreData.values = parsed.values;
+  }
+
+  // Show content, hide loading
+  document.getElementById('bc-loading').style.display = 'none';
+  document.getElementById('bc-content').style.display = 'block';
+  document.getElementById('bc-confirm-btn').style.display = 'block';
+
+  // Add edit hint
+  const wrap = document.getElementById('bc-wrap');
+  if (wrap && !document.getElementById('bc-edit-hint')) {
+    const hint = document.createElement('div');
+    hint.className = 'bc-edit-hint';
+    hint.id = 'bc-edit-hint';
+    hint.innerHTML = '◈ Click any block to edit inline';
+    wrap.appendChild(hint);
+  }
+}
+
+function editValueItem(el, idx) {
+  if (el.classList.contains('editing')) return;
+  el.classList.add('editing');
+  const input = document.getElementById('bvi-' + idx);
+  if (input) { input.focus(); }
+}
+
+function saveValueItem(idx, input) {
+  if (!brandCoreData.values) return;
+  if (brandCoreData.values[idx]) brandCoreData.values[idx].over = input.value.trim();
+  const el = input.closest('.bc-value-item');
+  if (el) {
+    el.classList.remove('editing');
+    const overEl = el.querySelector('.bc-value-over');
+    if (overEl) overEl.innerHTML = `We choose this over <em>${input.value.trim() || '...'}</em>`;
+  }
+}
+
+async function generateBrandCore() {
+  if (brandCoreGenerated) return;
+
+  // Show loading
+  document.getElementById('bc-loading').style.display = 'flex';
+  document.getElementById('bc-content').style.display = 'none';
+  document.getElementById('bc-confirm-btn').style.display = 'none';
+
+  const answersSummary = STRATEGY_QUESTIONS.map(q => {
+    const a = strategyAnswers[q.id] || {};
+    let parts = [];
+    if (a.custom) parts.push(a.custom);
+    if (a.values) parts.push('Values: ' + a.values.join(', '));
+    if (a.words) parts.push('Personality words: ' + a.words.join(', '));
+    Object.keys(a).forEach(k => {
+      if (['p1','p2','p3','p4','a1','a2','a3','a4','d1','d2','d3','d4','pr1','pr2','pr3','per1'].includes(k) && a[k]) {
+        parts.push(a[k]);
+      }
+      if (k.startsWith('over_') && a[k]) parts.push(k.replace('over_','') + ' over ' + a[k]);
+    });
+    return `${q.question}\n${parts.join('\n') || '(skipped)'}`;
+  }).join('\n\n');
+
+  const prompt = `Based on these brand discovery answers, generate a Brand Core in JSON format.
+
+DISCOVERY ANSWERS:
+${answersSummary}
+
+Return ONLY valid JSON, no markdown, no explanation. Use this exact structure:
+{
+  "why": "One sentence — why this brand exists beyond making money",
+  "how": "One sentence — how they do it differently",
+  "what": "One sentence — what they actually do",
+  "who": "One sentence — who it's for",
+  "essence": "The brand essence — the central idea in one powerful phrase",
+  "differentiator": "One paragraph — what makes this brand the only option",
+  "mission": "Mission statement — what they do today, for whom, with what result",
+  "vision": "Vision statement — what the world looks like in 5-10 years",
+  "values": [
+    { "name": "Value Name", "over": "what they choose it over" },
+    { "name": "Value Name", "over": "what they choose it over" },
+    { "name": "Value Name", "over": "what they choose it over" },
+    { "name": "Value Name", "over": "what they choose it over" }
+  ]
+}`;
+
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const data = await res.json();
+    const text = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('');
+    const clean = text.replace(/```json|```/g, '').trim();
+    const parsed = JSON.parse(clean);
+    brandCoreData = parsed;
+    brandCoreGenerated = true;
+    renderBrandCore(parsed);
+  } catch(e) {
+    console.error('Brand Core generation error:', e);
+    document.getElementById('bc-loading').innerHTML = '<div class="bc-loading-inner" style="color:rgba(245,100,100,0.7)">Error generating Brand Core. <button onclick="generateBrandCore()" style="margin-left:8px;background:transparent;border:1px solid var(--border);color:var(--dim);padding:4px 10px;border-radius:4px;cursor:pointer;font-family:var(--mono);font-size:10px">Retry</button></div>';
+  }
+}
+
+function confirmBrandCore() {
+  // Mark brand core as confirmed
+  document.getElementById('ck-brandcore').style.opacity = '1';
+
+  // Apply Brand Core data to brand book fields
+  const m = brandCoreData;
+  const set = (id, val) => { const el = document.getElementById(id); if (el && val) el.value = val; };
+
+  set('brand_essence', m.essence || m.why);
+  set('brand_purpose', m.why);
+  set('brand_mission', m.mission);
+  set('brand_vision', m.vision);
+  set('brand_diff', m.differentiator);
+
+  // Apply values
+  if (m.values && m.values.length) {
+    // Clear existing and repopulate
+    const container = document.getElementById('values-container');
+    if (container) {
+      container.innerHTML = '';
+      m.values.forEach((v, i) => {
+        addValue();
+        setTimeout(() => {
+          const nameInputs = container.querySelectorAll('.value-name');
+          const descInputs = container.querySelectorAll('.value-desc');
+          if (nameInputs[i]) nameInputs[i].value = v.name;
+          if (descInputs[i]) descInputs[i].value = v.over ? `We choose ${v.name} over ${v.over}.` : '';
+        }, 50);
+      });
+    }
+  }
+
+  go('intro');
 }
 
 // Init strategy on load
