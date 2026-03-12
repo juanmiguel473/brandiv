@@ -1329,7 +1329,8 @@ const PROGRESS = { strategy:2, intro:5, essence:13, values:21, personality:29, p
 // ─────────────────────────────────────────────
 // INIT
 // ─────────────────────────────────────────────
-window.addEventListener('DOMContentLoaded', () => {
+// builder init moved to single DOMContentLoaded below
+function initBuilder() {
   buildSliders();
   buildArchGrid();
   addValue(); addValue(); addValue(); addValue();
@@ -1339,7 +1340,7 @@ window.addEventListener('DOMContentLoaded', () => {
   addLogoOnColor(); addLogoOnColor();
   addCollateral(); addCollateral(); addCollateral();
   updateTypePreviews();
-});
+}
 
 // ─────────────────────────────────────────────
 // NAV
@@ -2817,9 +2818,7 @@ function confirmBrandCore() {
 }
 
 // Init strategy on load
-window.addEventListener('DOMContentLoaded', () => {
-  initStrategy();
-});
+// strategy init moved below
 
 
 // ════════════════════════════════════════════
@@ -2941,7 +2940,8 @@ function svUpdateProgress() {
 function svRender() {
   const step = SURVEY_STEPS[svStep];
   const container = document.getElementById('sv-content');
-  if (!container) return;
+  if (!container) { console.error('sv-content not found'); return; }
+  if (!step) { console.error('No step at index', svStep); return; }
 
   svUpdateProgress();
 
@@ -3456,9 +3456,14 @@ function svPopulateBuilder(data) {
   updatePill();
 }
 
-// Init survey on load
+// survey init moved below
+
+
+// ── Single consolidated init ──────────────────
 window.addEventListener('DOMContentLoaded', () => {
-  svRender();
+  try { initBuilder(); } catch(e) { console.warn('initBuilder error:', e); }
+  try { initStrategy(); } catch(e) { console.warn('initStrategy error:', e); }
+  try { svRender(); } catch(e) { console.error('svRender error:', e); }
 });
 
 </script>
