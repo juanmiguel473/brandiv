@@ -384,9 +384,237 @@ main { flex: 1; min-width: 0; padding: 44px 52px 100px; max-width: 800px; }
 .dondo-card.dont .dondo-head { color: rgba(245,100,100,.7); }
 .dondo-body { padding: 12px 14px; }
 .dondo-body textarea { background: none; border: none; width: 100%; color: var(--text); font-family: var(--mono); font-size: 12.6px; outline: none; resize: none; min-height: 80px; line-height: 1.65; }
+
+/* ════════════════════════════════════════════
+   SURVEY OVERLAY
+   ════════════════════════════════════════════ */
+#survey-overlay {
+  position: fixed; inset: 0; z-index: 1000;
+  background: var(--bg);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 24px;
+  transition: opacity .4s ease;
+}
+#survey-overlay.hidden {
+  opacity: 0; pointer-events: none;
+}
+
+/* Top bar */
+.sv-topbar {
+  position: absolute; top: 0; left: 0; right: 0;
+  padding: 20px 32px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.sv-logo { font-family: var(--mono); font-size: 14px; color: var(--text); letter-spacing: .04em; }
+.sv-progress-wrap { flex: 1; max-width: 200px; margin: 0 auto; }
+.sv-progress-track { height: 2px; background: var(--bg3); border-radius: 2px; overflow: hidden; }
+.sv-progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width .4s ease; }
+.sv-progress-label { font-size: 9px; color: var(--muted); text-align: center; margin-top: 6px; letter-spacing: .08em; }
+.sv-skip { font-family: var(--mono); font-size: 10px; color: var(--muted); background: none; border: none; cursor: pointer; padding: 4px 8px; transition: color .15s; }
+.sv-skip:hover { color: var(--dim); }
+
+/* Main card */
+.sv-card {
+  width: 100%; max-width: 620px;
+  animation: svFadeUp .3s ease;
+}
+@keyframes svFadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.sv-block-header {
+  margin-bottom: 32px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.sv-block-name {
+  font-size: 9px; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 8px;
+}
+.sv-block-title {
+  font-size: 22px; color: var(--text); font-weight: 300;
+  letter-spacing: -.02em; line-height: 1.2; margin-bottom: 6px;
+}
+.sv-block-sub {
+  font-size: 12px; color: var(--dim); line-height: 1.6;
+}
+
+.sv-question { font-size: 20px; color: var(--text); font-weight: 300; letter-spacing: -.01em; line-height: 1.35; margin-bottom: 8px; }
+.sv-sub { font-size: 12px; color: var(--dim); line-height: 1.6; margin-bottom: 28px; }
+
+/* Inputs */
+.sv-input {
+  width: 100%; background: transparent;
+  border: none; border-bottom: 2px solid var(--border);
+  color: var(--text); font-family: var(--mono); font-size: 16px;
+  padding: 12px 0; outline: none; transition: border-color .2s;
+  line-height: 1.4;
+}
+.sv-input:focus { border-bottom-color: var(--accent); }
+.sv-input::placeholder { color: var(--muted); }
+.sv-textarea {
+  width: 100%; background: transparent;
+  border: none; border-bottom: 2px solid var(--border);
+  color: var(--text); font-family: var(--mono); font-size: 15px;
+  padding: 12px 0; outline: none; resize: none;
+  transition: border-color .2s; line-height: 1.6; min-height: 80px;
+}
+.sv-textarea:focus { border-bottom-color: var(--accent); }
+.sv-textarea::placeholder { color: var(--muted); }
+
+/* Dropdown */
+.sv-select {
+  width: 100%; background: var(--bg2);
+  border: 1px solid var(--border); border-radius: 8px;
+  color: var(--text); font-family: var(--mono); font-size: 14px;
+  padding: 14px 16px; outline: none; cursor: pointer;
+  transition: border-color .2s; appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 16px center;
+  padding-right: 40px;
+}
+.sv-select:focus { border-color: var(--accent); }
+.sv-select option { background: var(--bg2); }
+
+/* Multi-select chips */
+.sv-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.sv-chip {
+  background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+  border-radius: 20px; padding: 8px 16px;
+  font-family: var(--mono); font-size: 11px; color: var(--dim);
+  cursor: pointer; transition: all .15s;
+}
+.sv-chip:hover { border-color: var(--border2); color: var(--text); }
+.sv-chip.sel { background: rgba(2,255,251,0.08); border-color: rgba(2,255,251,0.35); color: var(--accent); }
+.sv-other-input {
+  width: 100%; background: transparent; border: none;
+  border-bottom: 1px solid var(--border); color: var(--text);
+  font-family: var(--mono); font-size: 13px; padding: 8px 0;
+  outline: none; margin-top: 8px; display: none; transition: border-color .2s;
+}
+.sv-other-input.on { display: block; }
+.sv-other-input:focus { border-bottom-color: var(--accent); }
+
+/* Value grid */
+.sv-value-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+.sv-value-chip {
+  background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+  border-radius: 20px; padding: 8px 16px;
+  font-family: var(--mono); font-size: 11px; color: var(--dim);
+  cursor: pointer; transition: all .15s;
+}
+.sv-value-chip:hover { border-color: var(--border2); color: var(--text); }
+.sv-value-chip.sel { background: rgba(2,255,251,0.08); border-color: rgba(2,255,251,0.35); color: var(--accent); }
+.sv-value-count { font-size: 10px; color: var(--muted); margin-bottom: 14px; }
+
+/* Sliders */
+.sv-sliders { display: flex; flex-direction: column; gap: 24px; }
+.sv-slider-row { display: flex; flex-direction: column; gap: 10px; }
+.sv-slider-labels { display: flex; justify-content: space-between; }
+.sv-slider-l, .sv-slider-r { font-size: 11px; color: var(--dim); font-family: var(--mono); }
+.sv-slider { width: 100%; accent-color: var(--accent); cursor: pointer; height: 3px; }
+
+/* Bottom nav */
+.sv-nav {
+  margin-top: 36px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.sv-btn-next {
+  background: var(--text); border: none; border-radius: 8px;
+  padding: 13px 28px; font-family: var(--mono); font-size: 12px;
+  font-weight: 500; color: var(--bg); cursor: pointer;
+  letter-spacing: .06em; transition: all .2s;
+  display: flex; align-items: center; gap: 10px;
+}
+.sv-btn-next:hover { background: var(--accent); }
+.sv-btn-next:disabled { background: var(--bg3); color: var(--muted); cursor: not-allowed; }
+.sv-btn-back {
+  background: transparent; border: none;
+  font-family: var(--mono); font-size: 11px;
+  color: var(--muted); cursor: pointer; padding: 8px 0;
+  transition: color .15s;
+}
+.sv-btn-back:hover { color: var(--dim); }
+
+/* Summary cards */
+.sv-summary {
+  width: 100%; max-width: 620px;
+  animation: svFadeUp .35s ease;
+}
+.sv-summary-eyebrow {
+  font-size: 9px; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 12px;
+}
+.sv-summary-title {
+  font-size: 20px; color: var(--text); font-weight: 300;
+  letter-spacing: -.01em; line-height: 1.3; margin-bottom: 20px;
+}
+.sv-summary-card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 12px; padding: 20px 24px; margin-bottom: 12px;
+}
+.sv-summary-card-label {
+  font-size: 9px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--dim); margin-bottom: 8px;
+}
+.sv-summary-card-text {
+  font-size: 13px; color: #b8b6ac; line-height: 1.7;
+}
+.sv-summary-loading {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 12px; color: var(--dim); padding: 8px 0;
+}
+.sv-btn-continue {
+  margin-top: 24px; background: var(--accent); border: none;
+  border-radius: 8px; padding: 14px 32px;
+  font-family: var(--mono); font-size: 12px; font-weight: 500;
+  color: var(--bg); cursor: pointer; letter-spacing: .06em;
+  transition: opacity .15s; width: 100%;
+}
+.sv-btn-continue:hover { opacity: .85; }
+.sv-btn-continue:disabled { opacity: .4; cursor: not-allowed; }
+
+/* Final summary */
+.sv-final-summary { width: 100%; max-width: 620px; animation: svFadeUp .35s ease; }
+.sv-final-title { font-size: 26px; color: var(--text); font-weight: 300; letter-spacing: -.02em; margin-bottom: 8px; }
+.sv-final-sub { font-size: 13px; color: var(--dim); margin-bottom: 28px; line-height: 1.6; }
+.sv-final-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 28px; }
+.sv-final-item { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; }
+.sv-final-item-label { font-size: 9px; letter-spacing: .12em; text-transform: uppercase; color: var(--dim); margin-bottom: 6px; }
+.sv-final-item-val { font-size: 12px; color: var(--text); line-height: 1.5; }
+.sv-generate-btn {
+  width: 100%; background: var(--accent); border: none; border-radius: 8px;
+  padding: 16px; font-family: var(--mono); font-size: 13px; font-weight: 600;
+  color: var(--bg); cursor: pointer; letter-spacing: .06em;
+  transition: opacity .15s; display: flex; align-items: center;
+  justify-content: center; gap: 12px;
+}
+.sv-generate-btn:hover { opacity: .85; }
+.sv-generate-btn:disabled { opacity: .5; cursor: not-allowed; }
+
 </style>
 </head>
 <body>
+<!-- ════════════════════════════════════════════
+     SURVEY OVERLAY
+     ════════════════════════════════════════════ -->
+<div id="survey-overlay">
+  <!-- Top bar -->
+  <div class="sv-topbar">
+    <div class="sv-logo">BRANDIV</div>
+    <div class="sv-progress-wrap">
+      <div class="sv-progress-track"><div class="sv-progress-fill" id="sv-progress" style="width:0%"></div></div>
+      <div class="sv-progress-label" id="sv-progress-label">Step 1 of 20</div>
+    </div>
+    <div style="width:80px"></div>
+  </div>
+
+  <!-- Dynamic content area -->
+  <div id="sv-content"></div>
+</div>
+
+
 
 <header>
   <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTg0IiBoZWlnaHQ9IjI4IiB2aWV3Qm94PSIwIDAgMTg0IDI4IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTEyMy4wMzggMEgxMjYuNTg1QzEzMS4yMDggLTcuNjg2MzNlLTA3IDE0MC4zNTMgMi4xODYxNSAxNDAuMzUzIDEzLjc5NDdDMTQwLjM1MyAyNS40MDMyIDEzMS4yMDggMjcuNTg5NCAxMjYuNTg1IDI3LjU4OTRMMTEyLjYxIDI3LjU4OTRWMC4wMDA0OTA5NTRIMTIzLjAzOFYwWk0xMjMuNTc4IDAuNzE1NzRWMjYuNjI0QzEyNS42MDkgMjYuODIxNCAxMjguODM0IDI0LjU1MDkgMTI4LjgzNCAxMy43OTQ3QzEyOC44MzQgMy4wMzg1MSAxMjUuNjA5IDAuNzI1OTU5IDEyMy41NzggMC43MTU3NFoiIGZpbGw9IndoaXRlIi8+CjxyZWN0IHg9IjE0MS43MyIgeT0iMC4wMDA0ODgyODEiIHdpZHRoPSIxMC45Njc3IiBoZWlnaHQ9IjI3LjU4ODkiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNNjMuMTQ2MyAwSDc0LjM5ODZMODQuMDA1NSAyNy42MDNINzIuMDEwMUw2OC42NzA5IDE3Ljg0NDRINjAuNjU2N0w2MC4zMDU4IDE4Ljk4N0M2NS4xOTY5IDIyLjA4NiA2NS4wMzI4IDI0Ljc0MTcgNjQuOTA4NiAyNi43NTEyQzY0Ljg5MDIgMjcuMDQ5NiA2NC44NzI2IDI3LjMzMzcgNjQuODcyNiAyNy42MDNMNTYuMzA1NyAyNy42MDNMNjMuNzI4MSAzLjM5OTg0TDYzLjE0NjMgMS42OTk0NFYwWk02NC4zNTUyIDUuMjMyMzVMNjguMjkwMyAxNi43MzIzSDYwLjkxMzNMNjQuMzU1MiA1LjIzMjM1WiIgZmlsbD0id2hpdGUiLz4KPHBhdGggZD0iTTg1LjQzIDAuMDE0NTI2NEg4Ny41MjA3TDEwOC4wOTYgMTYuMjIwNFYxMS4wMDQzTDEwOC4wNzcgMTEuMDU1OUMxMDEuMjYgNy4wNTA1NiAxMDEuNDcyIDMuNjI0MyAxMDEuNjMxIDEuMDU4NjdDMTAxLjY1MyAwLjY5MzU4MSAxMDEuNjc1IDAuMzQ1OTE5IDEwMS42NzUgMC4wMTY0OTQ1TDEwOS4yNDIgMC4wMTY0NTM1TDEwOS4yNDIgMjcuNDkwOUwxMDUuMzMyIDI3LjQ5MDlMODYuNTMwMSAxMy4zMDgyTDg2LjUzMDEgMjcuNjAzSDg1LjM4MzhMODUuMzgzOCAwLjAxNjQ1MzZMODUuNDMgMC4wMTY0NTM2TDg1LjQzIDAuMDE0NTI2NFoiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik0xNTQuNzI4IDAuMDAwMjQ0MTQxSDE2NS45OEwxNzQuNTUzIDI1Ljc4NDRMMTc3LjA1NSAxNy45ODg1QzE3My40MTkgMTMuNzE3NiAxNzIuNSA4LjA4NTkgMTcyLjQ5NSA1Ljc3MzQ5TDE3Mi40OTIgNS43NjY5MVYwLjAwNTI1MDg1SDE4My45OTlMMTgzLjc1NyAwLjc1NTA0NkwxNzUuMTc0IDI3LjU4OTJMMTc1LjE1IDI3LjU4MjFMMTc1LjE3NCAyNy42NTNIMTYzLjE3OUwxNTQuNzI4IDAuNjU4MzUxTDE1NC43MjggMC4wMDAyNDQxNDFaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTE4Ljk3MjEgNC4yMjI4M2UtMTBIMFYyNy41ODg5TDIxLjM0MjYgMjcuNTg4OUMyMy44NTIxIDI3LjU4ODkgMjguMTQxNiAyNC42MjU3IDI4LjE0MTYgMjAuMjUxMUMyOC4xNDE2IDEzLjkzNiAyMi41ODQxIDEyLjU3NzYgMTkuOTg1NyAxMi42ODc4SDE5LjcxNDFDMjEuOTgzMiAxMi40MTg3IDI2LjI0NyAxMC42MTI1IDI2LjI0NyA2Ljc0NjM1QzI2LjI0NyAxLjExMzQyIDIxLjI3NDggLTIuNTA0MjRlLTA1IDE4Ljk3MjEgNC4yMjI4M2UtMTBaTTEyLjA2NjMgMC44NDcyODdIMTAuOTY3N1YxMi4zNDhIMTIuMDY2M0MxMi4zOTcxIDEyLjM0OCAxNS4zOTcyIDEyLjI4OTQgMTUuMzk3MiA2LjU5NzY3QzE1LjM5NzIgMC45MDU5NyAxMi4zOTcxIDAuODQ3Mjg3IDEyLjA2NjMgMC44NDcyODdaTTEwLjk2NzcgMTMuNjM3N1YyNi41MzExSDEyLjI0MzhDMTIuNjE0NiAyNi41MzExIDE1Ljk3OCAyNi40NjUzIDE1Ljk3OCAyMC4wODQ0QzE1Ljk3OCAxMy43MDM1IDEyLjYxNDYgMTMuNjM3NyAxMi4yNDM4IDEzLjYzNzdIMTAuOTY3N1oiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNMjkuNjcxOSAwLjAxNDUyNjRWMjcuNjAzNEg0MC42Mzk2VjIwLjc3NjhDNDIuMDUzMiAyMy4zNzQ5IDQ0LjA4MSAyNS43MDc4IDQ2LjIzODMgMjYuODM0OEM0OS4wMDM3IDI4LjI3OTYgNTIuODg1OCAyOC4wODE4IDU0LjQ4MTIgMjcuODAyM1YxNi41MTUzQzUyLjk1MjMgMTcuMzUzNyA0OS4xNjMyIDE4LjE5MjIgNDYuNzAzNyAxOC4xOTIyQzQ2LjYwOTMgMTguMTkyMiA0Ni41MTQ2IDE4LjE5MjQgNDYuNDE5OCAxOC4xOTI2QzQ1LjAyOCAxOC4xOTU0IDQzLjU4NDQgMTguMTk4MyA0Mi4yNTQ3IDE3LjYwMzhDNDUuODAxMSAxNy41Njg3IDQ5LjIyMjQgMTcuMTExNCA1MS43NTIzIDE1LjY4OTJDNTMuNzk4MyAxNC41NjggNTUuOTE4OSAxMi4zNTE1IDU1LjkxODkgOC44MDA2QzU1LjkxODkgMS40NjQ1OCA1MC45Njg4IDAuMDE0NTQ0NiA0OC42NDQgMC4wMTQ1MjY0SDI5LjY3MTlaTTQwLjYzOTYgMS4xMTc5OVYxNi4wOTU5SDQxLjczODJDNDIuMDY5IDE2LjA5NTkgNDUuMDY5MSAxNi4wMTk1IDQ1LjA2OTEgOC42MDY5N0M0NS4wNjkxIDEuMTk0NDEgNDIuMDY5IDEuMTE3OTkgNDEuNzM4MiAxLjExNzk5SDQwLjYzOTZaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K" alt="Brandiv" style="height:18px;opacity:0.9">
@@ -2470,10 +2698,25 @@ function saveValueItem(idx, input) {
 async function generateBrandCore() {
   if (brandCoreGenerated) return;
 
+  // Check if there are any answers
+  const hasAnswers = Object.keys(strategyAnswers).length > 0;
+  if (!hasAnswers) {
+    document.getElementById('bc-loading').innerHTML = '<div class="bc-loading-inner" style="flex-direction:column;gap:16px;text-align:center"><span style="color:var(--dim)">Complete the Brand Strategy Session first.</span><button onclick="go('strategy')" style="background:var(--text);border:none;border-radius:6px;padding:9px 20px;font-family:var(--mono);font-size:11px;color:var(--bg);cursor:pointer;letter-spacing:.06em">← Go to Discovery</button></div>';
+    return;
+  }
+
   // Show loading
   document.getElementById('bc-loading').style.display = 'flex';
   document.getElementById('bc-content').style.display = 'none';
   document.getElementById('bc-confirm-btn').style.display = 'none';
+
+  // Safety timeout — 30 seconds
+  const timeout = setTimeout(() => {
+    const loadEl = document.getElementById('bc-loading');
+    if (loadEl && loadEl.style.display !== 'none') {
+      loadEl.innerHTML = '<div class="bc-loading-inner" style="flex-direction:column;gap:16px;text-align:center"><span style="color:rgba(245,100,100,0.7)">Request timed out.</span><button onclick="generateBrandCore();brandCoreGenerated=false;" style="background:transparent;border:1px solid var(--border);border-radius:6px;padding:8px 16px;font-family:var(--mono);font-size:11px;color:var(--dim);cursor:pointer">Retry</button></div>';
+    }
+  }, 30000);
 
   const answersSummary = STRATEGY_QUESTIONS.map(q => {
     const a = strategyAnswers[q.id] || {};
@@ -2527,10 +2770,12 @@ Return ONLY valid JSON, no markdown, no explanation. Use this exact structure:
     const text = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('');
     const clean = text.replace(/```json|```/g, '').trim();
     const parsed = JSON.parse(clean);
+    clearTimeout(timeout);
     brandCoreData = parsed;
     brandCoreGenerated = true;
     renderBrandCore(parsed);
   } catch(e) {
+    clearTimeout(timeout);
     console.error('Brand Core generation error:', e);
     document.getElementById('bc-loading').innerHTML = '<div class="bc-loading-inner" style="color:rgba(245,100,100,0.7)">Error generating Brand Core. <button onclick="generateBrandCore()" style="margin-left:8px;background:transparent;border:1px solid var(--border);color:var(--dim);padding:4px 10px;border-radius:4px;cursor:pointer;font-family:var(--mono);font-size:10px">Retry</button></div>';
   }
@@ -2574,6 +2819,646 @@ function confirmBrandCore() {
 // Init strategy on load
 window.addEventListener('DOMContentLoaded', () => {
   initStrategy();
+});
+
+
+// ════════════════════════════════════════════
+// SURVEY ENGINE
+// ════════════════════════════════════════════
+
+const INDUSTRIES = [
+  'Technology & Software','Healthcare & Wellness','Education & Training',
+  'Finance & Fintech','Retail & E-commerce','Food & Beverage',
+  'Fashion & Apparel','Real Estate & Architecture','Professional Services',
+  'Creative Services & Design','Media & Entertainment','Travel & Hospitality',
+  'Non-profit & Social Impact','Manufacturing & Industrial',
+  'Beauty & Personal Care','Sports & Fitness','Legal Services',
+  'Agriculture & Environment','Logistics & Supply Chain','Other'
+];
+
+const VALUES_BANK = [
+  'Trust','Transparency','Excellence','Humanity','Commitment',
+  'Curiosity','Empathy','Authenticity','Professionalism','Adaptability',
+  'Honesty','Collaboration','Innovation','Ambition','Clarity',
+  'Integrity','Vision','Passion','Rigor','Simplicity',
+  'Boldness','Inclusion','Sustainability','Craftsmanship','Independence'
+];
+
+const PERSONALITY_WORDS = [
+  'Bold','Warm','Sharp','Calm','Energetic','Trustworthy',
+  'Disruptive','Elegant','Approachable','Visionary','Grounded','Playful',
+  'Minimal','Expressive','Precise','Empathetic','Ambitious','Refined'
+];
+
+const DIFF_OPTIONS = [
+  'Superior quality','Better price','Faster delivery',
+  'More personal','Niche focus','Stronger values',
+  'Better design','Simpler experience','Local presence','Other'
+];
+
+const FAIL_OPTIONS = [
+  'Quality','Personalization','Speed','Transparency',
+  'Affordability','Human touch','Innovation','Other'
+];
+
+const EMOTION_OPTIONS = [
+  'Confident','Inspired','Safe','Empowered',
+  'Understood','Excited','Calm','Motivated','Other'
+];
+
+// Survey steps definition
+// type: text | textarea | dropdown | multiselect | valuegrid | wordgrid | sliders | summary | final
+const SURVEY_STEPS = [
+  // BLOCK 0
+  { id:'brand_name', block:null, q:"What's your brand name?", type:'text', placeholder:'e.g. Brandiv', required:true },
+  { id:'industry', block:null, q:'What industry are you in?', type:'dropdown', options: INDUSTRIES, required:true },
+  { id:'niche', block:null, q:'Any sub-industry or niche?', sub:'Optional — be as specific as you want.', type:'text', placeholder:'e.g. AI tools for independent designers', required:false },
+  { id:'summary_0', type:'summary', block_num:0 },
+
+  // BLOCK 1 — Purpose
+  { id:'what_do', block:1, blockTitle:'Purpose', blockSub:"Why does this brand exist beyond making money?", q:'What does your product or service actually do?', type:'textarea', placeholder:'Describe it simply, as if to a friend.', required:true },
+  { id:'obsession', block:1, q:'What problem are you obsessed with solving?', type:'textarea', placeholder:'The thing that keeps you up at night.', required:true },
+  { id:'life_change', block:1, q:"What changes in someone's life after using it?", type:'textarea', placeholder:'Before vs. after. What shifts?', required:true },
+  { id:'disappeared', block:1, q:'If this brand disappeared tomorrow, what would be lost?', type:'textarea', placeholder:"What gap would it leave in the world?", required:true },
+  { id:'summary_1', type:'summary', block_num:1 },
+
+  // BLOCK 2 — Differentiator
+  { id:'competitors', block:2, blockTitle:'Differentiator', blockSub:"What makes you the only option? Be honest — this is the hardest question in strategy, and the most important one.", q:'Who are your main competitors or references?', sub:'List 2-4 brands your audience might also consider.', type:'textarea', placeholder:'e.g. Notion, Linear, Figma', required:true },
+  { id:'they_fail', block:2, q:'What do they consistently fail to deliver?', type:'multiselect', options: FAIL_OPTIONS, required:true },
+  { id:'differentiator', block:2, q:'What can you claim that none of them can?', type:'multiselect', options: DIFF_OPTIONS, required:true },
+  { id:'summary_2', type:'summary', block_num:2 },
+
+  // BLOCK 3 — Audience
+  { id:'audience_who', block:3, blockTitle:'Audience', blockSub:"Who is this really for? The more specific, the stronger the strategy.", q:'Who is the one person that needs this the most?', sub:'Job title, life stage, mindset — whatever feels most defining.', type:'textarea', placeholder:'e.g. A freelance designer who just landed their first big client', required:true },
+  { id:'audience_not', block:3, q:'Who is it NOT for?', sub:"Knowing your boundaries makes your positioning sharper.", type:'textarea', placeholder:'e.g. Large enterprises with procurement departments', required:true },
+  { id:'audience_pain', block:3, q:'What keeps them up at night?', type:'textarea', placeholder:'Their real frustration, not the surface problem.', required:true },
+  { id:'audience_emotional', block:3, q:'What emotional need sits behind that problem?', type:'textarea', placeholder:'Fear of failure? Need for recognition? Desire for control?', required:true },
+  { id:'audience_goal', block:3, q:"What do they want to achieve that they can't right now?", type:'textarea', placeholder:'The outcome they dream about.', required:true },
+  { id:'audience_where', block:3, q:'Where do they look for solutions today?', type:'textarea', placeholder:'Google, Reddit, Twitter, word of mouth, consultants...', required:true },
+
+  // BLOCK 4 — Values
+  { id:'values', block:4, blockTitle:'Values', blockSub:"What do you choose, even when it's hard?", q:'Select 3–5 values that feel genuinely true.', sub:'Not aspirational, not generic — actually yours.', type:'valuegrid', required:true },
+
+  // BLOCK 5 — Personality
+  { id:'personality_words', block:5, blockTitle:'Personality', blockSub:"If your brand walked into a room, how would people feel?", q:'Pick 3 words that describe your brand character.', type:'wordgrid', required:true },
+  { id:'personality_sliders', block:5, q:'Where does your brand sit on these spectrums?', type:'sliders', required:true },
+
+  // BLOCK 6 — Promise
+  { id:'promise_functional', block:6, blockTitle:'Promise', blockSub:"What can your audience always count on you for?", q:"What's the one thing you always deliver?", sub:'Functional — concrete, measurable, real.', type:'textarea', placeholder:'e.g. A response within 24 hours. A design system in 2 weeks.', required:true },
+  { id:'promise_emotion', block:6, q:'What emotional feeling do you leave people with?', type:'multiselect', options: EMOTION_OPTIONS, required:true },
+  { id:'promise_sentence', block:6, q:'How would a happy customer describe you in one sentence?', type:'textarea', placeholder:"Imagine them telling a friend. What do they say?", required:true },
+
+  { id:'final', type:'final' },
+];
+
+let svStep = 0;
+let svAnswers = {};
+let svSummaries = {};
+let currentBlockShown = null;
+
+function svTotalQuestions() {
+  return SURVEY_STEPS.filter(s => s.type !== 'summary' && s.type !== 'final').length;
+}
+
+function svQuestionIndex() {
+  let count = 0;
+  for (let i = 0; i < svStep; i++) {
+    if (SURVEY_STEPS[i].type !== 'summary' && SURVEY_STEPS[i].type !== 'final') count++;
+  }
+  return count + 1;
+}
+
+function svUpdateProgress() {
+  const total = SURVEY_STEPS.filter(s => s.type !== 'summary' && s.type !== 'final').length;
+  const current = svQuestionIndex();
+  const pct = Math.round((current / total) * 100);
+  const fill = document.getElementById('sv-progress');
+  const label = document.getElementById('sv-progress-label');
+  if (fill) fill.style.width = pct + '%';
+  if (label) label.textContent = `Step ${current} of ${total}`;
+}
+
+function svRender() {
+  const step = SURVEY_STEPS[svStep];
+  const container = document.getElementById('sv-content');
+  if (!container) return;
+
+  svUpdateProgress();
+
+  if (step.type === 'summary') { svRenderSummary(step, container); return; }
+  if (step.type === 'final') { svRenderFinal(container); return; }
+
+  // Check if block header needed
+  const showBlockHeader = step.block !== null && step.block !== currentBlockShown;
+  if (showBlockHeader) currentBlockShown = step.block;
+
+  const saved = svAnswers[step.id];
+
+  let blockHeaderHtml = '';
+  if (showBlockHeader) {
+    blockHeaderHtml = `<div class="sv-block-header">
+      <div class="sv-block-name">Block ${step.block}</div>
+      <div class="sv-block-title">${step.blockTitle || ''}</div>
+      ${step.blockSub ? `<div class="sv-block-sub">${step.blockSub}</div>` : ''}
+    </div>`;
+  }
+
+  let inputHtml = '';
+
+  if (step.type === 'text') {
+    inputHtml = `<input class="sv-input" id="sv-inp" type="text" placeholder="${step.placeholder||''}" value="${saved||''}" autofocus>`;
+  } else if (step.type === 'textarea') {
+    inputHtml = `<textarea class="sv-textarea" id="sv-inp" placeholder="${step.placeholder||''}" autofocus>${saved||''}</textarea>`;
+  } else if (step.type === 'dropdown') {
+    const opts = step.options.map(o => `<option value="${o}" ${saved===o?'selected':''}>${o}</option>`).join('');
+    inputHtml = `<select class="sv-select" id="sv-inp"><option value="">Select your industry...</option>${opts}</select>`;
+  } else if (step.type === 'multiselect') {
+    const sel = saved || [];
+    const chips = step.options.map(o => `<button class="sv-chip ${sel.includes(o)?'sel':''}" onclick="svToggleChip('${o}',this,'sv-chips-${step.id}')">${o}</button>`).join('');
+    inputHtml = `<div class="sv-chips" id="sv-chips-${step.id}">${chips}</div>
+      <input class="sv-other-input ${sel.includes('Other')?'on':''}" id="sv-other-${step.id}" placeholder="Describe other..." value="${svAnswers[step.id+'_other']||''}">`;
+  } else if (step.type === 'valuegrid') {
+    const sel = saved || [];
+    const chips = VALUES_BANK.map(v => `<button class="sv-value-chip ${sel.includes(v)?'sel':''}" onclick="svToggleValue('${v}',this)">${v}</button>`).join('');
+    inputHtml = `<div class="sv-value-count" id="sv-val-count">${sel.length} / 5 selected</div>
+      <div class="sv-value-grid">${chips}</div>`;
+  } else if (step.type === 'wordgrid') {
+    const sel = saved || [];
+    const chips = PERSONALITY_WORDS.map(w => `<button class="sv-value-chip ${sel.includes(w)?'sel':''}" onclick="svToggleWord('${w}',this)">${w}</button>`).join('');
+    inputHtml = `<div class="sv-value-count" id="sv-word-count">${sel.length} / 3 selected</div>
+      <div class="sv-value-grid">${chips}</div>`;
+  } else if (step.type === 'sliders') {
+    const SLIDERS_DEF = [
+      { id:'serious', l:'Serious', r:'Playful' },
+      { id:'classic', l:'Classic', r:'Innovative' },
+      { id:'corporate', l:'Corporate', r:'Human' },
+    ];
+    const sls = saved || {};
+    inputHtml = `<div class="sv-sliders">` + SLIDERS_DEF.map(s => `
+      <div class="sv-slider-row">
+        <div class="sv-slider-labels"><span class="sv-slider-l">${s.l}</span><span class="sv-slider-r">${s.r}</span></div>
+        <input type="range" class="sv-slider" id="sv-sl-${s.id}" min="1" max="10" value="${sls[s.id]||5}">
+      </div>`).join('') + `</div>`;
+  }
+
+  container.innerHTML = `<div class="sv-card">
+    ${blockHeaderHtml}
+    <div class="sv-question">${step.q}</div>
+    ${step.sub ? `<div class="sv-sub">${step.sub}</div>` : ''}
+    ${inputHtml}
+    <div class="sv-nav">
+      <button class="sv-btn-back" ${svStep===0?'style="visibility:hidden"':''} onclick="svBack()">← Back</button>
+      <button class="sv-btn-next" id="sv-btn-next" onclick="svNext()">
+        <span class="spin" id="sv-next-spin" style="border-top-color:#0a0a09"></span>
+        <span id="sv-next-txt">${svStep === SURVEY_STEPS.length-2 ? 'See my brand →' : 'Continue →'}</span>
+      </button>
+    </div>
+  </div>`;
+
+  // Focus input
+  setTimeout(() => {
+    const inp = document.getElementById('sv-inp');
+    if (inp) inp.focus();
+  }, 100);
+
+  // Enter key advances
+  const inp = document.getElementById('sv-inp');
+  if (inp && (step.type === 'text' || step.type === 'dropdown')) {
+    inp.addEventListener('keydown', e => { if (e.key === 'Enter') svNext(); });
+  }
+}
+
+function svToggleChip(val, el, containerId) {
+  const step = SURVEY_STEPS[svStep];
+  if (!svAnswers[step.id]) svAnswers[step.id] = [];
+  const arr = svAnswers[step.id];
+  if (arr.includes(val)) {
+    svAnswers[step.id] = arr.filter(x => x !== val);
+    el.classList.remove('sel');
+  } else {
+    arr.push(val);
+    el.classList.add('sel');
+  }
+  // Show/hide other input
+  const otherInp = document.getElementById('sv-other-' + step.id);
+  if (otherInp) otherInp.classList.toggle('on', svAnswers[step.id].includes('Other'));
+}
+
+function svToggleValue(v, el) {
+  const step = SURVEY_STEPS[svStep];
+  if (!svAnswers[step.id]) svAnswers[step.id] = [];
+  const arr = svAnswers[step.id];
+  if (arr.includes(v)) {
+    svAnswers[step.id] = arr.filter(x => x !== v);
+    el.classList.remove('sel');
+  } else if (arr.length < 5) {
+    arr.push(v);
+    el.classList.add('sel');
+  }
+  const cnt = document.getElementById('sv-val-count');
+  if (cnt) cnt.textContent = svAnswers[step.id].length + ' / 5 selected';
+}
+
+function svToggleWord(w, el) {
+  const step = SURVEY_STEPS[svStep];
+  if (!svAnswers[step.id]) svAnswers[step.id] = [];
+  const arr = svAnswers[step.id];
+  if (arr.includes(w)) {
+    svAnswers[step.id] = arr.filter(x => x !== w);
+    el.classList.remove('sel');
+  } else if (arr.length < 3) {
+    arr.push(w);
+    el.classList.add('sel');
+  }
+  const cnt = document.getElementById('sv-word-count');
+  if (cnt) cnt.textContent = svAnswers[step.id].length + ' / 3 selected';
+}
+
+function svSaveCurrentStep() {
+  const step = SURVEY_STEPS[svStep];
+  if (!step) return;
+
+  if (step.type === 'text' || step.type === 'textarea') {
+    const inp = document.getElementById('sv-inp');
+    if (inp) svAnswers[step.id] = inp.value.trim();
+  } else if (step.type === 'dropdown') {
+    const inp = document.getElementById('sv-inp');
+    if (inp) svAnswers[step.id] = inp.value;
+  } else if (step.type === 'sliders') {
+    const SLIDERS_DEF = ['serious','classic','corporate'];
+    const vals = {};
+    SLIDERS_DEF.forEach(s => {
+      const el = document.getElementById('sv-sl-' + s);
+      if (el) vals[s] = el.value;
+    });
+    svAnswers[step.id] = vals;
+  } else if (step.type === 'multiselect') {
+    const otherInp = document.getElementById('sv-other-' + step.id);
+    if (otherInp && otherInp.value.trim()) svAnswers[step.id + '_other'] = otherInp.value.trim();
+  }
+}
+
+function svValidate() {
+  const step = SURVEY_STEPS[svStep];
+  if (!step.required) return true;
+  if (step.type === 'summary' || step.type === 'final') return true;
+
+  if (step.type === 'text' || step.type === 'textarea') {
+    const inp = document.getElementById('sv-inp');
+    return inp && inp.value.trim().length > 0;
+  }
+  if (step.type === 'dropdown') {
+    const inp = document.getElementById('sv-inp');
+    return inp && inp.value !== '';
+  }
+  if (step.type === 'multiselect') {
+    return svAnswers[step.id] && svAnswers[step.id].length > 0;
+  }
+  if (step.type === 'valuegrid') {
+    return svAnswers[step.id] && svAnswers[step.id].length >= 3;
+  }
+  if (step.type === 'wordgrid') {
+    return svAnswers[step.id] && svAnswers[step.id].length >= 1;
+  }
+  return true;
+}
+
+async function svNext() {
+  svSaveCurrentStep();
+  const step = SURVEY_STEPS[svStep];
+
+  if (!svValidate()) {
+    // Shake the input
+    const inp = document.getElementById('sv-inp') || document.querySelector('.sv-input,.sv-textarea,.sv-select');
+    if (inp) { inp.style.borderBottomColor = 'rgba(245,100,100,0.6)'; setTimeout(()=>inp.style.borderBottomColor='',1500); }
+    return;
+  }
+
+  svStep++;
+  svRender();
+}
+
+function svBack() {
+  svSaveCurrentStep();
+  if (svStep > 0) { svStep--; svRender(); }
+}
+
+// ── SUMMARIES ─────────────────────────────────
+async function svRenderSummary(step, container) {
+  const blockNum = step.block_num;
+
+  // If already generated, show cached
+  if (svSummaries[blockNum]) {
+    svShowCachedSummary(blockNum, container);
+    return;
+  }
+
+  // Show loading state immediately
+  container.innerHTML = svSummaryShell(blockNum, true);
+
+  // Generate summary
+  await svGenerateSummary(blockNum, container);
+}
+
+function svSummaryShell(blockNum, loading) {
+  const titles = {
+    0: "Your market context",
+    1: "What your brand does",
+    2: "Your competitive landscape",
+  };
+  return `<div class="sv-summary">
+    <div class="sv-summary-eyebrow">◈ Summary · Block ${blockNum}</div>
+    <div class="sv-summary-title">${titles[blockNum] || 'Summary'}</div>
+    <div id="sv-summary-cards"></div>
+    ${loading ? `<div class="sv-summary-loading"><div class="ai-dot"></div><span id="sv-summary-status">Researching...</span></div>` : ''}
+    <button class="sv-btn-continue" id="sv-continue-btn" onclick="svNext()" ${loading?'disabled':''}>
+      ${loading ? 'Analyzing...' : 'Continue →'}
+    </button>
+  </div>`;
+}
+
+async function svGenerateSummary(blockNum, container) {
+  const name = svAnswers['brand_name'] || 'this brand';
+  const industry = svAnswers['industry'] || '';
+  const niche = svAnswers['niche'] || '';
+
+  let prompt = '';
+
+  if (blockNum === 0) {
+    prompt = `The user just told us their brand is called "${name}" and operates in: ${industry}${niche ? ', specifically: ' + niche : ''}.
+
+Search for 1-2 current, specific, and interesting data points about this industry/niche. Could be market size, growth rate, a surprising trend, a behavioral insight, or a cultural shift. Make it feel relevant and smart, not generic.
+
+Then return a JSON object (no markdown, just JSON):
+{
+  "stat": "One specific, interesting data point about the industry with a source or year if possible",
+  "trend": "One relevant trend or shift happening in this space right now",
+  "opportunity": "One sentence about where the real opportunity is in this market"
+}`;
+  } else if (blockNum === 1) {
+    const what = svAnswers['what_do'] || '';
+    const obsession = svAnswers['obsession'] || '';
+    const change = svAnswers['life_change'] || '';
+    const disappeared = svAnswers['disappeared'] || '';
+    prompt = `Based on these answers about a brand called "${name}" in ${industry}:
+- What it does: ${what}
+- Problem obsessed with: ${obsession}
+- Life change it creates: ${change}
+- What would be lost if gone: ${disappeared}
+
+Synthesize this into a brief brand purpose summary. Return JSON only:
+{
+  "essence": "A crisp 1-sentence synthesis of what this brand fundamentally does and why it matters",
+  "purpose": "The deeper reason this brand exists — 1-2 sentences, start with a verb",
+  "signal": "One honest observation about the strength or clarity of the purpose as defined"
+}`;
+  } else if (blockNum === 2) {
+    const competitors = svAnswers['competitors'] || '';
+    const fail = (svAnswers['they_fail'] || []).join(', ');
+    const diff = (svAnswers['differentiator'] || []).join(', ');
+    prompt = `Brand: "${name}" in ${industry}. Competitors mentioned: ${competitors}. What competitors fail at: ${fail}. Claimed differentiators: ${diff}.
+
+Search for these competitors briefly. Return JSON only:
+{
+  "landscape": "1-2 sentences describing the competitive landscape for this category",
+  "gap": "The specific gap in the market based on what competitors fail to deliver",
+  "position": "A one-sentence positioning statement for ${name} based on the differentiators claimed"
+}`;
+  }
+
+  try {
+    const statusEl = document.getElementById('sv-summary-status');
+    if (statusEl) statusEl.textContent = blockNum === 0 ? 'Researching your industry...' : blockNum === 2 ? 'Analyzing competitors...' : 'Synthesizing...';
+
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        tools: blockNum === 0 || blockNum === 2 ? [{ type: 'web_search_20250305', name: 'web_search' }] : undefined,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const data = await res.json();
+    const text = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('');
+    const clean = text.replace(/```json|```/g, '').trim();
+    const parsed = JSON.parse(clean);
+    svSummaries[blockNum] = parsed;
+    svShowCachedSummary(blockNum, container);
+  } catch(e) {
+    // Fallback — just continue
+    svSummaries[blockNum] = { error: true };
+    const btn = document.getElementById('sv-continue-btn');
+    if (btn) { btn.disabled = false; btn.textContent = 'Continue →'; }
+    const loading = container.querySelector('.sv-summary-loading');
+    if (loading) loading.style.display = 'none';
+  }
+}
+
+function svShowCachedSummary(blockNum, container) {
+  const data = svSummaries[blockNum];
+  const cardsEl = document.getElementById('sv-summary-cards');
+
+  if (!data || data.error) {
+    if (cardsEl) cardsEl.innerHTML = '';
+  } else {
+    const cards = Object.entries(data).map(([k, v]) => {
+      const labels = {
+        stat:'Market insight', trend:'Current trend', opportunity:'The opportunity',
+        essence:'Brand essence', purpose:'Brand purpose', signal:'Strategic signal',
+        landscape:'Competitive landscape', gap:'The gap', position:'Your position'
+      };
+      return `<div class="sv-summary-card">
+        <div class="sv-summary-card-label">${labels[k] || k}</div>
+        <div class="sv-summary-card-text">${v}</div>
+      </div>`;
+    }).join('');
+    if (cardsEl) cardsEl.innerHTML = cards;
+  }
+
+  const loading = container.querySelector('.sv-summary-loading');
+  if (loading) loading.style.display = 'none';
+  const btn = document.getElementById('sv-continue-btn');
+  if (btn) { btn.disabled = false; btn.textContent = 'Continue →'; }
+}
+
+// ── FINAL SCREEN ──────────────────────────────
+function svRenderFinal(container) {
+  const name = svAnswers['brand_name'] || 'Your brand';
+  const values = (svAnswers['values'] || []).join(', ');
+  const words = (svAnswers['personality_words'] || []).join(', ');
+  const diff = (svAnswers['differentiator'] || []).join(', ');
+
+  container.innerHTML = `<div class="sv-final-summary">
+    <div class="sv-final-title">You've defined ${name}.</div>
+    <div class="sv-final-sub">Here's what we know. Ready to build your brand strategy.</div>
+    <div class="sv-final-grid">
+      <div class="sv-final-item"><div class="sv-final-item-label">Industry</div><div class="sv-final-item-val">${svAnswers['industry']||'—'}</div></div>
+      <div class="sv-final-item"><div class="sv-final-item-label">Values</div><div class="sv-final-item-val">${values||'—'}</div></div>
+      <div class="sv-final-item"><div class="sv-final-item-label">Personality</div><div class="sv-final-item-val">${words||'—'}</div></div>
+      <div class="sv-final-item"><div class="sv-final-item-label">Differentiator</div><div class="sv-final-item-val">${diff||'—'}</div></div>
+    </div>
+    <button class="sv-generate-btn" id="sv-gen-btn" onclick="svGenerate()">
+      <span class="spin" id="sv-gen-spin" style="border-top-color:#0a0a09;display:none"></span>
+      <span id="sv-gen-txt">◈ Build my Brand Strategy →</span>
+    </button>
+  </div>`;
+}
+
+// ── GENERATE & TRANSITION ─────────────────────
+async function svGenerate() {
+  const btn = document.getElementById('sv-gen-btn');
+  const spin = document.getElementById('sv-gen-spin');
+  const txt = document.getElementById('sv-gen-txt');
+  btn.disabled = true;
+  spin.style.display = 'block';
+  txt.textContent = 'Building your brand strategy...';
+
+  // Build full context
+  const ctx = svAnswers;
+  const name = ctx['brand_name'] || 'this brand';
+  const summaryContext = Object.entries(svSummaries).map(([k,v]) => `Block ${k} insights: ${JSON.stringify(v)}`).join('\n');
+
+  const prompt = `You are a senior brand strategist. Based on this complete brand discovery session, generate a full brand strategy document.
+
+BRAND: ${name}
+INDUSTRY: ${ctx['industry']} ${ctx['niche'] ? '/ ' + ctx['niche'] : ''}
+
+PURPOSE ANSWERS:
+- What it does: ${ctx['what_do']}
+- Problem obsession: ${ctx['obsession']}
+- Life change: ${ctx['life_change']}
+- What would be lost: ${ctx['disappeared']}
+
+DIFFERENTIATOR:
+- Competitors: ${ctx['competitors']}
+- What they fail at: ${(ctx['they_fail']||[]).join(', ')}
+- Our differentiator: ${(ctx['differentiator']||[]).join(', ')} ${ctx['differentiator_other']||''}
+
+AUDIENCE:
+- Who: ${ctx['audience_who']}
+- Not for: ${ctx['audience_not']}
+- Pain: ${ctx['audience_pain']}
+- Emotional need: ${ctx['audience_emotional']}
+- Goal: ${ctx['audience_goal']}
+- Where they look: ${ctx['audience_where']}
+
+VALUES: ${(ctx['values']||[]).join(', ')}
+PERSONALITY WORDS: ${(ctx['personality_words']||[]).join(', ')}
+SLIDERS: ${JSON.stringify(ctx['personality_sliders']||{})}
+
+PROMISE:
+- Functional: ${ctx['promise_functional']}
+- Emotional: ${(ctx['promise_emotion']||[]).join(', ')}
+- Customer sentence: ${ctx['promise_sentence']}
+
+RESEARCH INSIGHTS:
+${summaryContext}
+
+Return ONLY valid JSON with this exact structure:
+{
+  "brand_name": "${name}",
+  "brand_essence": "A manifesto-style paragraph (3-5 sentences) that answers why this brand exists beyond money, what it aims to achieve, and how. Write it like a brand would speak — not corporate, not generic.",
+  "values": [
+    { "name": "value name", "description": "2-3 sentences explaining this value in context of this specific brand, industry and audience. Make it feel real, not dictionary-definition." }
+  ],
+  "personality": {
+    "summary": "2-3 sentences describing the brand personality and what it means in practice",
+    "in_culture": "How this personality shows up in team culture and hiring",
+    "in_visual": "What this personality means for visual identity — colors, typography, imagery direction",
+    "in_advertising": "How this personality sounds and feels in campaigns and content",
+    "we_are": ["word1","word2","word3","word4","word5"],
+    "we_are_not": ["word1","word2","word3","word4","word5"]
+  },
+  "tone_of_voice": {
+    "voice": "The brand voice described in 2 sentences — always this way, regardless of context",
+    "examples": [
+      { "context": "Onboarding", "on_brand": "Example message", "off_brand": "What NOT to say" },
+      { "context": "Error message", "on_brand": "Example message", "off_brand": "What NOT to say" },
+      { "context": "Social media", "on_brand": "Example message", "off_brand": "What NOT to say" }
+    ],
+    "always": ["3-5 writing principles"],
+    "never": ["3-5 things to avoid"]
+  },
+  "audience": {
+    "qualitative": "A rich 3-4 sentence description of the audience — their mindset, emotions, motivations, and how they see the world. Not a persona, not demographics — a portrait.",
+    "quantitative": "Rough market size estimate with reasoning — TAM/SAM thinking, demographic breakdown if relevant, geographic scope.",
+    "insight": "One unexpected or counterintuitive insight about this audience that most brands miss"
+  }
+}`;
+
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        tools: [{ type: 'web_search_20250305', name: 'web_search' }],
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const data = await res.json();
+    const text = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('');
+    const clean = text.replace(/```json|```/g, '').trim();
+    const brandStrategy = JSON.parse(clean);
+
+    // Store and transition to builder
+    window.brandStrategyData = brandStrategy;
+    svTransitionToBuilder(brandStrategy);
+  } catch(e) {
+    btn.disabled = false;
+    spin.style.display = 'none';
+    txt.textContent = '◈ Build my Brand Strategy →';
+    alert('Error generating strategy. Please try again.');
+  }
+}
+
+function svTransitionToBuilder(data) {
+  // Fade out survey
+  const overlay = document.getElementById('survey-overlay');
+  overlay.style.transition = 'opacity .6s ease';
+  overlay.style.opacity = '0';
+  setTimeout(() => {
+    overlay.style.display = 'none';
+    // Populate builder fields
+    svPopulateBuilder(data);
+    // Navigate to brand strategy section
+    go('essence');
+  }, 600);
+}
+
+function svPopulateBuilder(data) {
+  const set = (id, val) => { const el = document.getElementById(id); if (el && val) el.value = val; };
+  const name = data.brand_name || svAnswers['brand_name'] || '';
+
+  set('brand_name', name);
+  set('brand_industry', svAnswers['industry'] + (svAnswers['niche'] ? ' — ' + svAnswers['niche'] : ''));
+  set('brand_essence', data.brand_essence);
+  set('brand_purpose', data.brand_essence);
+
+  if (data.personality) {
+    set('p_speaks', (data.personality.we_are || []).join(', '));
+    set('p_weare', (data.personality.we_are || []).join(', '));
+    set('p_werenot', (data.personality.we_are_not || []).join(', '));
+  }
+  if (data.tone_of_voice) {
+    set('v_brand', data.tone_of_voice.voice);
+    set('v_yes', (data.tone_of_voice.always || []).join('\n'));
+    set('v_no', (data.tone_of_voice.never || []).join('\n'));
+  }
+  if (data.audience) {
+    set('a_primary_desc', data.audience.qualitative);
+  }
+  set('brand_diff', svAnswers['differentiator'] ? (svAnswers['differentiator'] || []).join(', ') : '');
+
+  updatePill();
+}
+
+// Init survey on load
+window.addEventListener('DOMContentLoaded', () => {
+  svRender();
 });
 
 </script>
