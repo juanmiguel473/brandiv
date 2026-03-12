@@ -2702,7 +2702,7 @@ async function generateBrandCore() {
   // Check if there are any answers
   const hasAnswers = Object.keys(strategyAnswers).length > 0;
   if (!hasAnswers) {
-    document.getElementById('bc-loading').innerHTML = '<div class="bc-loading-inner" style="flex-direction:column;gap:16px;text-align:center"><span style="color:var(--dim)">Complete the Brand Strategy Session first.</span><button onclick="go('strategy')" style="background:var(--text);border:none;border-radius:6px;padding:9px 20px;font-family:var(--mono);font-size:11px;color:var(--bg);cursor:pointer;letter-spacing:.06em">← Go to Discovery</button></div>';
+    document.getElementById('bc-loading').innerHTML = `<div class="bc-loading-inner" style="flex-direction:column;gap:16px;text-align:center"><span style="color:var(--dim)">Complete the Brand Strategy Session first.</span><button onclick="go('strategy')" style="background:var(--text);border:none;border-radius:6px;padding:9px 20px;font-family:var(--mono);font-size:11px;color:var(--bg);cursor:pointer;letter-spacing:.06em">← Go to Discovery</button></div>`;
     return;
   }
 
