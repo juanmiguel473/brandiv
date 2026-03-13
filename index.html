@@ -633,16 +633,11 @@ main { flex: 1; min-width: 0; padding: 44px 52px 100px; max-width: 800px; }
 <div class="app">
 <aside>
   <div class="nav-group">
-    <div class="nav-group-label">Introduction</div>
-    <button class="nav-item active" data-p="strategy" onclick="go('strategy')"><span class="nav-num">◈</span>Brand Strategy Session<span class="nav-check" id="ck-strategy">✓</span></button>
-    <button class="nav-item" data-p="intro" onclick="go('intro')"><span class="nav-num">00</span>Purpose<span class="nav-check" id="ck-intro">✓</span></button>
-  </div>
-  <div class="nav-group">
     <div class="nav-group-label">1 — Brand Strategy</div>
-    <button class="nav-item" data-p="essence" onclick="go('essence')"><span class="nav-num">1.0</span>Essence & Purpose<span class="nav-check" id="ck-essence">✓</span></button>
+    <button class="nav-item" data-p="essence" onclick="go('essence')"><span class="nav-num">1.0</span>Brand Essence<span class="nav-check" id="ck-essence">✓</span></button>
     <button class="nav-item" data-p="values" onclick="go('values')"><span class="nav-num">1.2</span>Values<span class="nav-check" id="ck-values">✓</span></button>
     <button class="nav-item" data-p="personality" onclick="go('personality')"><span class="nav-num">1.3</span>Personality<span class="nav-check" id="ck-personality">✓</span></button>
-    <button class="nav-item" data-p="promises" onclick="go('promises')"><span class="nav-num">1.4</span>Brand Promises<span class="nav-check" id="ck-promises">✓</span></button>
+    <button class="nav-item" data-p="promises" onclick="go('promises')"><span class="nav-num">1.4</span>Brand Promise<span class="nav-check" id="ck-promises">✓</span></button>
     <button class="nav-item" data-p="voice" onclick="go('voice')"><span class="nav-num">1.5</span>Tone of Voice<span class="nav-check" id="ck-voice">✓</span></button>
     <button class="nav-item" data-p="audience" onclick="go('audience')"><span class="nav-num">1.6</span>Audience<span class="nav-check" id="ck-audience">✓</span></button>
   </div>
@@ -850,187 +845,130 @@ main { flex: 1; min-width: 0; padding: 44px 52px 100px; max-width: 800px; }
 </div>
 
 <!-- 00 INTRO -->
-<div class="panel" id="panel-intro">
-  <div class="panel-eyebrow">Welcome to</div>
-  <div class="panel-title">Brand Book<br><em>Builder</em></div>
-  <div class="panel-desc">This tool guides you to document a complete brand system — from strategy to collaterals. Load the Brandiv demo to see it fully populated, or start from scratch with your own brand.</div>
-  <div class="section">
-    <div class="section-title">Project basics</div>
-    <div class="grid c2">
-      <div class="field"><div class="label">Nombre de la marca</div><input id="brand_name" placeholder="e.g. Brandiv" oninput="updatePill()"></div>
-      <div class="field"><div class="label">Industria</div><input id="brand_industry" placeholder="e.g. Branding Tools, SaaS"></div>
-      <div class="field span2"><div class="label">Tagline</div><input id="brand_tagline" placeholder="e.g. Bridging brands and audiences with strategic, creative clarity."></div>
-      <div class="field span2"><div class="label">Brand book purpose <span class="hint">Who is it for? What problem does it solve?</span></div><textarea id="brand_bookpurpose" rows="3" placeholder="This document serves as a comprehensive guide to understand and apply our brand identity..."></textarea></div>
-    </div>
-  </div>
-  <div class="panel-footer"><div></div><button class="btn-nav p" onclick="go('essence')">Brand Strategy →</button></div>
-</div>
-
-<!-- 1.0 ESSENCE -->
 <div class="panel" id="panel-essence">
   <div class="panel-eyebrow">Brand Strategy · 1.0</div>
-  <div class="panel-title">Esencia <em>& Propósito</em></div>
-  <div class="panel-desc">The heart of the brand. Everything else derives from here.</div>
+  <div class="panel-title">Brand <em>Essence</em></div>
+  <div class="panel-desc">The heart of the brand — why it exists, what it stands for, and the promise it makes to the world.</div>
+
   <div class="grid">
-    <div class="field span2"><div class="label">Brand Essence <span class="hint">The core idea in one sentence</span></div><input id="brand_essence" placeholder="e.g. Bridging brands and audiences with strategic, creative clarity."></div>
-    <div class="field span2"><div class="label">Brand Purpose — Start with Why</div><textarea id="brand_purpose" placeholder="Why does this brand exist? What does it believe in?"></textarea></div>
-    <div class="field span2"><div class="label">How it gets there</div><textarea id="brand_how" placeholder="How does it concretely fulfill that purpose?"></textarea></div>
-    <div class="field span2"><div class="label">Mission</div><textarea id="brand_mission" placeholder="What does the brand do today, for whom, and with what result?"></textarea></div>
-    <div class="field span2"><div class="label">Vision</div><textarea id="brand_vision" placeholder="What does the world look like in 5-10 years thanks to this brand?"></textarea></div>
-    <div class="field span2"><div class="label">Key differentiator</div><textarea id="brand_diff" placeholder="Why this brand and not another? What does it do that no one else does?"></textarea></div>
-    <div class="field span2"><div class="label">Brand promise</div><input id="brand_promise_main" placeholder="The main promise, in one sentence."></div>
+    <div class="field span2">
+      <div class="label">Brand Essence Manifesto <span class="hint">Why this brand exists beyond money</span></div>
+      <textarea id="brand_essence" rows="6" placeholder="A short manifesto — 3 to 5 sentences. Why does this brand exist? What does it aim to achieve? How?"></textarea>
+    </div>
+    <div class="field span2">
+      <div class="label">Key Differentiator</div>
+      <textarea id="brand_diff" placeholder="Why this brand and not another? What does it do that no one else does?"></textarea>
+    </div>
+    <div class="field span2">
+      <div class="label">Brand Promise</div>
+      <textarea id="brand_promise_main" placeholder="What the brand commits to deliver — functional, emotional, or both."></textarea>
+    </div>
   </div>
-  <div class="panel-footer"><button class="btn-nav" onclick="go('intro')">← Intro</button><button class="btn-nav p" onclick="go('values')">Values →</button></div>
+
+  <div class="panel-footer">
+    <button class="btn-nav" onclick="go('values')">Values →</button>
+  </div>
 </div>
 
-<!-- 1.2 VALUES -->
 <div class="panel" id="panel-values">
   <div class="panel-eyebrow">Brand Strategy · 1.2</div>
-  <div class="panel-title">Valores <em>de Marca</em></div>
-  <div class="panel-desc">The principles behind every decision. They define how the brand behaves.</div>
-  <div id="values-list"></div>
-  <button onclick="addValue()" style="background:none;border:1px dashed var(--muted);border-radius:6px;padding:8px 16px;color:var(--muted);font-family:var(--mono);font-size: 12.6px;cursor:pointer;margin-top:12px;transition:all .15s;" onmouseover="this.style.borderColor='var(--dim)';this.style.color='var(--dim)'" onmouseout="this.style.borderColor='var(--muted)';this.style.color='var(--muted)'">+ Add value</button>
-  <div class="panel-footer"><button class="btn-nav" onclick="go('essence')">← Essence</button><button class="btn-nav p" onclick="go('personality')">Personality →</button></div>
+  <div class="panel-title">Brand <em>Values</em></div>
+  <div class="panel-desc">The principles behind every decision — what this brand stands for in practice, not just on paper.</div>
+  <div id="values-generated" style="display:flex;flex-direction:column;gap:16px;"></div>
+  <div class="panel-footer">
+    <button class="btn-nav" onclick="go('essence')">← Essence</button>
+    <button class="btn-nav p" onclick="go('personality')">Personality →</button>
+  </div>
 </div>
 
-<!-- 1.3 PERSONALITY -->
 <div class="panel" id="panel-personality">
   <div class="panel-eyebrow">Brand Strategy · 1.3</div>
-  <div class="panel-title">Personalidad <em>de Marca</em></div>
-  <div class="panel-desc">The character that defines how the brand feels.</div>
-  <button class="btn-ai-assist" onclick="toggleAssist('essence')"><div class="assist-dot"></div>◈ Help me with Essence & Purpose</button>
-  <div class="assist-panel" id="assist-essence">
-    <div class="assist-panel-header">
-      <span class="assist-panel-title">◈ Suggestions for Essence & Purpose</span>
-      <button class="btn-close-assist" onclick="toggleAssist('essence')">×</button>
-    </div>
-    <div class="assist-content" id="assist-content-essence">
-      <div class="assist-loading" id="assist-loading-essence" style="display:none">
-        <div class="td"></div><div class="td"></div><div class="td"></div>
-      </div>
-      <span id="assist-text-essence" style="color:var(--muted);font-size: 12.6px">Click en "Generar sugerencias" para obtener recomendaciones basadas en el contexto de tu marca.</span>
-    </div>
-    <button class="btn-apply-assist" id="btn-apply-assist-essence" onclick="applyAssist('essence')">↓ Apply suggestions to fields</button>
-    <div style="margin-top:10px;display:flex;gap:8px">
-      <button onclick="generateAssist('essence','Essence & Purpose','brand_essence,brand_purpose,brand_mission,brand_vision,brand_diff,brand_promise_main')" style="background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:5px;padding:6px 13px;font-family:var(--mono);font-size: 11.5px;color:var(--dim);cursor:pointer;transition:all .15s" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--dim)'">◈ Generate suggestions</button>
-    </div>
-  </div>
-  <div style="margin-bottom:24px"></div>
+  <div class="panel-title">Brand <em>Personality</em></div>
+  <div class="panel-desc">The character that defines how the brand feels — and what that means in practice.</div>
+
+  <div id="personality-generated" style="margin-bottom:24px;"></div>
 
   <div class="section">
-    <div class="section-title">Personality traits</div>
-    <div class="grid c2">
-      <div class="field"><div class="label">The brand speaks like... <span class="hint">3 key adjectives</span></div><input id="p_speaks" placeholder="e.g. Innovative, Visionary, Supportive"></div>
-      <div class="field"><div class="label">Person analogy</div><input id="p_person" placeholder="e.g. 38-year-old architect who hates waste"></div>
-    </div>
-    <div class="divider"></div>
-    <div class="section-title">We are / We are not</div>
+    <div class="section-title">Character</div>
     <div class="yn-grid">
-      <div class="yn-box yes"><div class="yn-header">✓ We are</div><textarea id="p_weare" placeholder="Creative, Supportive, Visionary, Empowering, Friendly, Innovative, Collaborative, Professional, Accessible, Open-minded"></textarea></div>
-      <div class="yn-box no"><div class="yn-header">✗ We are not</div><textarea id="p_werenot" placeholder="Generic, Dismissive, Short-sighted, Restrictive, Cold, Stagnant, Isolated, Rigid, Exclusive, Closed-off"></textarea></div>
+      <div class="yn-box yes"><div class="yn-header">✓ We are</div><textarea id="p_weare" placeholder="Bold, Warm, Precise..."></textarea></div>
+      <div class="yn-box no"><div class="yn-header">✗ We are not</div><textarea id="p_werenot" placeholder="Generic, Cold, Stiff..."></textarea></div>
     </div>
     <div class="divider"></div>
     <div class="section-title">Personality spectrums</div>
     <div class="slider-block" id="sliders"></div>
     <div class="divider"></div>
-    <div class="section-title">Archetypes</div>
-    <div class="arch-grid" id="archGrid"></div>
+    <div class="section-title">Real-world implications</div>
+    <div id="personality-implications" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px;"></div>
   </div>
-  <div class="panel-footer"><button class="btn-nav" onclick="go('values')">← Values</button><button class="btn-nav p" onclick="go('promises')">Promises →</button></div>
+  <div class="panel-footer">
+    <button class="btn-nav" onclick="go('values')">← Values</button>
+    <button class="btn-nav p" onclick="go('promises')">Promises →</button>
+  </div>
 </div>
 
-<!-- 1.4 PROMISES -->
 <div class="panel" id="panel-promises">
   <div class="panel-eyebrow">Brand Strategy · 1.4</div>
-  <div class="panel-title">Promesas <em>de Marca</em></div>
-  <div class="panel-desc">What the brand commits to deliver. Functional, emotional, and distinct from the competition.</div>
-  <div id="promises-list"></div>
-  <button onclick="addPromise()" style="background:none;border:1px dashed var(--muted);border-radius:6px;padding:8px 16px;color:var(--muted);font-family:var(--mono);font-size: 12.6px;cursor:pointer;margin-top:12px;transition:all .15s;" onmouseover="this.style.borderColor='var(--dim)';this.style.color='var(--dim)'" onmouseout="this.style.borderColor='var(--muted)';this.style.color='var(--muted)'">+ Add promise</button>
-  <div class="panel-footer"><button class="btn-nav" onclick="go('personality')">← Personality</button><button class="btn-nav p" onclick="go('voice')">Tone of Voice →</button></div>
+  <div class="panel-title">Brand <em>Promise</em></div>
+  <div class="panel-desc">What the brand commits to deliver — consistently, to every person it serves.</div>
+  <div id="promises-generated" style="display:flex;flex-direction:column;gap:16px;"></div>
+  <div class="panel-footer">
+    <button class="btn-nav" onclick="go('personality')">← Personality</button>
+    <button class="btn-nav p" onclick="go('voice')">Tone of Voice →</button>
+  </div>
 </div>
 
-<!-- 1.5 VOICE -->
 <div class="panel" id="panel-voice">
   <div class="panel-eyebrow">Brand Strategy · 1.5</div>
-  <div class="panel-title">Tono <em>de Voz</em></div>
-  <div class="panel-desc">How the brand communicates. Constant in identity, variable in context.</div>
-  <button class="btn-ai-assist" onclick="toggleAssist('values')"><div class="assist-dot"></div>◈ Help me with Brand Values</button>
-  <div class="assist-panel" id="assist-values">
-    <div class="assist-panel-header">
-      <span class="assist-panel-title">◈ Suggestions for Brand Values</span>
-      <button class="btn-close-assist" onclick="toggleAssist('values')">×</button>
-    </div>
-    <div class="assist-content" id="assist-content-values">
-      <div class="assist-loading" id="assist-loading-values" style="display:none">
-        <div class="td"></div><div class="td"></div><div class="td"></div>
-      </div>
-      <span id="assist-text-values" style="color:var(--muted);font-size: 12.6px">Click en "Generar sugerencias" para obtener recomendaciones basadas en el contexto de tu marca.</span>
-    </div>
-    <button class="btn-apply-assist" id="btn-apply-assist-values" onclick="applyAssist('values')">↓ Apply suggestions to fields</button>
-    <div style="margin-top:10px;display:flex;gap:8px">
-      <button onclick="generateAssist('values','Valores de Marca','values')" style="background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:5px;padding:6px 13px;font-family:var(--mono);font-size: 11.5px;color:var(--dim);cursor:pointer;transition:all .15s" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--dim)'">◈ Generate suggestions</button>
-    </div>
-  </div>
-  <div style="margin-bottom:24px"></div>
+  <div class="panel-title">Tone <em>of Voice</em></div>
+  <div class="panel-desc">How the brand communicates — consistent in identity, variable in context.</div>
 
   <div class="grid">
-    <div class="field span2"><div class="label">Brand voice <span class="hint">Always this way</span></div><textarea id="v_brand" placeholder="e.g. Friendly and Approachable — warm, accessible, makes complex concepts simple..."></textarea></div>
-    <div class="field span2"><div class="label">Tone by context <span class="hint">Varies</span></div><textarea id="v_tone" placeholder="e.g. Onboarding: motivational. Errors: empathetic. Marketing: inspirational."></textarea></div>
+    <div class="field span2">
+      <div class="label">Brand voice <span class="hint">Always this way</span></div>
+      <textarea id="v_brand" placeholder="The brand voice in 2 sentences..."></textarea>
+    </div>
   </div>
   <div class="divider"></div>
   <div class="section-title">Writing guidelines</div>
   <div class="yn-grid">
-    <div class="yn-box yes"><div class="yn-header">✓ We say / We use</div><textarea id="v_yes" placeholder="Frases cortas. Voz activa. Preguntas directas. Datos concretos."></textarea></div>
-    <div class="yn-box no"><div class="yn-header">✗ We avoid</div><textarea id="v_no" placeholder="Jerga corporativa. Buzzwords. Exclamaciones excesivas. Lenguaje excluyente."></textarea></div>
+    <div class="yn-box yes"><div class="yn-header">✓ We say / We use</div><textarea id="v_yes" placeholder="Direct phrases. Active voice. Concrete examples."></textarea></div>
+    <div class="yn-box no"><div class="yn-header">✗ We avoid</div><textarea id="v_no" placeholder="Corporate jargon. Buzzwords. Excessive exclamations."></textarea></div>
   </div>
   <div class="divider"></div>
-  <div class="field span2"><div class="label">On-brand copy examples <span class="hint">Real reference to calibrate the AI</span></div><textarea id="v_examples" rows="4" placeholder="Paste 2-3 texts that represent the perfect brand voice."></textarea></div>
-  <div class="panel-footer"><button class="btn-nav" onclick="go('promises')">← Promises</button><button class="btn-nav p" onclick="go('audience')">Audience →</button></div>
+  <div class="section-title">Message examples</div>
+  <div id="voice-examples" style="display:flex;flex-direction:column;gap:12px;margin-top:8px;"></div>
+
+  <div class="panel-footer">
+    <button class="btn-nav" onclick="go('promises')">← Promise</button>
+    <button class="btn-nav p" onclick="go('audience')">Audience →</button>
+  </div>
 </div>
 
-<!-- 1.6 AUDIENCE -->
 <div class="panel" id="panel-audience">
   <div class="panel-eyebrow">Brand Strategy · 1.6</div>
-  <div class="panel-title">Audiencia <em>objetivo</em></div>
-  <div class="panel-desc">Who the brand speaks to. Defines the entire communication system.</div>
-  <button class="btn-ai-assist" onclick="toggleAssist('personality')"><div class="assist-dot"></div>◈ Help me with Personality</button>
-  <div class="assist-panel" id="assist-personality">
-    <div class="assist-panel-header">
-      <span class="assist-panel-title">◈ Suggestions for Personality</span>
-      <button class="btn-close-assist" onclick="toggleAssist('personality')">×</button>
-    </div>
-    <div class="assist-content" id="assist-content-personality">
-      <div class="assist-loading" id="assist-loading-personality" style="display:none">
-        <div class="td"></div><div class="td"></div><div class="td"></div>
-      </div>
-      <span id="assist-text-personality" style="color:var(--muted);font-size: 12.6px">Click en "Generar sugerencias" para obtener recomendaciones basadas en el contexto de tu marca.</span>
-    </div>
-    <button class="btn-apply-assist" id="btn-apply-assist-personality" onclick="applyAssist('personality')">↓ Apply suggestions to fields</button>
-    <div style="margin-top:10px;display:flex;gap:8px">
-      <button onclick="generateAssist('personality','Personalidad','p_speaks,p_person,p_weare,p_werenot')" style="background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:5px;padding:6px 13px;font-family:var(--mono);font-size: 11.5px;color:var(--dim);cursor:pointer;transition:all .15s" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--dim)'">◈ Generate suggestions</button>
-    </div>
-  </div>
-  <div style="margin-bottom:24px"></div>
+  <div class="panel-title">Target <em>Audience</em></div>
+  <div class="panel-desc">Who the brand speaks to — a qualitative portrait and a quantitative estimate.</div>
 
-  <div class="grid">
-    <div class="field"><div class="label">Primary segment</div><input id="a_primary" placeholder="e.g. Designers — creative professionals"></div>
-    <div class="field"><div class="label">Secondary segment</div><input id="a_secondary" placeholder="e.g. Brand Managers"></div>
-    <div class="field span2"><div class="label">Detailed profile — Primary</div><textarea id="a_primary_desc" placeholder="What do they do? What do they need? What tools do they use? What frustrates them?"></textarea></div>
-    <div class="field span2"><div class="label">Detailed profile — Secondary</div><textarea id="a_secondary_desc" placeholder="Secondary segment description..."></textarea></div>
-    <div class="field span2"><div class="label">Audience goals</div><textarea id="a_goals" placeholder="What does each segment want to achieve?"></textarea></div>
-    <div class="field span2"><div class="label">Challenges</div><textarea id="a_challenges" placeholder="What stops them? What obstacles do they face?"></textarea></div>
-    <div class="field span2"><div class="label">How the brand solves those challenges</div><textarea id="a_solution" placeholder="How does the brand concretely address the audience's challenges?"></textarea></div>
+  <div class="section">
+    <div class="section-title">Qualitative portrait</div>
+    <div id="audience-qualitative" style="margin-bottom:24px;"></div>
+    <div class="divider"></div>
+    <div class="section-title">Market estimate</div>
+    <div id="audience-quantitative" style="margin-bottom:24px;"></div>
+    <div class="divider"></div>
+    <div class="field span2">
+      <div class="label">The insight <span class="hint">What most brands miss about this audience</span></div>
+      <div id="audience-insight" style="font-size:13px;color:var(--dim);line-height:1.7;padding:14px 16px;background:rgba(2,255,251,0.04);border:1px solid rgba(2,255,251,0.12);border-radius:8px;"></div>
+    </div>
   </div>
-  <div class="divider"></div>
-  <div class="section-title">Context & channels</div>
-  <div class="grid c2">
-    <div class="field"><div class="label">Primary channels <span class="hint">Press Enter to add</span></div><div class="tag-wrap" onclick="document.getElementById('ch-in').focus()"><div id="ch-tags"></div><input class="tag-in" id="ch-in" placeholder="LinkedIn, Instagram..." onkeydown="handleTag(event,'ch')"></div></div>
-    <div class="field"><div class="label">Business type</div><select id="a_biz"><option value="">Select...</option><option value="b2b">B2B</option><option value="b2c">B2C</option><option value="b2b2c">B2B2C</option><option value="marketplace">Marketplace</option></select></div>
+
+  <div class="panel-footer">
+    <button class="btn-nav" onclick="go('voice')">← Tone of Voice</button>
+    <button class="btn-nav p" onclick="go('logo')">Visual Identity →</button>
   </div>
-  <div class="panel-footer"><button class="btn-nav" onclick="go('voice')">← Voice</button><button class="btn-nav p" onclick="go('logo')">Visual Identity →</button></div>
 </div>
 
-<!-- 2.1 LOGO -->
 <div class="panel" id="panel-logo">
   <div class="panel-eyebrow">Visual Identity · 2.1</div>
   <div class="panel-title">Logo <em>Principal</em></div>
@@ -3381,6 +3319,12 @@ Return ONLY valid JSON with this exact structure:
     "always": ["3-5 writing principles"],
     "never": ["3-5 things to avoid"]
   },
+  "promise": {
+    "statement": "A single powerful sentence — the brand promise. What the brand commits to deliver, functionally and emotionally.",
+    "functional": "What they always deliver, concretely",
+    "emotional": "How people feel after every interaction",
+    "proof": "The one behavior that proves this promise is real"
+  },
   "audience": {
     "qualitative": "A rich 3-4 sentence description of the audience — their mindset, emotions, motivations, and how they see the world. Not a persona, not demographics — a portrait.",
     "quantitative": "Rough market size estimate with reasoning — TAM/SAM thinking, demographic breakdown if relevant, geographic scope.",
@@ -3462,39 +3406,119 @@ function svPopulateBuilder(data) {
   const set = (id, val) => { const el = document.getElementById(id); if (el && val) el.value = val; };
   const name = data.brand_name || svAnswers['brand_name'] || '';
 
+  // Basic fields
   set('brand_name', name);
   set('brand_industry', svAnswers['industry'] + (svAnswers['niche'] ? ' — ' + svAnswers['niche'] : ''));
-  set('brand_essence', data.brand_essence);
-  set('brand_purpose', data.brand_essence);
 
+  // Essence panel
+  set('brand_essence', data.brand_essence);
+  set('brand_diff', (svAnswers['differentiator'] || []).join(', ') + (svAnswers['differentiator_other'] ? ', ' + svAnswers['differentiator_other'] : ''));
+  if (data.promise) set('brand_promise_main', data.promise.statement);
+
+  // Values — render as generated cards
+  if (data.values && data.values.length) {
+    const container = document.getElementById('values-generated');
+    if (container) {
+      container.innerHTML = data.values.map(v => `
+        <div style="padding:20px 24px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;">
+          <div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;">${v.name}</div>
+          <div style="font-size:13px;color:var(--dim);line-height:1.7;">${v.description}</div>
+        </div>`).join('');
+    }
+  }
+
+  // Personality — render summary + implications
   if (data.personality) {
-    set('p_speaks', (data.personality.we_are || []).join(', '));
-    set('p_weare', (data.personality.we_are || []).join(', '));
-    set('p_werenot', (data.personality.we_are_not || []).join(', '));
+    const p = data.personality;
+    set('p_weare', (p.we_are || []).join(', '));
+    set('p_werenot', (p.we_are_not || []).join(', '));
+
+    const genEl = document.getElementById('personality-generated');
+    if (genEl && p.summary) {
+      genEl.innerHTML = `<div style="font-size:14px;color:var(--dim);line-height:1.75;padding:20px 24px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;">${p.summary}</div>`;
+    }
+
+    const implEl = document.getElementById('personality-implications');
+    if (implEl) {
+      const impls = [
+        { label: 'In culture & hiring', text: p.in_culture },
+        { label: 'In visual identity', text: p.in_visual },
+        { label: 'In advertising', text: p.in_advertising },
+      ].filter(i => i.text);
+      implEl.innerHTML = impls.map(i => `
+        <div style="padding:16px 18px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;">
+          <div style="font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:8px;">${i.label}</div>
+          <div style="font-size:12px;color:#b8b6ac;line-height:1.65;">${i.text}</div>
+        </div>`).join('');
+    }
   }
+
+  // Promises — render generated promise
+  if (data.promise) {
+    const pr = data.promise;
+    const container = document.getElementById('promises-generated');
+    if (container) {
+      container.innerHTML = `
+        <div style="padding:24px;background:rgba(2,255,251,0.04);border:1px solid rgba(2,255,251,0.15);border-radius:10px;">
+          <div style="font-size:16px;color:var(--text);line-height:1.5;font-weight:300;margin-bottom:16px;">"${pr.statement}"</div>
+        </div>
+        ${pr.functional ? `<div style="padding:16px 20px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;">
+          <div style="font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:6px;">Functional</div>
+          <div style="font-size:13px;color:#b8b6ac;line-height:1.65;">${pr.functional}</div>
+        </div>` : ''}
+        ${pr.emotional ? `<div style="padding:16px 20px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;">
+          <div style="font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:6px;">Emotional</div>
+          <div style="font-size:13px;color:#b8b6ac;line-height:1.65;">${pr.emotional}</div>
+        </div>` : ''}
+        ${pr.proof ? `<div style="padding:16px 20px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;">
+          <div style="font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:6px;">Proof behavior</div>
+          <div style="font-size:13px;color:#b8b6ac;line-height:1.65;">${pr.proof}</div>
+        </div>` : ''}`;
+    }
+  }
+
+  // Tone of voice
   if (data.tone_of_voice) {
-    set('v_brand', data.tone_of_voice.voice);
-    set('v_yes', (data.tone_of_voice.always || []).join('\n'));
-    set('v_no', (data.tone_of_voice.never || []).join('\n'));
+    const tov = data.tone_of_voice;
+    set('v_brand', tov.voice);
+    set('v_yes', (tov.always || []).join('\n'));
+    set('v_no', (tov.never || []).join('\n'));
+
+    const exEl = document.getElementById('voice-examples');
+    if (exEl && tov.examples) {
+      exEl.innerHTML = tov.examples.map(ex => `
+        <div style="padding:16px 20px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;">
+          <div style="font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:12px;">${ex.context}</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div>
+              <div style="font-size:9px;color:rgba(2,255,251,0.6);margin-bottom:6px;">✓ ON BRAND</div>
+              <div style="font-size:12px;color:#b8b6ac;line-height:1.6;">${ex.on_brand}</div>
+            </div>
+            <div>
+              <div style="font-size:9px;color:rgba(245,100,100,0.6);margin-bottom:6px;">✗ OFF BRAND</div>
+              <div style="font-size:12px;color:var(--muted);line-height:1.6;">${ex.off_brand}</div>
+            </div>
+          </div>
+        </div>`).join('');
+    }
   }
+
+  // Audience
   if (data.audience) {
-    set('a_primary_desc', data.audience.qualitative);
+    const au = data.audience;
+    const qualEl = document.getElementById('audience-qualitative');
+    if (qualEl && au.qualitative) {
+      qualEl.innerHTML = `<div style="font-size:13px;color:var(--dim);line-height:1.75;padding:20px 24px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;">${au.qualitative}</div>`;
+    }
+    const quantEl = document.getElementById('audience-quantitative');
+    if (quantEl && au.quantitative) {
+      quantEl.innerHTML = `<div style="font-size:13px;color:var(--dim);line-height:1.75;padding:20px 24px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;">${au.quantitative}</div>`;
+    }
+    const insightEl = document.getElementById('audience-insight');
+    if (insightEl && au.insight) insightEl.textContent = au.insight;
   }
-  set('brand_diff', svAnswers['differentiator'] ? (svAnswers['differentiator'] || []).join(', ') : '');
 
   updatePill();
 }
 
-// survey init moved below
 
-
-// ── Single consolidated init ──────────────────
-window.addEventListener('DOMContentLoaded', () => {
-  try { initBuilder(); } catch(e) { console.warn('initBuilder error:', e); }
-  try { initStrategy(); } catch(e) { console.warn('initStrategy error:', e); }
-  try { svRender(); } catch(e) { console.error('svRender error:', e); }
-});
-
-</script>
-</body>
-</html>
