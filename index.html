@@ -3520,5 +3520,13 @@ function svPopulateBuilder(data) {
 
   updatePill();
 }
+// ── Consolidated init ─────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+  try { initBuilder(); } catch(e) { console.warn('initBuilder:', e); }
+  try { initStrategy(); } catch(e) { console.warn('initStrategy:', e); }
+  try { svRender(); } catch(e) { console.error('svRender:', e); }
+});
 
-
+</script>
+</body>
+</html>
