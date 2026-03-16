@@ -388,35 +388,9 @@ main { flex: 1; min-width: 0; padding: 44px 52px 100px; max-width: 800px; }
 /* ════════════════════════════════════════════
    SURVEY OVERLAY
    ════════════════════════════════════════════ */
-#survey-overlay {
-  position: fixed; inset: 0; z-index: 1000;
-  background: var(--bg);
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  padding: 24px;
-  transition: opacity .4s ease;
-}
-#survey-overlay.hidden {
-  opacity: 0; pointer-events: none;
-}
-
-/* Top bar */
-.sv-topbar {
-  position: absolute; top: 0; left: 0; right: 0;
-  padding: 20px 32px;
-  display: flex; align-items: center; justify-content: space-between;
-}
-.sv-logo { font-family: var(--mono); font-size: 14px; color: var(--text); letter-spacing: .04em; }
-.sv-progress-wrap { flex: 1; max-width: 200px; margin: 0 auto; }
-.sv-progress-track { height: 2px; background: var(--bg3); border-radius: 2px; overflow: hidden; }
-.sv-progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width .4s ease; }
-.sv-progress-label { font-size: 9px; color: var(--muted); text-align: center; margin-top: 6px; letter-spacing: .08em; }
-.sv-skip { font-family: var(--mono); font-size: 10px; color: var(--muted); background: none; border: none; cursor: pointer; padding: 4px 8px; transition: color .15s; }
-.sv-skip:hover { color: var(--dim); }
-
-/* Main card */
+/* Survey card — inside panel */
 .sv-card {
-  width: 100%; max-width: 620px;
+  width: 100%;
   animation: svFadeUp .3s ease;
 }
 @keyframes svFadeUp {
@@ -539,7 +513,7 @@ main { flex: 1; min-width: 0; padding: 44px 52px 100px; max-width: 800px; }
 
 /* Summary cards */
 .sv-summary {
-  width: 100%; max-width: 620px;
+  width: 100%;
   animation: svFadeUp .35s ease;
 }
 .sv-summary-eyebrow {
@@ -576,7 +550,7 @@ main { flex: 1; min-width: 0; padding: 44px 52px 100px; max-width: 800px; }
 .sv-btn-continue:disabled { opacity: .4; cursor: not-allowed; }
 
 /* Final summary */
-.sv-final-summary { width: 100%; max-width: 620px; animation: svFadeUp .35s ease; }
+.sv-final-summary { width: 100%; animation: svFadeUp .35s ease; }
 .sv-final-title { font-size: 26px; color: var(--text); font-weight: 300; letter-spacing: -.02em; margin-bottom: 8px; }
 .sv-final-sub { font-size: 13px; color: var(--dim); margin-bottom: 28px; line-height: 1.6; }
 .sv-final-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 28px; }
@@ -599,20 +573,7 @@ main { flex: 1; min-width: 0; padding: 44px 52px 100px; max-width: 800px; }
 <!-- ════════════════════════════════════════════
      SURVEY OVERLAY
      ════════════════════════════════════════════ -->
-<div id="survey-overlay">
-  <!-- Top bar -->
-  <div class="sv-topbar">
-    <div class="sv-logo">BRANDIV</div>
-    <div class="sv-progress-wrap">
-      <div class="sv-progress-track"><div class="sv-progress-fill" id="sv-progress" style="width:0%"></div></div>
-      <div class="sv-progress-label" id="sv-progress-label">Step 1 of 20</div>
-    </div>
-    <div style="width:80px"></div>
-  </div>
 
-  <!-- Dynamic content area -->
-  <div id="sv-content"></div>
-</div>
 
 
 
@@ -632,6 +593,10 @@ main { flex: 1; min-width: 0; padding: 44px 52px 100px; max-width: 800px; }
 
 <div class="app">
 <aside>
+  <div class="nav-group">
+    <div class="nav-group-label">Discovery</div>
+    <button class="nav-item active" data-p="discovery" onclick="go('discovery')"><span class="nav-num">◈</span>Brand Discovery<span class="nav-check" id="ck-discovery">✓</span></button>
+  </div>
   <div class="nav-group">
     <div class="nav-group-label">1 — Brand Strategy</div>
     <button class="nav-item" data-p="essence" onclick="go('essence')"><span class="nav-num">1.0</span>Brand Essence<span class="nav-check" id="ck-essence">✓</span></button>
@@ -673,6 +638,24 @@ main { flex: 1; min-width: 0; padding: 44px 52px 100px; max-width: 800px; }
 </aside>
 
 <main>
+
+<!-- BRAND DISCOVERY -->
+<div class="panel active" id="panel-discovery">
+  <div class="panel-eyebrow">Brand Discovery</div>
+  <div class="panel-title">Let's build<br><em>your brand.</em></div>
+  <div class="panel-desc" style="margin-bottom:32px;">Answer a few questions and we'll generate your complete brand strategy — values, personality, tone of voice, audience and more.</div>
+
+  <!-- Progress bar inside panel -->
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:28px;">
+    <div style="flex:1;height:2px;background:var(--bg3);border-radius:2px;overflow:hidden;">
+      <div id="sv-progress" style="height:100%;background:var(--accent);border-radius:2px;width:0%;transition:width .4s ease;"></div>
+    </div>
+    <div id="sv-progress-label" style="font-size:9px;color:var(--muted);font-family:var(--mono);letter-spacing:.08em;white-space:nowrap;">Step 1 of 20</div>
+  </div>
+
+  <!-- Survey content renders here -->
+  <div id="sv-content"></div>
+</div>
 
 <!-- STRATEGY SESSION -->
 <div class="panel active" id="panel-strategy">
@@ -1262,7 +1245,7 @@ const ARCHETYPES = [
   {id:'everyman',icon:'⬡',name:'Everyman',sub:'Belonging, community'},
 ];
 
-const PROGRESS = { strategy:2, intro:5, essence:13, values:21, personality:29, promises:37, voice:45, audience:53, logo:58, logo2:62, logodondos:65, colors:70, accents:74, logocolor:77, type1:81, type2:85, typehier:88, illustrations:91, layout:94, collateral:97, ai:98, generate:100 };
+const PROGRESS = { discovery:2, strategy:5, intro:5, essence:13, values:21, personality:29, promises:37, voice:45, audience:53, logo:58, logo2:62, logodondos:65, colors:70, accents:74, logocolor:77, type1:81, type2:85, typehier:88, illustrations:91, layout:94, collateral:97, ai:98, generate:100 };
 
 // ─────────────────────────────────────────────
 // INIT
@@ -3389,17 +3372,13 @@ Return ONLY valid JSON with this exact structure:
 }
 
 function svTransitionToBuilder(data) {
-  // Fade out survey
-  const overlay = document.getElementById('survey-overlay');
-  overlay.style.transition = 'opacity .6s ease';
-  overlay.style.opacity = '0';
-  setTimeout(() => {
-    overlay.style.display = 'none';
-    // Populate builder fields
-    svPopulateBuilder(data);
-    // Navigate to brand strategy section
-    go('essence');
-  }, 600);
+  // Mark discovery as complete
+  const ckEl = document.getElementById('ck-discovery');
+  if (ckEl) ckEl.style.opacity = '1';
+  // Populate builder fields
+  svPopulateBuilder(data);
+  // Navigate to brand strategy section
+  go('essence');
 }
 
 function svPopulateBuilder(data) {
