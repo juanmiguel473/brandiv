@@ -704,7 +704,7 @@ main { flex: 1; min-width: 0; padding: 44px 52px 100px; max-width: 800px; }
     <div class="strategy-wrap">
       <div class="strategy-result-header">
         <div class="strategy-result-eyebrow">◈ Strategic proposal generated</div>
-        <div class="strategy-result-title" id="strategy-brand-name-result">Tu marca</div>
+        <div class="strategy-result-title" id="strategy-brand-name-result">Your brand</div>
       </div>
       <div class="strategy-result-body" id="strategy-result-body">
         <!-- Populated by AI -->
@@ -955,7 +955,7 @@ main { flex: 1; min-width: 0; padding: 44px 52px 100px; max-width: 800px; }
 
 <div class="panel" id="panel-logo">
   <div class="panel-eyebrow">Visual Identity · 2.1</div>
-  <div class="panel-title">Logo <em>Principal</em></div>
+  <div class="panel-title">Logo <em>Primary</em></div>
   <div class="panel-desc">The first point of recognition. A visual synthesis of the identity.</div>
   <button class="btn-ai-assist" onclick="toggleAssist('promises')"><div class="assist-dot"></div>◈ Help me with Brand Promises</button>
   <div class="assist-panel" id="assist-promises">
@@ -967,7 +967,7 @@ main { flex: 1; min-width: 0; padding: 44px 52px 100px; max-width: 800px; }
       <div class="assist-loading" id="assist-loading-promises" style="display:none">
         <div class="td"></div><div class="td"></div><div class="td"></div>
       </div>
-      <span id="assist-text-promises" style="color:var(--muted);font-size: 12.6px">Click en "Generar sugerencias" para obtener recomendaciones basadas en el contexto de tu marca.</span>
+      <span id="assist-text-promises" style="color:var(--muted);font-size: 12.6px">Click "Generate suggestions" to get recommendations based on your brand context.</span>
     </div>
     <button class="btn-apply-assist" id="btn-apply-assist-promises" onclick="applyAssist('promises')">↓ Apply suggestions to fields</button>
     <div style="margin-top:10px;display:flex;gap:8px">
@@ -1000,7 +1000,7 @@ main { flex: 1; min-width: 0; padding: 44px 52px 100px; max-width: 800px; }
 <!-- 2.2 LOGO2 -->
 <div class="panel" id="panel-logo2">
   <div class="panel-eyebrow">Visual Identity · 2.2</div>
-  <div class="panel-title">Logo <em>Secundario</em></div>
+  <div class="panel-title">Logo <em>Secondary</em></div>
   <div class="panel-desc">Simplified version for small spaces — avatars, icons, favicons.</div>
   <button class="btn-ai-assist" onclick="toggleAssist('voice')"><div class="assist-dot"></div>◈ Help me with Tone of Voice</button>
   <div class="assist-panel" id="assist-voice">
@@ -1012,7 +1012,7 @@ main { flex: 1; min-width: 0; padding: 44px 52px 100px; max-width: 800px; }
       <div class="assist-loading" id="assist-loading-voice" style="display:none">
         <div class="td"></div><div class="td"></div><div class="td"></div>
       </div>
-      <span id="assist-text-voice" style="color:var(--muted);font-size: 12.6px">Click en "Generar sugerencias" para obtener recomendaciones basadas en el contexto de tu marca.</span>
+      <span id="assist-text-voice" style="color:var(--muted);font-size: 12.6px">Click "Generate suggestions" to get recommendations based on your brand context.</span>
     </div>
     <button class="btn-apply-assist" id="btn-apply-assist-voice" onclick="applyAssist('voice')">↓ Apply suggestions to fields</button>
     <div style="margin-top:10px;display:flex;gap:8px">
@@ -1022,10 +1022,10 @@ main { flex: 1; min-width: 0; padding: 44px 52px 100px; max-width: 800px; }
   <div style="margin-bottom:24px"></div>
 
   <div class="grid">
-    <div class="field span2"><div class="label">Secondary logo description</div><textarea id="logo2_desc" placeholder="Ej: Versión simplificada del wordmark principal. Retiene los elementos tipográficos clave..."></textarea></div>
+    <div class="field span2"><div class="label">Secondary logo description</div><textarea id="logo2_desc" placeholder="e.g. Simplified version of the primary wordmark. Retains the key typographic elements..."></textarea></div>
     <div class="field"><div class="label">Secondary logo URL</div><input id="logo2_url" type="url" placeholder="https://..."></div>
     <div class="field"><div class="label">Isotype / Icon URL</div><input id="isotipo_url" type="url" placeholder="https://..."></div>
-    <div class="field span2"><div class="label">Recommended use cases</div><textarea id="logo2_usage" placeholder="Ej: Social media avatar, favicon, app icon, stamps, watermarks en contextos pequeños..."></textarea></div>
+    <div class="field span2"><div class="label">Recommended use cases</div><textarea id="logo2_usage" placeholder="e.g. Social media avatar, favicon, app icon, stamps, watermarks in small contexts..."></textarea></div>
   </div>
   <div class="panel-footer"><button class="btn-nav" onclick="go('logo')">← Primary Logo</button><button class="btn-nav p" onclick="go('logodondos')">Do's & Don'ts →</button></div>
 </div>
@@ -1036,8 +1036,8 @@ main { flex: 1; min-width: 0; padding: 44px 52px 100px; max-width: 800px; }
   <div class="panel-title">Logo — Do's <em>& Don'ts</em></div>
   <div class="panel-desc">Usage rules to preserve logo integrity across all contexts.</div>
   <div class="dondos">
-    <div class="dondo-card do"><div class="dondo-head">✓ Do</div><div class="dondo-body"><textarea id="logo_dos" placeholder="Usar el logo con el espacio de seguridad correcto. Usar sobre fondos aprobados. Mantener proporciones."></textarea></div></div>
-    <div class="dondo-card dont"><div class="dondo-head">✗ Don't</div><div class="dondo-body"><textarea id="logo_donts" placeholder="No agrandar letras individuales. No usar sombras ni efectos. No rotar. No deformar. No separar. No usar otra tipografía. No usar múltiples colores."></textarea></div></div>
+    <div class="dondo-card do"><div class="dondo-head">✓ Do</div><div class="dondo-body"><textarea id="logo_dos" placeholder="Use with correct clear space. Use on approved backgrounds. Maintain proportions."></textarea></div></div>
+    <div class="dondo-card dont"><div class="dondo-head">✗ Don't</div><div class="dondo-body"><textarea id="logo_donts" placeholder="Don't enlarge individual letters. Don't use shadows or effects. Don't rotate. Don't distort. Don't separate. Don't use different typography. Don't use multiple colors."></textarea></div></div>
   </div>
   <div class="panel-footer"><button class="btn-nav" onclick="go('logo2')">← Secondary Logo</button><button class="btn-nav p" onclick="go('colors')">Color →</button></div>
 </div>
@@ -1045,30 +1045,30 @@ main { flex: 1; min-width: 0; padding: 44px 52px 100px; max-width: 800px; }
 <!-- 3.1 COLORS -->
 <div class="panel" id="panel-colors">
   <div class="panel-eyebrow">Color · 3.1</div>
-  <div class="panel-title">Paleta <em>Primaria</em></div>
+  <div class="panel-title">Primary <em>Palette</em></div>
   <div class="panel-desc">The base colors that establish the visual foundation of the brand.</div>
   <div class="section-title">Primary colors</div>
   <div id="primary-colors-list"></div>
   <button onclick="addColor('primary')" style="background:none;border:1px dashed var(--muted);border-radius:6px;padding:7px 14px;color:var(--muted);font-family:var(--mono);font-size: 12.6px;cursor:pointer;margin-top:10px;transition:all .15s;" onmouseover="this.style.borderColor='var(--dim)';this.style.color='var(--dim)'" onmouseout="this.style.borderColor='var(--muted)';this.style.color='var(--muted)'">+ Add color</button>
   <div class="divider"></div>
-  <div class="field"><div class="label">Color philosophy <span class="hint">Why these colors? What do they communicate?</span></div><textarea id="color_philosophy" placeholder="El color juega un rol pivotal en la identidad visual. La paleta primaria establece..."></textarea></div>
+  <div class="field"><div class="label">Color philosophy <span class="hint">Why these colors? What do they communicate?</span></div><textarea id="color_philosophy" placeholder="e.g. Color plays a pivotal role in the visual identity. The primary palette establishes..."></textarea></div>
   <div class="panel-footer"><button class="btn-nav" onclick="go('logodondos')">← Do's & Don'ts</button><button class="btn-nav p" onclick="go('accents')">Accent Colors →</button></div>
 </div>
 
 <!-- 3.2 ACCENTS -->
 <div class="panel" id="panel-accents">
   <div class="panel-eyebrow">Color · 3.2</div>
-  <div class="panel-title">Colores <em>de Acento</em></div>
+  <div class="panel-title">Accent <em>Colors</em></div>
   <div class="panel-desc">Colors that inject energy and dynamism into communications.</div>
   <div id="accent-colors-list"></div>
-  <button onclick="addColor('accent')" style="background:none;border:1px dashed var(--muted);border-radius:6px;padding:7px 14px;color:var(--muted);font-family:var(--mono);font-size: 12.6px;cursor:pointer;margin-top:10px;transition:all .15s;" onmouseover="this.style.borderColor='var(--dim)';this.style.color='var(--dim)'" onmouseout="this.style.borderColor='var(--muted)';this.style.color='var(--muted)'">+ Add color de acento</button>
+  <button onclick="addColor('accent')" style="background:none;border:1px dashed var(--muted);border-radius:6px;padding:7px 14px;color:var(--muted);font-family:var(--mono);font-size: 12.6px;cursor:pointer;margin-top:10px;transition:all .15s;" onmouseover="this.style.borderColor='var(--dim)';this.style.color='var(--dim)'" onmouseout="this.style.borderColor='var(--muted)';this.style.color='var(--muted)'">+ Add accent color</button>
   <div class="panel-footer"><button class="btn-nav" onclick="go('colors')">← Primary Palette</button><button class="btn-nav p" onclick="go('logocolor')">Logo on Color →</button></div>
 </div>
 
 <!-- 3.3 LOGO ON COLOR -->
 <div class="panel" id="panel-logocolor">
   <div class="panel-eyebrow">Color · 3.3</div>
-  <div class="panel-title">Logo <em>sobre Color</em></div>
+  <div class="panel-title">Logo <em>on Color</em></div>
   <div class="panel-desc">How to apply the logo on different backgrounds to maintain readability.</div>
   <div id="logo-on-color-list"></div>
   <button onclick="addLogoOnColor()" style="background:none;border:1px dashed var(--muted);border-radius:6px;padding:7px 14px;color:var(--muted);font-family:var(--mono);font-size: 12.6px;cursor:pointer;margin-top:10px;transition:all .15s;" onmouseover="this.style.borderColor='var(--dim)';this.style.color='var(--dim)'" onmouseout="this.style.borderColor='var(--muted)';this.style.color='var(--muted)'">+ Add combination</button>
@@ -1078,12 +1078,12 @@ main { flex: 1; min-width: 0; padding: 44px 52px 100px; max-width: 800px; }
 <!-- 4.1 TYPE1 -->
 <div class="panel" id="panel-type1">
   <div class="panel-eyebrow">Typography · 4.1</div>
-  <div class="panel-title">Tipografía <em>Primaria</em></div>
+  <div class="panel-title">Primary <em>Typography</em></div>
   <div class="panel-desc">The visual voice of the brand. Used in headlines, titles and primary elements.</div>
   <div class="grid">
-    <div class="field"><div class="label">Typeface name</div><input id="t1_name" placeholder="Ej: Inter" oninput="updateTypePreviews()"></div>
+    <div class="field"><div class="label">Typeface name</div><input id="t1_name" placeholder="e.g. Inter" oninput="updateTypePreviews()"></div>
     <div class="field"><div class="label">Source</div><select id="t1_source"><option value="">Select...</option><option value="google">Google Fonts</option><option value="adobe">Adobe Fonts</option><option value="custom">Custom / Licensed</option></select></div>
-    <div class="field span2"><div class="label">Description & rationale</div><textarea id="t1_desc" placeholder="Ej: Fuente neutral y moderna con excelente legibilidad. Referida como la 'nueva Helvetica', complementa perfectamente el logo..."></textarea></div>
+    <div class="field span2"><div class="label">Description & rationale</div><textarea id="t1_desc" placeholder="e.g. Neutral and modern typeface with excellent legibility. Known as the 'new Helvetica', perfectly complements the logo..."></textarea></div>
     <div class="field span2"><div class="label">Google Fonts or CDN URL</div><input id="t1_url" placeholder="https://fonts.google.com/specimen/Inter"></div>
   </div>
   <div id="type1-preview" style="margin-top:20px"></div>
@@ -1093,13 +1093,13 @@ main { flex: 1; min-width: 0; padding: 44px 52px 100px; max-width: 800px; }
 <!-- 4.2 TYPE2 -->
 <div class="panel" id="panel-type2">
   <div class="panel-eyebrow">Typography · 4.2</div>
-  <div class="panel-title">Tipografía <em>Secundaria</em></div>
+  <div class="panel-title">Secondary <em>Typography</em></div>
   <div class="panel-desc">For taglines, buttons, labels and captions. Adds character to functional elements.</div>
   <div class="grid">
-    <div class="field"><div class="label">Typeface name</div><input id="t2_name" placeholder="Ej: PT Mono" oninput="updateTypePreviews()"></div>
+    <div class="field"><div class="label">Typeface name</div><input id="t2_name" placeholder="e.g. PT Mono" oninput="updateTypePreviews()"></div>
     <div class="field"><div class="label">Source</div><select id="t2_source"><option value="">Select...</option><option value="google">Google Fonts</option><option value="adobe">Adobe Fonts</option><option value="custom">Custom / Licensed</option></select></div>
-    <div class="field span2"><div class="label">Description & rationale</div><textarea id="t2_desc" placeholder="Ej: Agrega carácter a elementos funcionales, contraste juguetón con la primaria..."></textarea></div>
-    <div class="field span2"><div class="label">Recommended use</div><input id="t2_usage" placeholder="Ej: Taglines, buttons, labels, captions, small UI elements"></div>
+    <div class="field span2"><div class="label">Description & rationale</div><textarea id="t2_desc" placeholder="e.g. Adds character to functional elements, playful contrast with the primary typeface..."></textarea></div>
+    <div class="field span2"><div class="label">Recommended use</div><input id="t2_usage" placeholder="e.g. Taglines, buttons, labels, captions, small UI elements"></div>
   </div>
   <div class="panel-footer"><button class="btn-nav" onclick="go('type1')">← Primary Typeface</button><button class="btn-nav p" onclick="go('typehier')">Hierarchy →</button></div>
 </div>
@@ -1107,14 +1107,14 @@ main { flex: 1; min-width: 0; padding: 44px 52px 100px; max-width: 800px; }
 <!-- 4.3 HIERARCHY -->
 <div class="panel" id="panel-typehier">
   <div class="panel-eyebrow">Typography · 4.3</div>
-  <div class="panel-title">Jerarquía <em>Web</em></div>
+  <div class="panel-title">Web <em>Hierarchy</em></div>
   <div class="panel-desc">Size and weight system for web. Defines the visual order of information.</div>
   <div id="type-hierarchy-preview" style="margin-bottom:24px"></div>
   <div class="divider"></div>
   <div class="section-title">Typographic Do's & Don'ts</div>
   <div class="dondos">
-    <div class="dondo-card do"><div class="dondo-head">✓ Do</div><div class="dondo-body"><textarea id="type_dos" placeholder="Seguir la jerarquía establecida. Usar los tamaños especificados. Mantener consistencia entre plataformas."></textarea></div></div>
-    <div class="dondo-card dont"><div class="dondo-head">✗ Don't</div><div class="dondo-body"><textarea id="type_donts" placeholder="No usar PT Mono en párrafos largos. No abusar de bold o italic. No mezclar más de 2 tipografías."></textarea></div></div>
+    <div class="dondo-card do"><div class="dondo-head">✓ Do</div><div class="dondo-body"><textarea id="type_dos" placeholder="Follow the established hierarchy. Use the specified sizes. Maintain consistency across platforms."></textarea></div></div>
+    <div class="dondo-card dont"><div class="dondo-head">✗ Don't</div><div class="dondo-body"><textarea id="type_donts" placeholder="Don't use PT Mono in long paragraphs. Don't overuse bold or italic. Don't mix more than 2 typefaces."></textarea></div></div>
   </div>
   <div class="panel-footer"><button class="btn-nav" onclick="go('type2')">← Secondary Typeface</button><button class="btn-nav p" onclick="go('illustrations')">Visual System →</button></div>
 </div>
@@ -1122,14 +1122,14 @@ main { flex: 1; min-width: 0; padding: 44px 52px 100px; max-width: 800px; }
 <!-- 5.1 ILLUSTRATIONS -->
 <div class="panel" id="panel-illustrations">
   <div class="panel-eyebrow">Visual System · 5.1</div>
-  <div class="panel-title">Sistema de <em>Illustrations</em></div>
+  <div class="panel-title">Illustration <em>System</em></div>
   <div class="panel-desc">The visual system that reinforces the identity across different contexts.</div>
   <div class="grid">
-    <div class="field span2"><div class="label">System description</div><textarea id="ill_desc" placeholder="Ej: Formas abstractas modernas que simbolizan creatividad e innovación. Patrones dinámicos que se adaptan a distintos contextos..."></textarea></div>
-    <div class="field span2"><div class="label">General visual style</div><textarea id="ill_style" placeholder="Ej: Abstracto, geométrico, dinámico. Influenciado por el diseño editorial de los 70 y el maximalismo contemporáneo..."></textarea></div>
-    <div class="field span2"><div class="label">Visual references</div><textarea id="ill_refs" placeholder="URLs de Behance, Dribbble, o descripción de referencias visuales..."></textarea></div>
+    <div class="field span2"><div class="label">System description</div><textarea id="ill_desc" placeholder="e.g. Modern abstract forms that symbolise creativity and innovation. Dynamic patterns that adapt to different contexts..."></textarea></div>
+    <div class="field span2"><div class="label">General visual style</div><textarea id="ill_style" placeholder="e.g. Abstract, geometric, dynamic. Influenced by 70s editorial design and contemporary maximalism..."></textarea></div>
+    <div class="field span2"><div class="label">Visual references</div><textarea id="ill_refs" placeholder="Behance or Dribbble URLs, or description of visual references..."></textarea></div>
     <div class="field"><div class="label">Illustrations folder URL</div><input id="ill_url" placeholder="https://drive.google.com/..."></div>
-    <div class="field"><div class="label">File formats</div><input id="ill_formats" placeholder="Ej: SVG, AI, PNG"></div>
+    <div class="field"><div class="label">File formats</div><input id="ill_formats" placeholder="e.g. SVG, AI, PNG"></div>
   </div>
   <div class="panel-footer"><button class="btn-nav" onclick="go('typehier')">← Typography</button><button class="btn-nav p" onclick="go('layout')">Layout →</button></div>
 </div>
@@ -1137,18 +1137,18 @@ main { flex: 1; min-width: 0; padding: 44px 52px 100px; max-width: 800px; }
 <!-- 5.2 LAYOUT -->
 <div class="panel" id="panel-layout">
   <div class="panel-eyebrow">Visual System · 5.2</div>
-  <div class="panel-title">Layout <em>& Escala</em></div>
+  <div class="panel-title">Layout <em>& Scale</em></div>
   <div class="panel-desc">How visual elements are organized across formats and scales.</div>
   <div class="grid">
-    <div class="field span2"><div class="label">Layout principles</div><textarea id="ly_principles" placeholder="Ej: El logo debe mostrarse con espacio de seguridad adecuado. Las ilustraciones complementan pero no opacan el logo..."></textarea></div>
-    <div class="field span2"><div class="label">Logo + illustrations integration guidelines</div><textarea id="ly_integration" placeholder="Ej: Las ilustraciones pueden usarse alrededor o junto al logo, pero deben complementarlo, no superarlo en protagonismo..."></textarea></div>
+    <div class="field span2"><div class="label">Layout principles</div><textarea id="ly_principles" placeholder="e.g. The logo should always have adequate clear space. Illustrations complement but do not overshadow the logo..."></textarea></div>
+    <div class="field span2"><div class="label">Logo + illustrations integration guidelines</div><textarea id="ly_integration" placeholder="e.g. Illustrations can be used around or alongside the logo, but must complement it rather than compete with it..."></textarea></div>
   </div>
   <div class="divider"></div>
   <div class="section-title">Scale</div>
   <div class="grid c3">
-    <div class="field"><div class="label">Small scale</div><textarea id="ly_small" placeholder="Íconos, UI digital, formatos pequeños..."></textarea></div>
-    <div class="field"><div class="label">Medium scale</div><textarea id="ly_medium" placeholder="Secciones web, brochures, social media..."></textarea></div>
-    <div class="field"><div class="label">Large scale</div><textarea id="ly_large" placeholder="Banners, murales, gráficas de gran formato..."></textarea></div>
+    <div class="field"><div class="label">Small scale</div><textarea id="ly_small" placeholder="Icons, digital UI, small formats..."></textarea></div>
+    <div class="field"><div class="label">Medium scale</div><textarea id="ly_medium" placeholder="Web sections, brochures, social media..."></textarea></div>
+    <div class="field"><div class="label">Large scale</div><textarea id="ly_large" placeholder="Banners, murals, large format graphics..."></textarea></div>
   </div>
   <div class="panel-footer"><button class="btn-nav" onclick="go('illustrations')">← Illustrations</button><button class="btn-nav p" onclick="go('collateral')">Collaterals →</button></div>
 </div>
@@ -1156,7 +1156,7 @@ main { flex: 1; min-width: 0; padding: 44px 52px 100px; max-width: 800px; }
 <!-- 5.4 COLLATERAL -->
 <div class="panel" id="panel-collateral">
   <div class="panel-eyebrow">Visual System · 5.4</div>
-  <div class="panel-title">Colaterales <em>& Aplicaciones</em></div>
+  <div class="panel-title">Collaterals <em>& Applications</em></div>
   <div class="panel-desc">Identity in action. Every touchpoint where the brand lives.</div>
   <div id="collateral-list"></div>
   <button onclick="addCollateral()" style="background:none;border:1px dashed var(--muted);border-radius:6px;padding:8px 16px;color:var(--muted);font-family:var(--mono);font-size: 12.6px;cursor:pointer;margin-top:12px;transition:all .15s;" onmouseover="this.style.borderColor='var(--dim)';this.style.color='var(--dim)'" onmouseout="this.style.borderColor='var(--muted)';this.style.color='var(--muted)'">+ Add application</button>
@@ -1171,7 +1171,7 @@ main { flex: 1; min-width: 0; padding: 44px 52px 100px; max-width: 800px; }
   <div class="chat-wrap">
     <div class="chat-top"><div class="ai-dot"></div><span class="chat-top-label">Brandiv AI · Context active</span></div>
     <div class="chat-msgs" id="chatMsgs">
-      <div class="msg ai"><div class="msg-av">◈</div><div class="msg-bub" id="aiWelcome">Cargá una marca para empezar. Podés usar el demo de Brandiv con el botón del header.</div></div>
+      <div class="msg ai"><div class="msg-av">◈</div><div class="msg-bub" id="aiWelcome">Load a brand to get started. You can use the Brandiv demo with the header button.</div></div>
     </div>
     <div class="chat-input-row">
       <textarea class="chat-in" id="chatIn" placeholder="Ask questions, request suggestions, ask it to fill in fields..." rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChat()}" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
@@ -1268,10 +1268,13 @@ function initBuilder() {
 // NAV
 // ─────────────────────────────────────────────
 function go(id) {
+  const panel = document.getElementById('panel-'+id);
+  if (!panel) return;
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('panel-'+id).classList.add('active');
-  document.querySelector('[data-p="'+id+'"]').classList.add('active');
+  panel.classList.add('active');
+  const navItem = document.querySelector('[data-p="'+id+'"]');
+  if (navItem) navItem.classList.add('active');
   document.getElementById('pFill').style.width = (PROGRESS[id]||5)+'%';
   window.scrollTo({top:0,behavior:'smooth'});
 }
@@ -1335,7 +1338,7 @@ function addValue() {
   const d = document.createElement('div');
   d.id = 'val-'+i;
   d.style.cssText = 'background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:10px;display:grid;gap:10px;';
-  d.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size: 10.3px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">Valor ${i+1}</span><button onclick="removeItem('val-${i}','values',${i})" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size: 18.4px;padding:0" title="Eliminar">×</button></div>
+  d.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size: 10.3px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">Value ${i+1}</span><button onclick="removeItem('val-${i}','values',${i})" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size: 18.4px;padding:0" title="Remove">×</button></div>
     <input placeholder="Value name — e.g. Creativity" oninput="values[${i}].name=this.value" style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:5px;padding:9px 12px;color:var(--text);font-family:var(--mono);font-size: 13.8px;outline:none;width:100%">
     <textarea placeholder="Value description — e.g. We always explore new ways to solve branding challenges..." rows="2" oninput="values[${i}].desc=this.value" style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:5px;padding:9px 12px;color:var(--text);font-family:var(--mono);font-size: 13.8px;outline:none;resize:none;width:100%;line-height:1.5"></textarea>`;
   c.appendChild(d);
@@ -1392,7 +1395,7 @@ function addLogoOnColor() {
       <div style="width:36px;height:36px;border-radius:5px;border:1px solid rgba(255,255,255,.1);overflow:hidden;position:relative;cursor:pointer;background:${logoOnColors[i].bg}" id="loc-swatch-${i}">
         <input type="color" value="${logoOnColors[i].bg}" oninput="logoOnColors[${i}].bg=this.value;document.getElementById('loc-swatch-${i}').style.background=this.value" style="position:absolute;inset:-4px;opacity:0;cursor:pointer;width:calc(100% + 8px);height:calc(100% + 8px)">
       </div>
-      <span style="font-size: 11.5px;color:var(--dim)">Color de fondo ${i+1}</span>
+      <span style="font-size: 11.5px;color:var(--dim)">Background color ${i+1}</span>
     </div>
     <button onclick="removeItem('loc-${i}','logoOnColors',${i})" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size: 18.4px">×</button>
   </div>
@@ -1409,7 +1412,7 @@ function addCollateral() {
   d.id = 'coll-'+i;
   d.style.cssText = 'background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:10px;display:grid;gap:10px;';
   d.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center">
-    <span style="font-size: 10.3px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">Aplicación ${i+1}</span>
+    <span style="font-size: 10.3px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">Application ${i+1}</span>
     <button onclick="removeItem('coll-${i}','collaterals',${i})" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size: 18.4px">×</button>
   </div>
   <div style="display:grid;grid-template-columns:2fr 1fr;gap:10px">
@@ -1465,13 +1468,13 @@ function previewLogo(inputId, previewId) {
 // TYPE PREVIEWS
 // ─────────────────────────────────────────────
 function updateTypePreviews() {
-  const t1 = document.getElementById('t1_name')?.value || 'Tipografía Primaria';
-  const t2 = document.getElementById('t2_name')?.value || 'Tipografía Secundaria';
+  const t1 = document.getElementById('t1_name')?.value || 'Primary Typography';
+  const t2 = document.getElementById('t2_name')?.value || 'Secondary Typography';
 
   const p1 = document.getElementById('type1-preview');
   if (p1) p1.innerHTML = `<div class="font-pair">
-    <div class="font-card"><div class="font-card-label">Display</div><div class="font-card-sample">${t1}</div><div class="font-card-meta" style="font-family:'Space Mono',monospace;font-size: 10.3px">HEADINGS · TÍTULOS · DISPLAY</div></div>
-    <div class="font-card"><div class="font-card-label">Body</div><div class="font-card-sample" style="font-size: 18.4px;line-height:1.5">Al BRANDIV creemos en el poder del diseño para conectar organizaciones con su audiencia.</div><div class="font-card-meta">Body text · UI · Labels</div></div>
+    <div class="font-card"><div class="font-card-label">Display</div><div class="font-card-sample">${t1}</div><div class="font-card-meta" style="font-family:'Space Mono',monospace;font-size: 10.3px">HEADINGS · TITLES · DISPLAY</div></div>
+    <div class="font-card"><div class="font-card-label">Body</div><div class="font-card-sample" style="font-size: 18.4px;line-height:1.5">At BRANDIV we believe in the power of design to connect organisations with their audience.</div><div class="font-card-meta">Body text · UI · Labels</div></div>
   </div>`;
 
   const hier = document.getElementById('type-hierarchy-preview');
@@ -1623,7 +1626,7 @@ async function sendChat() {
   const msg = inp.value.trim();
   if (!msg) return;
   const brand = getBrand();
-  if (!brand.name) { addMsg('ai','Cargá primero el nombre de la marca.'); return; }
+  if (!brand.name) { addMsg('ai','Please enter a brand name first.'); return; }
   addMsg('user', msg);
   inp.value = ''; inp.style.height = 'auto';
   const tid = addTyping();
@@ -1668,55 +1671,55 @@ function loadDemo() {
   set('brand_name', 'Brandiv');
   set('brand_industry', 'Branding Tools / Design SaaS');
   set('brand_tagline', 'Bridging brands and audiences with strategic, creative clarity.');
-  set('brand_bookpurpose', 'Este documento sirve como guía comprensiva para entender y aplicar la identidad de marca de Brandiv. Diseñado para garantizar consistencia coherente en todas las plataformas, canales y puntos de contacto.');
+  set('brand_bookpurpose', 'This document serves as a comprehensive guide to understanding and applying the Brandiv brand identity. Designed to ensure consistent coherence across all platforms, channels and touchpoints.');
   set('brand_essence', 'Bridging brands and audiences with strategic, creative clarity.');
-  set('brand_purpose', 'Creemos en el poder del branding bien ejecutado para transformar cómo las organizaciones se comunican y conectan con sus audiencias.');
-  set('brand_how', 'Proveyendo a designers y brand managers una herramienta flexible y fácil de usar que simplifica el proceso de creación de brand books. Un template Webflow clonable gratuito que ayuda a establecer una identidad de marca cohesiva y profesional.');
-  set('brand_mission', 'Simplificar la creación y documentación de sistemas de marca para que cualquier designer o brand manager pueda construir una identidad poderosa y coherente.');
-  set('brand_vision', 'Un mundo donde cada marca puede expresar su verdadera identidad con claridad, consistencia e impacto — sin importar el tamaño del equipo.');
-  set('brand_diff', 'La única herramienta que combina documentación estratégica, identidad visual y generación de assets con AI en un sistema unificado y editable.');
-  set('brand_promise_main', 'Tu marca, documentada y activada en un sistema que tu equipo puede usar y la AI puede entender.');
+  set('brand_purpose', 'We believe in the power of well-executed branding to transform how organisations communicate and connect with their audiences.');
+  set('brand_how', 'By giving designers and brand managers a flexible, easy-to-use tool that simplifies the brand book creation process. A free cloneable Webflow template that helps establish a cohesive and professional brand identity.');
+  set('brand_mission', 'Simplify the creation and documentation of brand systems so that any designer or brand manager can build a powerful and coherent identity.');
+  set('brand_vision', 'A world where every brand can express its true identity with clarity, consistency and impact — regardless of team size.');
+  set('brand_diff', 'The only tool that combines strategic documentation, visual identity and AI-powered asset generation in a single, editable system.');
+  set('brand_promise_main', 'Your brand, documented and activated in a system your team can use and AI can understand.');
 
   // Values
   const vInputs = document.querySelectorAll('#values-list input');
   const vTexts = document.querySelectorAll('#values-list textarea');
   const valData = [
-    { name: 'Creatividad', desc: 'El tono de voz debe reflejar la personalidad y valores de la marca, asegurando que cada pieza de comunicación se sienta consistente y auténtica.' },
-    { name: 'Claridad', desc: 'Priorizamos claridad en la comunicación, asegurando que cada mensaje sea entregado con propósito y precisión.' },
-    { name: 'Empoderamiento', desc: 'Buscamos empoderar a designers y brand managers proveyéndoles las herramientas que necesitan para construir marcas sólidas y efectivas.' },
-    { name: 'Colaboración', desc: 'Creemos en el poder de la colaboración, reuniendo perspectivas diversas para crear algo mayor que la suma de sus partes.' },
+    { name: 'Creativity', desc: 'The tone of voice must reflect the brand\'s personality and values, ensuring every piece of communication feels consistent and authentic.' },
+    { name: 'Clarity', desc: 'We prioritise clarity in communication, ensuring every message is delivered with purpose and precision.' },
+    { name: 'Empowerment', desc: 'We seek to empower designers and brand managers by giving them the tools they need to build strong, effective brands.' },
+    { name: 'Collaboration', desc: 'We believe in the power of collaboration, bringing together diverse perspectives to create something greater than the sum of its parts.' },
   ];
   vInputs.forEach((inp, i) => { if(valData[i]) { inp.value = valData[i].name; values[i] = values[i]||{}; values[i].name = valData[i].name; } });
   vTexts.forEach((txt, i) => { if(valData[i]) { txt.value = valData[i].desc; values[i] = values[i]||{}; values[i].desc = valData[i].desc; } });
 
   set('p_speaks', 'Innovative, Visionary, Supportive');
-  set('p_person', 'Un designer estratégico de 35 años que colecciona sistemas de diseño y cree que la claridad es la forma más alta de elegancia.');
+  set('p_person', 'A strategic 35-year-old designer who collects design systems and believes clarity is the highest form of elegance.');
   set('p_weare', 'Creative, Supportive, Visionary, Empowering, Friendly, Innovative, Collaborative, Professional, Accessible, Open-minded');
   set('p_werenot', 'Generic, Dismissive, Short-sighted, Restrictive, Cold, Stagnant, Isolated, Rigid, Exclusive, Closed-off');
 
   selArch('creator');
 
-  set('v_brand', 'Friendly and Approachable — nos comunicamos con calidez y apertura, haciendo conceptos complejos de branding accesibles y atractivos. Professional yet Casual — encontramos el balance entre expertise y accesibilidad.');
-  set('v_tone', 'En onboarding: motivacional y empoderador. En documentación técnica: claro y preciso. En social: más informal y cercano. En marketing: inspiracional.');
-  set('v_yes', 'Frases directas y accionables. Voz activa. Ejemplos concretos. Preguntas que invitan a reflexionar. Humor sutil y apropiado.');
-  set('v_no', 'Jerga corporativa sin sentido. "Solución integral", "de clase mundial". Exclamaciones excesivas. Lenguaje condescendiente. Over-promising.');
+  set('v_brand', 'Friendly and Approachable — we communicate with warmth and openness, making complex branding concepts accessible and engaging. Professional yet Casual — we find the balance between expertise and accessibility.');
+  set('v_tone', 'In onboarding: motivational and empowering. In technical documentation: clear and precise. In social: more informal and conversational. In marketing: inspirational.');
+  set('v_yes', 'Direct and actionable phrases. Active voice. Concrete examples. Questions that invite reflection. Subtle, appropriate humour.');
+  set('v_no', 'Meaningless corporate jargon. "Comprehensive solution", "world-class". Excessive exclamation marks. Condescending language. Over-promising.');
   set('v_examples', '"Your brand, your rules. Brandiv gives you the tools to say it exactly right."\n"We built this for the designers who care about the details — because we\'re one of them."');
 
-  set('a_primary', 'Designers — profesionales creativos responsables de desarrollar materiales de branding');
-  set('a_secondary', 'Brand Managers — responsables de mantener la identidad y estrategia de marca');
-  set('a_primary_desc', 'Necesitan una herramienta que simplifique la organización y presentación de su trabajo creativo. Frustrados con procesos manuales y PDFs estáticos que quedan desactualizados.');
-  set('a_goals', 'Entregar un brand book cohesivo e impactante. Tener una herramienta eficiente que se adapte a distintas necesidades. Documentar la marca de forma clara y profesional.');
-  set('a_challenges', 'Navegar conceptos complejos de branding sin una estructura clara. Mantener consistencia en todos los materiales. Equilibrar facilidad de uso con features avanzadas.');
-  set('a_solution', 'BRANDIV ofrece una interfaz intuitiva y un framework flexible adaptado a las necesidades específicas de designers y brand managers, haciendo el proceso eficiente y adaptable.');
+  set('a_primary', 'Designers — creative professionals responsible for developing branding materials');
+  set('a_secondary', 'Brand Managers — responsible for maintaining brand identity and strategy');
+  set('a_primary_desc', 'They need a tool that simplifies organising and presenting their creative work. Frustrated with manual processes and static PDFs that quickly become outdated.');
+  set('a_goals', 'Deliver a cohesive and impactful brand book. Have an efficient tool that adapts to different needs. Document the brand clearly and professionally.');
+  set('a_challenges', 'Navigating complex branding concepts without clear structure. Maintaining consistency across all materials. Balancing ease of use with advanced features.');
+  set('a_solution', 'BRANDIV offers an intuitive interface and flexible framework tailored to the specific needs of designers and brand managers, making the process efficient and adaptable.');
 
-  set('logo_desc', 'Wordmark sofisticado que encarna simplicidad y claridad. Diseñado con tipografía custom, se distingue por su presencia robusta y clara. Líneas limpias y detalles significativos contribuyen a su identidad única.');
+  set('logo_desc', 'Sophisticated wordmark that embodies simplicity and clarity. Designed with custom typography, distinguished by its robust and clear presence. Clean lines and meaningful details contribute to its unique identity.');
   set('logo_type', 'wordmark');
   set('logo_print_formats', 'SVG, PDF, AI');
   set('logo_digital_formats', 'PNG, JPEG, SVG');
-  set('logo2_desc', 'Versión simplificada del wordmark principal. Retiene los elementos tipográficos que definen el logo primario. Versátil para avatares de redes sociales, íconos y aplicaciones donde el wordmark completo no es efectivo.');
-  set('logo2_usage', 'Social media avatar, favicon, app icon, stamps, watermarks en contextos reducidos.');
-  set('logo_dos', 'Usar con espacio de seguridad adecuado.\nMantener proporciones originales.\nUsar sobre fondos aprobados de la paleta.\nDescargar siempre desde la carpeta oficial de assets.');
-  set('logo_donts', 'No agrandar letras individuales.\nNo usar sombras ni efectos visuales.\nNo rotar el logo.\nNo deformar ni colapsar.\nNo separar los elementos.\nNo usar otra tipografía.\nNo usar múltiples colores en el logo.\nNo agregar elementos externos al espacio de seguridad.');
+  set('logo2_desc', 'Simplified version of the primary wordmark. Retains the typographic elements that define the primary logo. Versatile for social media avatars, icons and applications where the full wordmark is not effective.');
+  set('logo2_usage', 'Social media avatar, favicon, app icon, stamps, watermarks in reduced contexts.');
+  set('logo_dos', 'Use with adequate clear space.\nMaintain original proportions.\nUse on approved palette backgrounds.\nAlways download from the official assets folder.');
+  set('logo_donts', 'Don\'t enlarge individual letters.\nDon\'t use shadows or visual effects.\nDon\'t rotate the logo.\nDon\'t distort or collapse.\nDon\'t separate elements.\nDon\'t use different typography.\nDon\'t use multiple colours in the logo.\nDon\'t add external elements to the clear space.');
 
   // Colors - Primary
   const pColorData = [
@@ -1754,56 +1757,56 @@ function loadDemo() {
     }
   });
 
-  set('color_philosophy', 'El color juega un rol pivotal en la identidad de BRANDIV. La paleta primaria de Off White, White y Black establece una fundación limpia y moderna. Los colores de acento — Blue, Red, Yellow, Green, Cyan y Pink — inyectan vibración y dinamismo, elegidos para ser llamativos en plataformas digitales e impresas.');
+  set('color_philosophy', 'Colour plays a pivotal role in BRANDIV\'s identity. The primary palette of Off White, White and Black establishes a clean, modern foundation. The accent colours — Blue, Red, Yellow, Green, Cyan and Pink — inject vibrancy and dynamism, chosen to stand out across digital and print platforms.');
 
   set('t1_name', 'Inter');
   set('t1_source', 'google');
-  set('t1_desc', 'Fuente neutral y moderna con excelente legibilidad. Referida como la "nueva Helvetica", complementa perfectamente el logo vibrante y colorido de BRANDIV. Su simplicidad permite que la identidad visual brille sin opacar el contenido.');
+  set('t1_desc', 'Neutral and modern typeface with excellent legibility. Known as the "new Helvetica", it perfectly complements BRANDIV\'s vibrant and colourful logo. Its simplicity lets the visual identity shine without obscuring content.');
   set('t1_url', 'https://fonts.google.com/specimen/Inter');
   set('t2_name', 'Space Mono');
   set('t2_source', 'google');
-  set('t2_desc', 'Tipografía monospace con personalidad. Usada en labels, tags, buttons y captions. Aporta carácter técnico y contemporáneo que contrasta con la neutralidad de Inter.');
+  set('t2_desc', 'Monospace typeface with personality. Used in labels, tags, buttons and captions. Adds a technical and contemporary character that contrasts with Inter\'s neutrality.');
   set('t2_usage', 'Taglines, buttons, labels, captions, UI elements, section markers');
-  set('type_dos', 'Seguir la jerarquía tipográfica establecida.\nUsar Inter para todos los headings y body text.\nMantener los tamaños especificados para consistencia y legibilidad.');
-  set('type_donts', 'No usar Space Mono en párrafos largos — solo para contenido corto.\nNo abusar de bold o italic.\nNo mezclar más de 2 tipografías en un mismo layout.');
+  set('type_dos', 'Follow the established typographic hierarchy.\nUse Inter for all headings and body text.\nMaintain the specified sizes for consistency and legibility.');
+  set('type_donts', 'Don\'t use Space Mono in long paragraphs — short content only.\nDon\'t overuse bold or italic.\nDon\'t mix more than 2 typefaces in the same layout.');
 
-  set('ill_desc', 'El sistema visual de BRANDIV incluye un sistema de ilustraciones sofisticado que mejora la comunicación y atractivo de la marca. Formas abstractas modernas que simbolizan creatividad e innovación.');
-  set('ill_style', 'Abstracto, geométrico, dinámico. Patrones que evocan creatividad y diseño forward-thinking. Las formas abstractas reflejan la naturaleza innovadora y adaptable de la marca.');
-  set('ill_refs', 'Linear App, Are.na, The Futur — minimalismo editorial con toques de color estratégico.');
+  set('ill_desc', 'BRANDIV\'s visual system includes a sophisticated illustration system that enhances brand communication and appeal. Modern abstract forms that symbolise creativity and innovation.');
+  set('ill_style', 'Abstract, geometric, dynamic. Patterns that evoke creativity and forward-thinking design. Abstract forms reflect the brand\'s innovative and adaptable nature.');
+  set('ill_refs', 'Linear App, Are.na, The Futur — editorial minimalism with strategic touches of colour.');
   set('ill_formats', 'SVG, AI, PNG');
 
-  set('ly_principles', 'El logo de BRANDIV debe mostrarse con espacio de seguridad adecuado para garantizar visibilidad e impacto. Las ilustraciones pueden usarse alrededor o junto al logo, pero deben complementarlo sin opacarlo.');
-  set('ly_integration', 'Al usar ilustraciones con el logo, asegurarse de que la combinación se vea balanceada y cohesiva. Las ilustraciones refuerzan la identidad sin restar protagonismo al logo.');
-  set('ly_small', 'Las ilustraciones deben mantenerse claras y efectivas escaladas para interfaces digitales o formatos pequeños. Preservar detalles y reconocibilidad.');
-  set('ly_medium', 'Para secciones web, brochures o social media. Escala apropiada para el medio, asegurando impacto visual y coherencia.');
-  set('ly_large', 'Para aplicaciones de gran formato como banners. Las visuales deben escalar sin perder calidad y mantener el estilo de la marca.');
+  set('ly_principles', 'The BRANDIV logo must be displayed with adequate clear space to ensure visibility and impact. Illustrations can be used around or alongside the logo, but must complement it without obscuring it.');
+  set('ly_integration', 'When using illustrations with the logo, ensure the combination looks balanced and cohesive. Illustrations strengthen the identity without taking attention away from the logo.');
+  set('ly_small', 'Illustrations must remain clear and effective when scaled for digital interfaces or small formats. Preserve detail and recognisability.');
+  set('ly_medium', 'For web sections, brochures or social media. Appropriate scale for the medium, ensuring visual impact and coherence.');
+  set('ly_large', 'For large format applications such as banners. Visuals must scale without losing quality and maintain the brand style.');
 
   // Promises
   const promInputs = document.querySelectorAll('#promises-list textarea');
   const promData = [
-    'Proveer una plataforma confiable y fácil de usar que simplifica el proceso de creación del brand book.',
-    'Mantenerse a la vanguardia de las tendencias de branding, asegurando que los usuarios tengan acceso a las herramientas y recursos más actualizados.',
-    'Fomentar una comunidad de designers que comparten conocimiento e inspiran a otros.'
+    'Provide a reliable and easy-to-use platform that simplifies the brand book creation process.',
+    'Stay at the forefront of branding trends, ensuring users always have access to the most up-to-date tools and resources.',
+    'Foster a community of designers who share knowledge and inspire one another.'
   ];
   promInputs.forEach((inp, i) => { if(promData[i]) { inp.value = promData[i]; promises[i] = promData[i]; } });
 
   // Collaterals
-  const collInputs = document.querySelectorAll('#collateral-list input[placeholder*="Nombre"]');
+  const collInputs = document.querySelectorAll('#collateral-list input[placeholder*="Name"]');
   const collDesc = document.querySelectorAll('#collateral-list textarea');
   const collData = [
-    { name: 'Website / Webflow Site', desc: 'Sitio principal de la marca. Template clonable en Webflow con todas las secciones del brand book aplicadas.' },
-    { name: 'Social Media Kit', desc: 'Templates para Instagram, LinkedIn y Twitter. Coherentes con el sistema visual, editables en Figma.' },
-    { name: 'Brand Book PDF', desc: 'Versión imprimible del manual de marca completo. Exportable desde el sistema.' },
+    { name: 'Website / Webflow Site', desc: 'Main brand website. Cloneable Webflow template with all brand book sections applied.' },
+    { name: 'Social Media Kit', desc: 'Templates for Instagram, LinkedIn and Twitter. Consistent with the visual system, editable in Figma.' },
+    { name: 'Brand Book PDF', desc: 'Printable version of the complete brand manual. Exportable from the system.' },
   ];
   collInputs.forEach((inp, i) => { if(collData[i]) inp.value = collData[i].name; });
   collDesc.forEach((txt, i) => { if(collData[i]) txt.value = collData[i].desc; });
 
   updatePill();
   updateTypePreviews();
-  go('intro');
+  go('essence');
   setTimeout(() => {
     const w = document.getElementById('aiWelcome');
-    if(w) w.textContent = `Sistema de marca de Brandiv cargado ✓. Tengo acceso a toda la estrategia, identidad visual, tipografía, colores, audiencia y voz. ¿Qué generamos?`;
+    if(w) w.textContent = `Brandiv brand system loaded ✓. I have full access to the strategy, visual identity, typography, colours, audience and voice. What shall we create?`;
   }, 100);
 }
 
@@ -2743,7 +2746,7 @@ function confirmBrandCore() {
     }
   }
 
-  go('intro');
+  go('essence');
 }
 
 // Init strategy on load
