@@ -651,7 +651,7 @@ main { flex: 1; min-width: 0; padding: 44px 52px 100px; max-width: 800px; }
     <div style="flex:1;height:2px;background:var(--bg3);border-radius:2px;overflow:hidden;">
       <div id="sv-progress" style="height:100%;background:var(--accent);border-radius:2px;width:0%;transition:width .4s ease;"></div>
     </div>
-    <div id="sv-progress-label" style="font-size:9px;color:var(--muted);font-family:var(--mono);letter-spacing:.08em;white-space:nowrap;">Step 1 of 20</div>
+    <div id="sv-progress-label" style="font-size:9px;color:var(--muted);font-family:var(--mono);letter-spacing:.08em;white-space:nowrap;">Step 1 of 18</div>
   </div>
 
   <!-- Survey content renders here -->
@@ -1280,10 +1280,13 @@ function go(id) {
 }
 
 function updatePill() {
-  const n = document.getElementById('brand_name').value;
+  const el = document.getElementById('brand_name');
+  const n = el ? el.value : (typeof svAnswers !== 'undefined' && svAnswers['brand_name']) || '';
   const pill = document.getElementById('brandPill');
-  document.getElementById('pillName').textContent = n || '—';
-  pill.classList.toggle('on', !!n);
+  if (pill) {
+    document.getElementById('pillName').textContent = n || '—';
+    pill.classList.toggle('on', !!n);
+  }
   const w = document.getElementById('aiWelcome');
   if(w && n) w.textContent = `Brand system active for ${n}. Ask me about the brand, request field completion, copy suggestions, or any type of output.`;
 }
@@ -2808,8 +2811,7 @@ const SURVEY_STEPS = [
 
   // BLOCK 1 — Purpose
   { id:'what_do', block:1, blockTitle:'Purpose', blockSub:"Why does this brand exist beyond making money?", q:'What does your product or service actually do?', type:'textarea', placeholder:'Describe it simply, as if to a friend.', required:true },
-  { id:'obsession', block:1, q:'What problem are you obsessed with solving?', type:'textarea', placeholder:'The thing that keeps you up at night.', required:true },
-  { id:'life_change', block:1, q:"What changes in someone's life after using it?", type:'textarea', placeholder:'Before vs. after. What shifts?', required:true },
+  { id:'problem_type', block:1, q:"What's the core problem you solve?", type:'multiselect', options:['Lack of time','Lack of clarity','Too expensive','Too complex','Not personalized enough','Poor quality','Hard to access','Other'], required:true },
   { id:'disappeared', block:1, q:'If this brand disappeared tomorrow, what would be lost?', type:'textarea', placeholder:"What gap would it leave in the world?", required:true },
   { id:'summary_1', type:'summary', block_num:1 },
 
@@ -2822,9 +2824,7 @@ const SURVEY_STEPS = [
   // BLOCK 3 — Audience
   { id:'audience_who', block:3, blockTitle:'Audience', blockSub:"Who is this really for? The more specific, the stronger the strategy.", q:'Who is the one person that needs this the most?', sub:'Job title, life stage, mindset — whatever feels most defining.', type:'textarea', placeholder:'e.g. A freelance designer who just landed their first big client', required:true },
   { id:'audience_not', block:3, q:'Who is it NOT for?', sub:"Knowing your boundaries makes your positioning sharper.", type:'textarea', placeholder:'e.g. Large enterprises with procurement departments', required:true },
-  { id:'audience_pain', block:3, q:'What keeps them up at night?', type:'textarea', placeholder:'Their real frustration, not the surface problem.', required:true },
-  { id:'audience_emotional', block:3, q:'What emotional need sits behind that problem?', type:'textarea', placeholder:'Fear of failure? Need for recognition? Desire for control?', required:true },
-  { id:'audience_goal', block:3, q:"What do they want to achieve that they can't right now?", type:'textarea', placeholder:'The outcome they dream about.', required:true },
+  { id:'audience_pain', block:3, q:'What keeps them up at night?', type:'multiselect', options:['Not enough time','Too expensive','Too complex to use','Lack of guidance','Inconsistent results','No single source of truth','Hard to collaborate','Other'], required:true },
   { id:'audience_where', block:3, q:'Where do they look for solutions today?', type:'textarea', placeholder:'Google, Reddit, Twitter, word of mouth, consultants...', required:true },
 
   // BLOCK 4 — Values
@@ -2835,9 +2835,8 @@ const SURVEY_STEPS = [
   { id:'personality_sliders', block:5, q:'Where does your brand sit on these spectrums?', type:'sliders', required:true },
 
   // BLOCK 6 — Promise
-  { id:'promise_functional', block:6, blockTitle:'Promise', blockSub:"What can your audience always count on you for?", q:"What's the one thing you always deliver?", sub:'Functional — concrete, measurable, real.', type:'textarea', placeholder:'e.g. A response within 24 hours. A design system in 2 weeks.', required:true },
-  { id:'promise_emotion', block:6, q:'What emotional feeling do you leave people with?', type:'multiselect', options: EMOTION_OPTIONS, required:true },
-  { id:'promise_sentence', block:6, q:'How would a happy customer describe you in one sentence?', type:'textarea', placeholder:"Imagine them telling a friend. What do they say?", required:true },
+  { id:'promise_emotion', block:6, blockTitle:'Promise', blockSub:"What can your audience always count on you for?", q:'What emotional feeling do you leave people with?', type:'multiselect', options: EMOTION_OPTIONS, required:true },
+  { id:'promise_sentence', block:6, q:'Complete this sentence:', type:'textarea', placeholder:"We're the only [type of product] that [unique differentiator]", required:true },
 
   { id:'final', type:'final' },
 ];
@@ -3243,9 +3242,9 @@ async function svGenerate() {
   const btn = document.getElementById('sv-gen-btn');
   const spin = document.getElementById('sv-gen-spin');
   const txt = document.getElementById('sv-gen-txt');
-  btn.disabled = true;
-  spin.style.display = 'block';
-  txt.textContent = 'Building your brand strategy...';
+  if (btn) btn.disabled = true;
+  if (spin) spin.style.display = 'block';
+  if (txt) txt.textContent = 'Building your brand strategy...';
 
   // Build full context
   const ctx = svAnswers;
@@ -3329,7 +3328,7 @@ Return ONLY valid JSON with this exact structure:
   const svFetchWithRetry = async (body, retries = 3, delay = 2000) => {
     for (let attempt = 0; attempt < retries; attempt++) {
       if (attempt > 0) {
-        txt.textContent = `Retrying... (${attempt}/${retries-1})`;
+        if (txt) txt.textContent = `Retrying... (${attempt}/${retries-1})`;
         await new Promise(r => setTimeout(r, delay * attempt));
       }
       const res = await fetch('/api/chat', {
@@ -3347,7 +3346,7 @@ Return ONLY valid JSON with this exact structure:
   };
 
   try {
-    txt.textContent = 'Building your brand strategy...';
+    if (txt) txt.textContent = 'Building your brand strategy...';
     const data = await svFetchWithRetry({
       model: 'claude-sonnet-4-20250514',
       max_tokens: 4000,
@@ -3370,14 +3369,14 @@ Return ONLY valid JSON with this exact structure:
     window.brandStrategyData = brandStrategy;
     svTransitionToBuilder(brandStrategy);
   } catch(e) {
-    btn.disabled = false;
-    spin.style.display = 'none';
-    txt.textContent = '◈ Build my Brand Strategy →';
+    if (btn) btn.disabled = false;
+    if (spin) spin.style.display = 'none';
+    if (txt) txt.textContent = '◈ Build my Brand Strategy →';
     // Show inline error instead of alert
     const errEl = document.createElement('div');
     errEl.style.cssText = 'margin-top:12px;font-size:11px;color:rgba(245,100,100,0.8);font-family:var(--mono);text-align:center;';
     errEl.textContent = e.message || 'Error generating strategy. Please try again.';
-    btn.parentNode.appendChild(errEl);
+    if (btn) btn.parentNode.appendChild(errEl);
     setTimeout(() => errEl.remove(), 6000);
   }
 }
