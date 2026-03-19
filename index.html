@@ -8,329 +8,649 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.0/dist/fonts/geist-sans/style.css">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  :root {
-    --bg: #0a0a09;
-    --bg2: #111110;
-    --bg3: #1a1a18;
-    --text: #e8e6dc;
-    --dim: #888;
-    --muted: #444;
-    --accent: #02FFFB;
-    --border: rgba(255,255,255,0.08);
-    --serif: 'Geist', 'GeistSans', system-ui, sans-serif;
-    --mono: 'DM Mono', monospace;
-  }
+:root {
+  --bg:       #F5F3EE;
+  --bg2:      #FFFFFF;
+  --bg3:      #ECEAE4;
+  --text:     #1A1A18;
+  --dim:      #6B6B65;
+  --muted:    #A8A89F;
+  --border:   rgba(0,0,0,0.08);
+  --border2:  rgba(0,0,0,0.14);
+  --accent:   #0a0a09;
+  --accent2:  #02FFFB;
 
-  html { scroll-behavior: smooth; }
+  /* Icon container colors */
+  --ic1: #E8F4FF;
+  --ic2: #FFF3E8;
+  --ic3: #EEFFF8;
+  --ic1t: #2D69FF;
+  --ic2t: #FF5100;
+  --ic3t: #02B391;
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--mono);
-    font-size: 14px;
-    line-height: 1.6;
-    overflow-x: hidden;
-  }
+  --serif: 'Geist', system-ui, sans-serif;
+  --mono:  'DM Mono', monospace;
+}
 
-  /* ── HEADER ── */
-  header {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    padding: 20px 40px;
-    display: flex; align-items: center; justify-content: space-between;
-    border-bottom: 1px solid transparent;
-    transition: border-color .3s, background .3s;
-  }
-  header.scrolled {
-    background: rgba(10,10,9,0.92);
-    border-bottom-color: var(--border);
-    backdrop-filter: blur(12px);
-  }
-  .logo img { height: 18px; opacity: .9; }
-  .header-cta {
-    background: var(--text); color: var(--bg);
-    border: none; border-radius: 6px;
-    padding: 9px 20px; font-family: var(--mono);
-    font-size: 12px; font-weight: 500;
-    letter-spacing: .06em; cursor: pointer;
-    transition: background .15s;
-    text-decoration: none; display: inline-block;
-  }
-  .header-cta:hover { background: var(--accent); }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 14px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
 
-  /* ── HERO ── */
-  .hero {
-    min-height: 100vh;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    text-align: center;
-    padding: 120px 24px 80px;
-    position: relative;
-    overflow: hidden;
-  }
+/* ── HEADER ── */
+header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 0 48px;
+  height: 60px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(245,243,238,0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.logo img {
+  height: 16px;
+  filter: invert(1);
+}
+.btn-cta {
+  background: var(--text); color: #F5F3EE;
+  border: none; border-radius: 6px;
+  padding: 9px 20px; font-family: var(--mono);
+  font-size: 12px; font-weight: 500;
+  letter-spacing: .05em; cursor: pointer;
+  transition: opacity .15s;
+  text-decoration: none; display: inline-block;
+}
+.btn-cta:hover { opacity: .75; }
 
-  /* Background grid */
-  .hero::before {
-    content: '';
-    position: absolute; inset: 0;
-    background-image:
-      linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
-    background-size: 60px 60px;
-    mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 40%, transparent 100%);
-  }
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 140px 48px 100px;
+  position: relative;
+}
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--dim); margin-bottom: 28px;
+  padding: 6px 14px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  opacity: 0; animation: fadeUp .5s ease .1s forwards;
+}
+.hero-eyebrow span {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--ic3t); flex-shrink: 0;
+}
+.hero-title {
+  font-family: var(--serif);
+  font-size: clamp(44px, 7vw, 84px);
+  line-height: 1.05; letter-spacing: -.03em;
+  color: var(--text); margin-bottom: 24px;
+  font-weight: 600;
+  opacity: 0; animation: fadeUp .5s ease .2s forwards;
+}
+.hero-title em {
+  font-style: normal;
+  color: var(--muted);
+  font-weight: 300;
+}
+.hero-sub {
+  font-size: 16px; color: var(--dim);
+  max-width: 500px; line-height: 1.8;
+  margin: 0 auto 44px; font-weight: 300;
+  opacity: 0; animation: fadeUp .5s ease .3s forwards;
+}
+.hero-actions {
+  display: flex; align-items: center; gap: 12px;
+  opacity: 0; animation: fadeUp .5s ease .4s forwards;
+}
+.btn-primary {
+  background: var(--text); color: var(--bg);
+  border: none; border-radius: 8px;
+  padding: 14px 32px; font-family: var(--mono);
+  font-size: 13px; font-weight: 500;
+  letter-spacing: .05em; cursor: pointer;
+  transition: opacity .15s;
+  text-decoration: none; display: inline-block;
+}
+.btn-primary:hover { opacity: .75; }
+.btn-secondary {
+  background: var(--bg2);
+  color: var(--dim);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  padding: 14px 28px; font-family: var(--mono);
+  font-size: 13px; letter-spacing: .05em;
+  cursor: pointer; transition: all .15s;
+  text-decoration: none; display: inline-block;
+}
+.btn-secondary:hover { color: var(--text); border-color: var(--border2); }
 
-  /* Accent glow */
-  .hero::after {
-    content: '';
-    position: absolute;
-    width: 600px; height: 300px;
-    background: radial-gradient(ellipse, rgba(2,255,251,0.06) 0%, transparent 70%);
-    top: 30%; left: 50%; transform: translateX(-50%);
-    pointer-events: none;
-  }
+/* ── PROOF ── */
+.proof {
+  text-align: center;
+  padding: 20px 48px;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--bg2);
+}
+.proof p {
+  font-size: 11px; color: var(--muted);
+  letter-spacing: .1em; text-transform: uppercase;
+}
 
-  .hero-eyebrow {
-    font-size: 10px; letter-spacing: .18em; text-transform: uppercase;
-    color: var(--accent); margin-bottom: 24px;
-    opacity: 0; animation: fadeUp .6s ease .1s forwards;
-  }
+/* ── SHARED SECTION STYLES ── */
+.section {
+  padding: 100px 48px;
+  max-width: 1080px; margin: 0 auto;
+}
+.section-label {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--dim);
+  padding: 6px 14px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+.section-label::before {
+  content: '';
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--ic3t); flex-shrink: 0;
+}
+.section-title {
+  font-family: var(--serif);
+  font-size: clamp(28px, 3.5vw, 44px);
+  letter-spacing: -.025em; font-weight: 600;
+  line-height: 1.12; margin-bottom: 16px;
+}
+.section-sub {
+  font-size: 15px; color: var(--dim);
+  max-width: 480px; line-height: 1.75;
+  font-weight: 300; margin-bottom: 52px;
+}
 
-  .hero-title {
-    font-family: var(--serif);
-    font-size: clamp(52px, 8vw, 96px);
-    line-height: 1.05;
-    letter-spacing: -.02em;
-    color: var(--text);
-    margin-bottom: 28px;
-    opacity: 0; animation: fadeUp .6s ease .2s forwards;
-  }
-  .hero-title em {
-    font-style: normal;
-    color: var(--dim);
-  }
+/* ── PRODUCT MOCKUP ── */
+.product-wrap {
+  padding: 80px 48px;
+  background: var(--bg3);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+}
+.product-mockup {
+  max-width: 860px; margin: 0 auto;
+  background: #0a0a09;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 32px 100px rgba(0,0,0,0.25), 0 4px 20px rgba(0,0,0,0.15);
+}
+.mockup-bar {
+  padding: 12px 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  display: flex; align-items: center; gap: 7px;
+  background: #111110;
+}
+.mockup-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+}
+.mockup-url {
+  flex: 1; text-align: center;
+  font-size: 10px; color: #555;
+  letter-spacing: .03em;
+}
+.mockup-body {
+  display: grid; grid-template-columns: 220px 1fr;
+  min-height: 380px; text-align: left;
+}
+.mockup-sidebar {
+  border-right: 1px solid rgba(255,255,255,0.07);
+  padding: 20px 0; background: #0a0a09;
+}
+.mockup-nav-group { padding: 0 12px 16px; }
+.mockup-nav-label {
+  font-size: 8px; letter-spacing: .14em;
+  text-transform: uppercase; color: #444;
+  margin-bottom: 6px; padding: 0 8px;
+}
+.mockup-nav-item {
+  padding: 6px 10px; border-radius: 5px;
+  font-size: 11px; color: #666;
+  display: flex; align-items: center;
+  justify-content: space-between; margin-bottom: 2px;
+  font-family: var(--mono);
+}
+.mockup-nav-item.active {
+  background: rgba(255,255,255,0.05);
+  color: #e8e6dc;
+}
+.mockup-nav-dot {
+  width: 13px; height: 13px; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.12);
+}
+.mockup-nav-dot.filled {
+  background: #02FFFB; border-color: #02FFFB;
+}
+.mockup-content { padding: 32px 36px; background: #0a0a09; }
+.mockup-eyebrow {
+  font-size: 9px; letter-spacing: .14em;
+  text-transform: uppercase; color: #02FFFB;
+  margin-bottom: 10px;
+}
+.mockup-heading {
+  font-family: var(--serif);
+  font-size: 24px; font-weight: 600;
+  letter-spacing: -.02em; margin-bottom: 8px; line-height: 1.2;
+  color: #e8e6dc;
+}
+.mockup-heading em { font-style: normal; color: #555; font-weight: 300; }
+.mockup-desc {
+  font-size: 11px; color: #666;
+  margin-bottom: 24px; line-height: 1.7; max-width: 380px;
+}
+.mockup-progress {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 24px;
+}
+.mockup-progress-bar {
+  flex: 1; height: 2px; background: #1a1a18; border-radius: 2px;
+}
+.mockup-progress-fill {
+  height: 100%; width: 5%; background: #02FFFB; border-radius: 2px;
+}
+.mockup-progress-label { font-size: 9px; color: #444; white-space: nowrap; }
+.mockup-question {
+  font-size: 17px; font-weight: 500; margin-bottom: 14px;
+  font-family: var(--serif); letter-spacing: -.01em;
+  color: #e8e6dc;
+}
+.mockup-input {
+  width: 100%; border: none; border-bottom: 2px solid #02FFFB;
+  background: transparent; padding: 8px 0;
+  font-family: var(--mono); font-size: 13px;
+  color: #444; outline: none; margin-bottom: 24px;
+}
+.mockup-btn {
+  background: #e8e6dc; color: #0a0a09;
+  border: none; border-radius: 6px;
+  padding: 9px 20px; font-family: var(--mono);
+  font-size: 11px; float: right; cursor: default;
+}
 
-  .hero-sub {
-    font-size: 15px; color: var(--dim);
-    max-width: 480px; line-height: 1.75;
-    margin-bottom: 40px;
-    font-weight: 300;
-    opacity: 0; animation: fadeUp .6s ease .35s forwards;
-  }
+/* ── WHO IT'S FOR ── */
+.who-grid {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 16px; margin-top: 0;
+}
+.who-col {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px; padding: 32px 28px;
+}
+.who-col-icon {
+  width: 36px; height: 36px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; margin-bottom: 18px;
+}
+.who-col-icon.c1 { background: var(--ic1); color: var(--ic1t); }
+.who-col-icon.c2 { background: var(--ic2); color: var(--ic2t); }
+.who-col-icon.c3 { background: var(--ic3); color: var(--ic3t); }
+.who-col-label {
+  font-size: 13px; font-weight: 500; margin-bottom: 16px;
+  color: var(--text);
+}
+.who-pain {
+  display: flex; flex-direction: column; gap: 10px;
+  margin-bottom: 20px; padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+.who-pain-item {
+  display: flex; gap: 8px; align-items: flex-start;
+  font-size: 12px; color: var(--dim); line-height: 1.5;
+}
+.who-pain-item::before {
+  content: '—'; color: var(--muted); flex-shrink: 0;
+}
+.who-solution {
+  font-size: 12px; color: var(--text); line-height: 1.65;
+}
 
-  .hero-actions {
-    display: flex; align-items: center; gap: 16px;
-    opacity: 0; animation: fadeUp .6s ease .45s forwards;
-  }
+/* ── HOW IT WORKS ── */
+.how-section {
+  padding: 100px 48px;
+  max-width: 1080px; margin: 0 auto;
+  border-top: 1px solid var(--border);
+}
+.how-steps {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 40px; margin-top: 52px;
+  position: relative;
+}
+.how-steps::before {
+  content: '';
+  position: absolute;
+  top: 18px; left: calc(16.66% + 20px);
+  width: calc(66.66% - 40px); height: 1px;
+  background: linear-gradient(90deg, var(--border2), var(--border), var(--border2));
+}
+.how-num {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--bg2); border: 1px solid var(--border2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; color: var(--dim);
+  margin-bottom: 20px; font-family: var(--mono);
+}
+.how-title {
+  font-family: var(--serif);
+  font-size: 18px; font-weight: 600;
+  letter-spacing: -.01em; margin-bottom: 10px;
+}
+.how-desc {
+  font-size: 12px; color: var(--dim);
+  line-height: 1.75; font-weight: 300;
+}
 
-  .btn-primary {
-    background: var(--accent); color: var(--bg);
-    border: none; border-radius: 8px;
-    padding: 14px 32px; font-family: var(--mono);
-    font-size: 13px; font-weight: 500;
-    letter-spacing: .06em; cursor: pointer;
-    transition: opacity .15s;
-    text-decoration: none; display: inline-block;
-  }
-  .btn-primary:hover { opacity: .85; }
+/* ── FEATURES ── */
+.features-section {
+  padding: 0 48px 100px;
+  max-width: 1080px; margin: 0 auto;
+}
+.features-grid {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 16px;
+}
+.feature-item {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 12px; padding: 32px 28px;
+  transition: box-shadow .2s;
+}
+.feature-item:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.07); }
+.feature-icon-wrap {
+  width: 36px; height: 36px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; margin-bottom: 18px;
+}
+.feature-icon-wrap.c1 { background: var(--ic1); color: var(--ic1t); }
+.feature-icon-wrap.c2 { background: var(--ic2); color: var(--ic2t); }
+.feature-icon-wrap.c3 { background: var(--ic3); color: var(--ic3t); }
+.feature-title { font-size: 13px; color: var(--text); margin-bottom: 8px; font-weight: 500; }
+.feature-desc { font-size: 12px; color: var(--dim); line-height: 1.75; font-weight: 300; }
 
-  .btn-ghost {
-    color: var(--dim); font-family: var(--mono);
-    font-size: 12px; cursor: pointer; background: none;
-    border: none; letter-spacing: .04em;
-    transition: color .15s; text-decoration: none;
-  }
-  .btn-ghost:hover { color: var(--text); }
+/* ── MOAT ── */
+.moat {
+  text-align: center; padding: 100px 48px;
+  background: var(--text);
+  position: relative; overflow: hidden;
+}
+.moat-text {
+  font-family: var(--serif);
+  font-size: clamp(26px, 4vw, 46px);
+  line-height: 1.25; letter-spacing: -.025em;
+  font-weight: 600; max-width: 660px;
+  margin: 0 auto; color: var(--bg);
+}
+.moat-text em {
+  font-style: normal;
+  color: rgba(245,243,238,0.4);
+  font-weight: 300;
+}
 
-  /* ── FEATURES ── */
-  .features {
-    padding: 80px 40px 100px;
-    max-width: 1100px; margin: 0 auto;
-    opacity: 0; animation: fadeUp .7s ease .6s forwards;
-  }
+/* ── CTA ── */
+.cta-section {
+  text-align: center; padding: 120px 48px;
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+}
+.cta-label {
+  font-size: 10px; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--muted);
+  margin-bottom: 20px;
+}
+.cta-title {
+  font-family: var(--serif);
+  font-size: clamp(32px, 4vw, 52px);
+  letter-spacing: -.025em; font-weight: 600;
+  margin-bottom: 36px; line-height: 1.12;
+}
 
-  .features-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-  }
+/* ── FOOTER ── */
+footer {
+  padding: 28px 48px;
+  border-top: 1px solid var(--border);
+  background: var(--bg);
+  display: flex; align-items: center;
+  justify-content: space-between;
+}
+.footer-copy { font-size: 11px; color: var(--muted); }
 
-  .feature-item {
-    background: var(--bg);
-    padding: 36px 32px;
-    transition: background .2s;
-  }
-  .feature-item:hover { background: var(--bg2); }
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 
-  .feature-icon {
-    font-size: 18px; color: var(--accent);
-    margin-bottom: 20px; display: block;
-  }
-
-  .feature-title {
-    font-size: 13px; color: var(--text);
-    margin-bottom: 10px; letter-spacing: .02em;
-    font-weight: 500;
-  }
-
-  .feature-desc {
-    font-size: 12px; color: var(--dim);
-    line-height: 1.75; font-weight: 300;
-  }
-
-  /* ── MOAT ── */
-  .moat {
-    padding: 100px 24px;
-    text-align: center;
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .moat::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(2,255,251,0.04) 0%, transparent 70%);
-    pointer-events: none;
-  }
-
-  .moat-text {
-    font-family: var(--serif);
-    font-size: clamp(28px, 4vw, 48px);
-    line-height: 1.25;
-    letter-spacing: -.02em;
-    color: var(--text);
-    max-width: 700px;
-    margin: 0 auto 16px;
-  }
-  .moat-text em {
-    font-style: normal; color: var(--dim);
-  }
-
-  .moat-sub {
-    font-size: 12px; color: var(--muted);
-    letter-spacing: .06em; text-transform: uppercase;
-    margin-top: 20px;
-  }
-
-  /* ── CTA SECTION ── */
-  .cta-section {
-    padding: 100px 24px;
-    text-align: center;
-  }
-
-  .cta-label {
-    font-size: 9px; letter-spacing: .18em;
-    text-transform: uppercase; color: var(--dim);
-    margin-bottom: 20px;
-  }
-
-  .cta-title {
-    font-family: var(--serif);
-    font-size: clamp(32px, 4vw, 52px);
-    letter-spacing: -.02em;
-    margin-bottom: 32px;
-    line-height: 1.15;
-  }
-
-  /* ── FOOTER ── */
-  footer {
-    padding: 28px 40px;
-    border-top: 1px solid var(--border);
-    display: flex; align-items: center;
-    justify-content: space-between;
-  }
-  .footer-copy {
-    font-size: 11px; color: var(--muted);
-  }
-
-  /* ── ANIMATIONS ── */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  /* ── RESPONSIVE ── */
-  @media (max-width: 768px) {
-    header { padding: 16px 20px; }
-    .features { padding: 60px 20px; }
-    .features-grid { grid-template-columns: 1fr; }
-    .hero { padding: 100px 20px 60px; }
-    footer { flex-direction: column; gap: 12px; text-align: center; }
-  }
+@media (max-width: 768px) {
+  header { padding: 0 20px; }
+  .hero { padding: 100px 20px 60px; }
+  .section, .how-section, .features-section { padding: 60px 20px; }
+  .product-wrap { padding: 60px 20px; }
+  .who-grid, .how-steps, .features-grid { grid-template-columns: 1fr; }
+  .mockup-sidebar { display: none; }
+  .mockup-body { grid-template-columns: 1fr; }
+  .moat, .cta-section { padding: 80px 20px; }
+  footer { flex-direction: column; gap: 12px; text-align: center; padding: 24px 20px; }
+  .how-steps::before { display: none; }
+}
 </style>
 </head>
 <body>
 
-<header id="site-header">
-  <div class="logo">
-    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTg0IiBoZWlnaHQ9IjI4IiB2aWV3Qm94PSIwIDAgMTg0IDI4IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTEyMy4wMzggMEgxMjYuNTg1QzEzMS4yMDggLTcuNjg2MzNlLTA3IDE0MC4zNTMgMi4xODYxNSAxNDAuMzUzIDEzLjc5NDdDMTQwLjM1MyAyNS40MDMyIDEzMS4yMDggMjcuNTg5NCAxMjYuNTg1IDI3LjU4OTRMMTEyLjYxIDI3LjU4OTRWMC4wMDA0OTA5NTRIMTIzLjAzOFYwWk0xMjMuNTc4IDAuNzE1NzRWMjYuNjI0QzEyNS42MDkgMjYuODIxNCAxMjguODM0IDI0LjU1MDkgMTI4LjgzNCAxMy43OTQ3QzEyOC44MzQgMy4wMzg1MSAxMjUuNjA5IDAuNzI1OTU5IDEyMy41NzggMC43MTU3NFoiIGZpbGw9IndoaXRlIi8+CjxyZWN0IHg9IjE0MS43MyIgeT0iMC4wMDA0ODgyODEiIHdpZHRoPSIxMC45Njc3IiBoZWlnaHQ9IjI3LjU4ODkiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNNjMuMTQ2MyAwSDc0LjM5ODZMODQuMDA1NSAyNy42MDNINzIuMDEwMUw2OC42NzA5IDE3Ljg0NDRINjAuNjU2N0w2MC4zMDU4IDE4Ljk4N0M2NS4xOTY5IDIyLjA4NiA2NS4wMzI4IDI0Ljc0MTcgNjQuOTA4NiAyNi43NTEyQzY0Ljg5MDIgMjcuMDQ5NiA2NC44NzI2IDI3LjMzMzcgNjQuODcyNiAyNy42MDNMNTYuMzA1NyAyNy42MDNMNjMuNzI4MSAzLjM5OTg0TDYzLjE0NjMgMS42OTk0NFYwWk02NC4zNTUyIDUuMjMyMzVMNjguMjkwMyAxNi43MzIzSDYwLjkxMzNMNjQuMzU1MiA1LjIzMjM1WiIgZmlsbD0id2hpdGUiLz4KPHBhdGggZD0iTTg1LjQzIDAuMDE0NTI2NEg4Ny41MjA3TDEwOC4wOTYgMTYuMjIwNFYxMS4wMDQzTDEwOC4wNzcgMTEuMDU1OUMxMDEuMjYgNy4wNTA1NiAxMDEuNDcyIDMuNjI0MyAxMDEuNjMxIDEuMDU4NjdDMTAxLjY1MyAwLjY5MzU4MSAxMDEuNjc1IDAuMzQ1OTE5IDEwMS42NzUgMC4wMTY0OTQ1TDEwOS4yNDIgMC4wMTY0NTM1TDEwOS4yNDIgMjcuNDkwOUwxMDUuMzMyIDI3LjQ5MDlMODYuNTMwMSAxMy4zMDgyTDg2LjUzMDEgMjcuNjAzSDg1LjM4MzhMODUuMzgzOCAwLjAxNjQ1MzZMODUuNDMgMC4wMTY0NTM2TDg1LjQzIDAuMDE0NTI2NFoiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik0xNTQuNzI4IDAuMDAwMjQ0MTQxSDE2NS45OEwxNzQuNTUzIDI1Ljc4NDRMMTc3LjA1NSAxNy45ODg1QzE3My40MTkgMTMuNzE3NiAxNzIuNSA4LjA4NTkgMTcyLjQ5NSA1Ljc3MzQ5TDE3Mi40OTIgNS43NjY5MVYwLjAwNTI1MDg1SDE4My45OTlMMTgzLjc1NyAwLjc1NTA0NkwxNzUuMTc0IDI3LjU4OTJMMTc1LjE1IDI3LjU4MjFMMTc1LjE3NCAyNy42NTNIMTYzLjE3OUwxNTQuNzI4IDAuNjU4MzUxTDE1NC43MjggMC4wMDAyNDQxNDFaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTE4Ljk3MjEgNC4yMjI4M2UtMTBIMFYyNy41ODg5TDIxLjM0MjYgMjcuNTg4OUMyMy44NTIxIDI3LjU4ODkgMjguMTQxNiAyNC42MjU3IDI4LjE0MTYgMjAuMjUxMUMyOC4xNDE2IDEzLjkzNiAyMi41ODQxIDEyLjU3NzYgMTkuOTg1NyAxMi42ODc4SDE5LjcxNDFDMjEuOTgzMiAxMi40MTg3IDI2LjI0NyAxMC42MTI1IDI2LjI0NyA2Ljc0NjM1QzI2LjI0NyAxLjExMzQyIDIxLjI3NDggLTIuNTA0MjRlLTA1IDE4Ljk3MjEgNC4yMjI4M2UtMTBaTTEyLjA2NjMgMC44NDcyODdIMTAuOTY3N1YxMi4zNDhIMTIuMDY2M0MxMi4zOTcxIDEyLjM0OCAxNS4zOTcyIDEyLjI4OTQgMTUuMzk3MiA2LjU5NzY3QzE1LjM5NzIgMC45MDU5NyAxMi4zOTcxIDAuODQ3Mjg3IDEyLjA2NjMgMC44NDcyODdaTTEwLjk2NzcgMTMuNjM3N1YyNi41MzExSDEyLjI0MzhDMTIuNjE0NiAyNi41MzExIDE1Ljk3OCAyNi40NjUzIDE1Ljk3OCAyMC4wODQ0QzE1Ljk3OCAxMy43MDM1IDEyLjYxNDYgMTMuNjM3NyAxMi4yNDM4IDEzLjYzNzdIMTAuOTY3N1oiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNMjkuNjcxOSAwLjAxNDUyNjRWMjcuNjAzNEg0MC42Mzk2VjIwLjc3NjhDNDIuMDUzMiAyMy4zNzQ5IDQ0LjA4MSAyNS43MDc4IDQ2LjIzODMgMjYuODM0OEM0OS4wMDM3IDI4LjI3OTYgNTIuODg1OCAyOC4wODE4IDU0LjQ4MTIgMjcuODAyM1YxNi41MTUzQzUyLjk1MjMgMTcuMzUzNyA0OS4xNjMyIDE4LjE5MjIgNDYuNzAzNyAxOC4xOTIyQzQ2LjYwOTMgMTguMTkyMiA0Ni41MTQ2IDE4LjE5MjQgNDYuNDE5OCAxOC4xOTI2QzQ1LjAyOCAxOC4xOTU0IDQzLjU4NDQgMTguMTk4MyA0Mi4yNTQ3IDE3LjYwMzhDNDUuODAxMSAxNy41Njg3IDQ5LjIyMjQgMTcuMTExNCA1MS43NTIzIDE1LjY4OTJDNTMuNzk4MyAxNC41NjggNTUuOTE4OSAxMi4zNTE1IDU1LjkxODkgOC44MDA2QzU1LjkxODkgMS40NjQ1OCA1MC45Njg4IDAuMDE0NTQ0NiA0OC42NDQgMC4wMTQ1MjY0SDI5LjY3MTlaTTQwLjYzOTYgMS4xMTc5OVYxNi4wOTU5SDQxLjczODJDNDIuMDY5IDE2LjA5NTkgNDUuMDY5MSAxNi4wMTk1IDQ1LjA2OTEgOC42MDY5N0M0NS4wNjkxIDEuMTk0NDEgNDIuMDY5IDEuMTE3OTkgNDEuNzM4MiAxLjExNzk5SDQwLjYzOTZaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K" alt="Brandiv">
-  </div>
-  <a href="builder.html" class="header-cta">Get started →</a>
+<!-- HEADER -->
+<header>
+  <a href="/" class="logo"><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTg0IiBoZWlnaHQ9IjI4IiB2aWV3Qm94PSIwIDAgMTg0IDI4IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTEyMy4wMzggMEgxMjYuNTg1QzEzMS4yMDggLTcuNjg2MzNlLTA3IDE0MC4zNTMgMi4xODYxNSAxNDAuMzUzIDEzLjc5NDdDMTQwLjM1MyAyNS40MDMyIDEzMS4yMDggMjcuNTg5NCAxMjYuNTg1IDI3LjU4OTRMMTEyLjYxIDI3LjU4OTRWMC4wMDA0OTA5NTRIMTIzLjAzOFYwWk0xMjMuNTc4IDAuNzE1NzRWMjYuNjI0QzEyNS42MDkgMjYuODIxNCAxMjguODM0IDI0LjU1MDkgMTI4LjgzNCAxMy43OTQ3QzEyOC44MzQgMy4wMzg1MSAxMjUuNjA5IDAuNzI1OTU5IDEyMy41NzggMC43MTU3NFoiIGZpbGw9IndoaXRlIi8+CjxyZWN0IHg9IjE0MS43MyIgeT0iMC4wMDA0ODgyODEiIHdpZHRoPSIxMC45Njc3IiBoZWlnaHQ9IjI3LjU4ODkiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNNjMuMTQ2MyAwSDc0LjM5ODZMODQuMDA1NSAyNy42MDNINzIuMDEwMUw2OC42NzA5IDE3Ljg0NDRINjAuNjU2N0w2MC4zMDU4IDE4Ljk4N0M2NS4xOTY5IDIyLjA4NiA2NS4wMzI4IDI0Ljc0MTcgNjQuOTA4NiAyNi43NTEyQzY0Ljg5MDIgMjcuMDQ5NiA2NC44NzI2IDI3LjMzMzcgNjQuODcyNiAyNy42MDNMNTYuMzA1NyAyNy42MDNMNjMuNzI4MSAzLjM5OTg0TDYzLjE0NjMgMS42OTk0NFYwWk02NC4zNTUyIDUuMjMyMzVMNjguMjkwMyAxNi43MzIzSDYwLjkxMzNMNjQuMzU1MiA1LjIzMjM1WiIgZmlsbD0id2hpdGUiLz4KPHBhdGggZD0iTTg1LjQzIDAuMDE0NTI2NEg4Ny41MjA3TDEwOC4wOTYgMTYuMjIwNFYxMS4wMDQzTDEwOC4wNzcgMTEuMDU1OUMxMDEuMjYgNy4wNTA1NiAxMDEuNDcyIDMuNjI0MyAxMDEuNjMxIDEuMDU4NjdDMTAxLjY1MyAwLjY5MzU4MSAxMDEuNjc1IDAuMzQ1OTE5IDEwMS42NzUgMC4wMTY0OTQ1TDEwOS4yNDIgMC4wMTY0NTM1TDEwOS4yNDIgMjcuNDkwOUwxMDUuMzMyIDI3LjQ5MDlMODYuNTMwMSAxMy4zMDgyTDg2LjUzMDEgMjcuNjAzSDg1LjM4MzhMODUuMzgzOCAwLjAxNjQ1MzZMODUuNDMgMC4wMTY0NTM2TDg1LjQzIDAuMDE0NTI2NFoiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik0xNTQuNzI4IDAuMDAwMjQ0MTQxSDE2NS45OEwxNzQuNTUzIDI1Ljc4NDRMMTc3LjA1NSAxNy45ODg1QzE3My40MTkgMTMuNzE3NiAxNzIuNSA4LjA4NTkgMTcyLjQ5NSA1Ljc3MzQ5TDE3Mi40OTIgNS43NjY5MVYwLjAwNTI1MDg1SDE4My45OTlMMTgzLjc1NyAwLjc1NTA0NkwxNzUuMTc0IDI3LjU4OTJMMTc1LjE1IDI3LjU4MjFMMTc1LjE3NCAyNy42NTNIMTYzLjE3OUwxNTQuNzI4IDAuNjU4MzUxTDE1NC43MjggMC4wMDAyNDQxNDFaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTE4Ljk3MjEgNC4yMjI4M2UtMTBIMFYyNy41ODg5TDIxLjM0MjYgMjcuNTg4OUMyMy44NTIxIDI3LjU4ODkgMjguMTQxNiAyNC42MjU3IDI4LjE0MTYgMjAuMjUxMUMyOC4xNDE2IDEzLjkzNiAyMi41ODQxIDEyLjU3NzYgMTkuOTg1NyAxMi42ODc4SDE5LjcxNDFDMjEuOTgzMiAxMi40MTg3IDI2LjI0NyAxMC42MTI1IDI2LjI0NyA2Ljc0NjM1QzI2LjI0NyAxLjExMzQyIDIxLjI3NDggLTIuNTA0MjRlLTA1IDE4Ljk3MjEgNC4yMjI4M2UtMTBaTTEyLjA2NjMgMC44NDcyODdIMTAuOTY3N1YxMi4zNDhIMTIuMDY2M0MxMi4zOTcxIDEyLjM0OCAxNS4zOTcyIDEyLjI4OTQgMTUuMzk3MiA2LjU5NzY3QzE1LjM5NzIgMC45MDU5NyAxMi4zOTcxIDAuODQ3Mjg3IDEyLjA2NjMgMC44NDcyODdaTTEwLjk2NzcgMTMuNjM3N1YyNi41MzExSDEyLjI0MzhDMTIuNjE0NiAyNi41MzExIDE1Ljk3OCAyNi40NjUzIDE1Ljk3OCAyMC4wODQ0QzE1Ljk3OCAxMy43MDM1IDEyLjYxNDYgMTMuNjM3NyAxMi4yNDM4IDEzLjYzNzdIMTAuOTY3N1oiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNMjkuNjcxOSAwLjAxNDUyNjRWMjcuNjAzNEg0MC42Mzk2VjIwLjc3NjhDNDIuMDUzMiAyMy4zNzQ5IDQ0LjA4MSAyNS43MDc4IDQ2LjIzODMgMjYuODM0OEM0OS4wMDM3IDI4LjI3OTYgNTIuODg1OCAyOC4wODE4IDU0LjQ4MTIgMjcuODAyM1YxNi41MTUzQzUyLjk1MjMgMTcuMzUzNyA0OS4xNjMyIDE4LjE5MjIgNDYuNzAzNyAxOC4xOTIyQzQ2LjYwOTMgMTguMTkyMiA0Ni41MTQ2IDE4LjE5MjQgNDYuNDE5OCAxOC4xOTI2QzQ1LjAyOCAxOC4xOTU0IDQzLjU4NDQgMTguMTk4MyA0Mi4yNTQ3IDE3LjYwMzhDNDUuODAxMSAxNy41Njg3IDQ5LjIyMjQgMTcuMTExNCA1MS43NTIzIDE1LjY4OTJDNTMuNzk4MyAxNC41NjggNTUuOTE4OSAxMi4zNTE1IDU1LjkxODkgOC44MDA2QzU1LjkxODkgMS40NjQ1OCA1MC45Njg4IDAuMDE0NTQ0NiA0OC42NDQgMC4wMTQ1MjY0SDI5LjY3MTlaTTQwLjYzOTYgMS4xMTc5OVYxNi4wOTU5SDQxLjczODJDNDIuMDY5IDE2LjA5NTkgNDUuMDY5MSAxNi4wMTk1IDQ1LjA2OTEgOC42MDY5N0M0NS4wNjkxIDEuMTk0NDEgNDIuMDY5IDEuMTE3OTkgNDEuNzM4MiAxLjExNzk5SDQwLjYzOTZaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K" alt="Brandiv"></a>
+  <a href="builder.html" class="btn-cta">Get started →</a>
 </header>
 
-<section class="hero">
-  <div class="hero-eyebrow">Brand HQ — built for designers & founders</div>
-  <h1 class="hero-title">Your brand,<br><em>all in one place.</em></h1>
-  <p class="hero-sub">From strategy to visual identity — Brandiv is where you build, document and maintain everything that makes your brand yours.</p>
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow"><span></span>Brand HQ — strategy, identity & guidelines</div>
+  <h1 class="hero-title">Your brand lives in<br>a PDF <em>nobody opens.</em></h1>
+  <p class="hero-sub">Brandiv is the living headquarters for your brand — strategy, identity and guidelines, all in one place your whole team can actually use.</p>
   <div class="hero-actions">
     <a href="builder.html" class="btn-primary">Build my brand →</a>
-    <a href="#features" class="btn-ghost">See how it works ↓</a>
+    <a href="#how" class="btn-secondary">See how it works ↓</a>
   </div>
-</section>
+</div>
 
-<section class="features" id="features">
+<!-- PROOF -->
+<div class="proof">
+  <p>Used by designers, brand managers and founders across 30+ countries</p>
+</div>
+
+<!-- PRODUCT IN USE -->
+<div class="product-wrap">
+  <div class="section" style="padding-bottom:0;text-align:left;">
+    <div class="section-label">The product</div>
+    <h2 class="section-title">See it in action.</h2>
+    <p class="section-sub">Answer a few questions. Walk away with a complete brand strategy.</p>
+  </div>
+  <div class="product-mockup">
+    <div class="mockup-bar">
+      <div class="mockup-dot"></div>
+      <div class="mockup-dot"></div>
+      <div class="mockup-dot"></div>
+      <div class="mockup-url">brandiv.app/builder</div>
+    </div>
+    <div class="mockup-body">
+      <div class="mockup-sidebar">
+        <div class="mockup-nav-group">
+          <div class="mockup-nav-label">Discovery</div>
+          <div class="mockup-nav-item active">◈ Brand Discovery <div class="mockup-nav-dot filled"></div></div>
+        </div>
+        <div class="mockup-nav-group">
+          <div class="mockup-nav-label">1 — Brand Strategy</div>
+          <div class="mockup-nav-item">Brand Essence <div class="mockup-nav-dot"></div></div>
+          <div class="mockup-nav-item">Values <div class="mockup-nav-dot"></div></div>
+          <div class="mockup-nav-item">Personality <div class="mockup-nav-dot"></div></div>
+          <div class="mockup-nav-item">Brand Promise <div class="mockup-nav-dot"></div></div>
+          <div class="mockup-nav-item">Tone of Voice <div class="mockup-nav-dot"></div></div>
+          <div class="mockup-nav-item">Audience <div class="mockup-nav-dot"></div></div>
+        </div>
+        <div class="mockup-nav-group">
+          <div class="mockup-nav-label">2 — Visual Identity</div>
+          <div class="mockup-nav-item">Primary Logo <div class="mockup-nav-dot"></div></div>
+          <div class="mockup-nav-item">Color Palette <div class="mockup-nav-dot"></div></div>
+          <div class="mockup-nav-item">Typography <div class="mockup-nav-dot"></div></div>
+        </div>
+      </div>
+      <div class="mockup-content">
+        <div class="mockup-eyebrow">Brand Discovery · Step 1 of 22</div>
+        <h3 class="mockup-heading">Let's build<br><em>your brand.</em></h3>
+        <p class="mockup-desc">Answer a few questions and we'll generate your complete brand strategy — values, personality, tone of voice, and more.</p>
+        <div class="mockup-progress">
+          <div class="mockup-progress-bar"><div class="mockup-progress-fill"></div></div>
+          <div class="mockup-progress-label">Step 1 of 22</div>
+        </div>
+        <div class="mockup-question">What's your brand name?</div>
+        <input class="mockup-input" placeholder="e.g. Brandiv" readonly>
+        <div class="mockup-btn">Continue →</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WHO IT'S FOR -->
+<div class="section" id="who">
+  <div class="section-label">Who it's for</div>
+  <h2 class="section-title">Built for everyone<br>who touches the brand.</h2>
+  <p class="section-sub">Whether you create it, manage it, or use it — Brandiv keeps everyone on the same page.</p>
+  <div class="who-grid">
+    <div class="who-col">
+      <div class="who-col-icon c1">✦</div>
+      <div class="who-col-label">For Designers</div>
+      <div class="who-pain">
+        <div class="who-pain-item">PDFs are rigid and hard to update</div>
+        <div class="who-pain-item">Maintaining multiple versions is exhausting</div>
+        <div class="who-pain-item">Empty placeholders slow you down</div>
+      </div>
+      <div class="who-solution">Built with guidance, not blank pages. Strategy first, design second.</div>
+    </div>
+    <div class="who-col">
+      <div class="who-col-icon c2">◈</div>
+      <div class="who-col-label">For Brand Managers</div>
+      <div class="who-pain">
+        <div class="who-pain-item">Guidelines arrive as long decks nobody navigates</div>
+        <div class="who-pain-item">New team members start from zero every time</div>
+        <div class="who-pain-item">Hard to keep everyone aligned</div>
+      </div>
+      <div class="who-solution">One living document your whole team can reference — always up to date.</div>
+    </div>
+    <div class="who-col">
+      <div class="who-col-icon c3">◎</div>
+      <div class="who-col-label">For Collaborators</div>
+      <div class="who-pain">
+        <div class="who-pain-item">Files get requested manually every time</div>
+        <div class="who-pain-item">Wrong logos and old guidelines get used</div>
+        <div class="who-pain-item">No single source of truth</div>
+      </div>
+      <div class="who-solution">Everything in one place, always current. No more hunting for the right file.</div>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="how-section" id="how">
+  <div class="section-label">How it works</div>
+  <h2 class="section-title">From zero to brand strategy<br>in one session.</h2>
+  <div class="how-steps">
+    <div class="how-step">
+      <div class="how-num">01</div>
+      <div class="how-title">Answer</div>
+      <div class="how-desc">A guided survey that thinks with you. No blank pages, no generic templates — questions designed to surface what makes your brand yours.</div>
+    </div>
+    <div class="how-step">
+      <div class="how-num">02</div>
+      <div class="how-title">We build</div>
+      <div class="how-desc">The AI researches your market, analyzes your competitors, and generates a complete brand strategy — values, personality, tone of voice, and audience portrait.</div>
+    </div>
+    <div class="how-step">
+      <div class="how-num">03</div>
+      <div class="how-title">You own it</div>
+      <div class="how-desc">A living brand document you can edit, share and grow. Add your logo, colors and typography. Your whole team can access it anytime.</div>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<div class="features-section">
   <div class="features-grid">
     <div class="feature-item">
-      <span class="feature-icon">◈</span>
+      <div class="feature-icon-wrap c1">✦</div>
       <div class="feature-title">Start with strategy</div>
       <div class="feature-desc">Answer a few questions and get a complete brand strategy in minutes — values, personality, tone of voice, and audience portrait.</div>
     </div>
     <div class="feature-item">
-      <span class="feature-icon">◎</span>
+      <div class="feature-icon-wrap c2">◈</div>
       <div class="feature-title">Build your identity</div>
       <div class="feature-desc">Logo, colors, typography, and visual system — all documented in one place, with the context your team actually needs.</div>
     </div>
     <div class="feature-item">
-      <span class="feature-icon">◇</span>
+      <div class="feature-icon-wrap c3">◎</div>
       <div class="feature-title">Keep it consistent</div>
       <div class="feature-desc">One place your whole team can reference. Always up to date. Always on brand.</div>
     </div>
   </div>
-</section>
+</div>
 
-<section class="moat">
+<!-- MOAT -->
+<div class="moat">
   <p class="moat-text">Other tools help you make things.<br><em>Brandiv helps you know what you stand for.</em></p>
-  <div class="moat-sub">Strategy · Identity · Documentation</div>
-</section>
+</div>
 
-<section class="cta-section">
+<!-- CTA -->
+<div class="cta-section">
   <div class="cta-label">Ready when you are</div>
   <h2 class="cta-title">Start building<br>your brand today.</h2>
   <a href="builder.html" class="btn-primary">Build my brand — it's free →</a>
-</section>
+</div>
 
+<!-- FOOTER -->
 <footer>
-  <div class="logo">
-    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTg0IiBoZWlnaHQ9IjI4IiB2aWV3Qm94PSIwIDAgMTg0IDI4IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTEyMy4wMzggMEgxMjYuNTg1QzEzMS4yMDggLTcuNjg2MzNlLTA3IDE0MC4zNTMgMi4xODYxNSAxNDAuMzUzIDEzLjc5NDdDMTQwLjM1MyAyNS40MDMyIDEzMS4yMDggMjcuNTg5NCAxMjYuNTg1IDI3LjU4OTRMMTEyLjYxIDI3LjU4OTRWMC4wMDA0OTA5NTRIMTIzLjAzOFYwWk0xMjMuNTc4IDAuNzE1NzRWMjYuNjI0QzEyNS42MDkgMjYuODIxNCAxMjguODM0IDI0LjU1MDkgMTI4LjgzNCAxMy43OTQ3QzEyOC44MzQgMy4wMzg1MSAxMjUuNjA5IDAuNzI1OTU5IDEyMy41NzggMC43MTU3NFoiIGZpbGw9IndoaXRlIi8+CjxyZWN0IHg9IjE0MS43MyIgeT0iMC4wMDA0ODgyODEiIHdpZHRoPSIxMC45Njc3IiBoZWlnaHQ9IjI3LjU4ODkiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNNjMuMTQ2MyAwSDc0LjM5ODZMODQuMDA1NSAyNy42MDNINzIuMDEwMUw2OC42NzA5IDE3Ljg0NDRINjAuNjU2N0w2MC4zMDU4IDE4Ljk4N0M2NS4xOTY5IDIyLjA4NiA2NS4wMzI4IDI0Ljc0MTcgNjQuOTA4NiAyNi43NTEyQzY0Ljg5MDIgMjcuMDQ5NiA2NC44NzI2IDI3LjMzMzcgNjQuODcyNiAyNy42MDNMNTYuMzA1NyAyNy42MDNMNjMuNzI4MSAzLjM5OTg0TDYzLjE0NjMgMS42OTk0NFYwWk02NC4zNTUyIDUuMjMyMzVMNjguMjkwMyAxNi43MzIzSDYwLjkxMzNMNjQuMzU1MiA1LjIzMjM1WiIgZmlsbD0id2hpdGUiLz4KPHBhdGggZD0iTTg1LjQzIDAuMDE0NTI2NEg4Ny41MjA3TDEwOC4wOTYgMTYuMjIwNFYxMS4wMDQzTDEwOC4wNzcgMTEuMDU1OUMxMDEuMjYgNy4wNTA1NiAxMDEuNDcyIDMuNjI0MyAxMDEuNjMxIDEuMDU4NjdDMTAxLjY1MyAwLjY5MzU4MSAxMDEuNjc1IDAuMzQ1OTE5IDEwMS42NzUgMC4wMTY0OTQ1TDEwOS4yNDIgMC4wMTY0NTM1TDEwOS4yNDIgMjcuNDkwOUwxMDUuMzMyIDI3LjQ5MDlMODYuNTMwMSAxMy4zMDgyTDg2LjUzMDEgMjcuNjAzSDg1LjM4MzhMODUuMzgzOCAwLjAxNjQ1MzZMODUuNDMgMC4wMTY0NTM2TDg1LjQzIDAuMDE0NTI2NFoiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik0xNTQuNzI4IDAuMDAwMjQ0MTQxSDE2NS45OEwxNzQuNTUzIDI1Ljc4NDRMMTc3LjA1NSAxNy45ODg1QzE3My40MTkgMTMuNzE3NiAxNzIuNSA4LjA4NTkgMTcyLjQ5NSA1Ljc3MzQ5TDE3Mi40OTIgNS43NjY5MVYwLjAwNTI1MDg1SDE4My45OTlMMTgzLjc1NyAwLjc1NTA0NkwxNzUuMTc0IDI3LjU4OTJMMTc1LjE1IDI3LjU4MjFMMTc1LjE3NCAyNy42NTNIMTYzLjE3OUwxNTQuNzI4IDAuNjU4MzUxTDE1NC43MjggMC4wMDAyNDQxNDFaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTE4Ljk3MjEgNC4yMjI4M2UtMTBIMFYyNy41ODg5TDIxLjM0MjYgMjcuNTg4OUMyMy44NTIxIDI3LjU4ODkgMjguMTQxNiAyNC42MjU3IDI4LjE0MTYgMjAuMjUxMUMyOC4xNDE2IDEzLjkzNiAyMi41ODQxIDEyLjU3NzYgMTkuOTg1NyAxMi42ODc4SDE5LjcxNDFDMjEuOTgzMiAxMi40MTg3IDI2LjI0NyAxMC42MTI1IDI2LjI0NyA2Ljc0NjM1QzI2LjI0NyAxLjExMzQyIDIxLjI3NDggLTIuNTA0MjRlLTA1IDE4Ljk3MjEgNC4yMjI4M2UtMTBaTTEyLjA2NjMgMC44NDcyODdIMTAuOTY3N1YxMi4zNDhIMTIuMDY2M0MxMi4zOTcxIDEyLjM0OCAxNS4zOTcyIDEyLjI4OTQgMTUuMzk3MiA2LjU5NzY3QzE1LjM5NzIgMC45MDU5NyAxMi4zOTcxIDAuODQ3Mjg3IDEyLjA2NjMgMC44NDcyODdaTTEwLjk2NzcgMTMuNjM3N1YyNi41MzExSDEyLjI0MzhDMTIuNjE0NiAyNi41MzExIDE1Ljk3OCAyNi40NjUzIDE1Ljk3OCAyMC4wODQ0QzE1Ljk3OCAxMy43MDM1IDEyLjYxNDYgMTMuNjM3NyAxMi4yNDM4IDEzLjYzNzdIMTAuOTY3N1oiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNMjkuNjcxOSAwLjAxNDUyNjRWMjcuNjAzNEg0MC42Mzk2VjIwLjc3NjhDNDIuMDUzMiAyMy4zNzQ5IDQ0LjA4MSAyNS43MDc4IDQ2LjIzODMgMjYuODM0OEM0OS4wMDM3IDI4LjI3OTYgNTIuODg1OCAyOC4wODE4IDU0LjQ4MTIgMjcuODAyM1YxNi41MTUzQzUyLjk1MjMgMTcuMzUzNyA0OS4xNjMyIDE4LjE5MjIgNDYuNzAzNyAxOC4xOTIyQzQ2LjYwOTMgMTguMTkyMiA0Ni41MTQ2IDE4LjE5MjQgNDYuNDE5OCAxOC4xOTI2QzQ1LjAyOCAxOC4xOTU0IDQzLjU4NDQgMTguMTk4MyA0Mi4yNTQ3IDE3LjYwMzhDNDUuODAxMSAxNy41Njg3IDQ5LjIyMjQgMTcuMTExNCA1MS43NTIzIDE1LjY4OTJDNTMuNzk4MyAxNC41NjggNTUuOTE4OSAxMi4zNTE1IDU1LjkxODkgOC44MDA2QzU1LjkxODkgMS40NjQ1OCA1MC45Njg4IDAuMDE0NTQ0NiA0OC42NDQgMC4wMTQ1MjY0SDI5LjY3MTlaTTQwLjYzOTYgMS4xMTc5OVYxNi4wOTU5SDQxLjczODJDNDIuMDY5IDE2LjA5NTkgNDUuMDY5MSAxNi4wMTk1IDQ1LjA2OTEgOC42MDY5N0M0NS4wNjkxIDEuMTk0NDEgNDIuMDY5IDEuMTE3OTkgNDEuNzM4MiAxLjExNzk5SDQwLjYzOTZaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K" alt="Brandiv" style="height:14px;opacity:0.5;">
-  </div>
-  <div class="footer-copy">Built for designers and founders</div>
-  <a href="builder.html" class="header-cta" style="font-size:11px;padding:7px 16px;">Get started →</a>
+  <a href="/" class="logo"><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTg0IiBoZWlnaHQ9IjI4IiB2aWV3Qm94PSIwIDAgMTg0IDI4IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTEyMy4wMzggMEgxMjYuNTg1QzEzMS4yMDggLTcuNjg2MzNlLTA3IDE0MC4zNTMgMi4xODYxNSAxNDAuMzUzIDEzLjc5NDdDMTQwLjM1MyAyNS40MDMyIDEzMS4yMDggMjcuNTg5NCAxMjYuNTg1IDI3LjU4OTRMMTEyLjYxIDI3LjU4OTRWMC4wMDA0OTA5NTRIMTIzLjAzOFYwWk0xMjMuNTc4IDAuNzE1NzRWMjYuNjI0QzEyNS42MDkgMjYuODIxNCAxMjguODM0IDI0LjU1MDkgMTI4LjgzNCAxMy43OTQ3QzEyOC44MzQgMy4wMzg1MSAxMjUuNjA5IDAuNzI1OTU5IDEyMy41NzggMC43MTU3NFoiIGZpbGw9IndoaXRlIi8+CjxyZWN0IHg9IjE0MS43MyIgeT0iMC4wMDA0ODgyODEiIHdpZHRoPSIxMC45Njc3IiBoZWlnaHQ9IjI3LjU4ODkiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNNjMuMTQ2MyAwSDc0LjM5ODZMODQuMDA1NSAyNy42MDNINzIuMDEwMUw2OC42NzA5IDE3Ljg0NDRINjAuNjU2N0w2MC4zMDU4IDE4Ljk4N0M2NS4xOTY5IDIyLjA4NiA2NS4wMzI4IDI0Ljc0MTcgNjQuOTA4NiAyNi43NTEyQzY0Ljg5MDIgMjcuMDQ5NiA2NC44NzI2IDI3LjMzMzcgNjQuODcyNiAyNy42MDNMNTYuMzA1NyAyNy42MDNMNjMuNzI4MSAzLjM5OTg0TDYzLjE0NjMgMS42OTk0NFYwWk02NC4zNTUyIDUuMjMyMzVMNjguMjkwMyAxNi43MzIzSDYwLjkxMzNMNjQuMzU1MiA1LjIzMjM1WiIgZmlsbD0id2hpdGUiLz4KPHBhdGggZD0iTTg1LjQzIDAuMDE0NTI2NEg4Ny41MjA3TDEwOC4wOTYgMTYuMjIwNFYxMS4wMDQzTDEwOC4wNzcgMTEuMDU1OUMxMDEuMjYgNy4wNTA1NiAxMDEuNDcyIDMuNjI0MyAxMDEuNjMxIDEuMDU4NjdDMTAxLjY1MyAwLjY5MzU4MSAxMDEuNjc1IDAuMzQ1OTE5IDEwMS42NzUgMC4wMTY0OTQ1TDEwOS4yNDIgMC4wMTY0NTM1TDEwOS4yNDIgMjcuNDkwOUwxMDUuMzMyIDI3LjQ5MDlMODYuNTMwMSAxMy4zMDgyTDg2LjUzMDEgMjcuNjAzSDg1LjM4MzhMODUuMzgzOCAwLjAxNjQ1MzZMODUuNDMgMC4wMTY0NTM2TDg1LjQzIDAuMDE0NTI2NFoiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik0xNTQuNzI4IDAuMDAwMjQ0MTQxSDE2NS45OEwxNzQuNTUzIDI1Ljc4NDRMMTc3LjA1NSAxNy45ODg1QzE3My40MTkgMTMuNzE3NiAxNzIuNSA4LjA4NTkgMTcyLjQ5NSA1Ljc3MzQ5TDE3Mi40OTIgNS43NjY5MVYwLjAwNTI1MDg1SDE4My45OTlMMTgzLjc1NyAwLjc1NTA0NkwxNzUuMTc0IDI3LjU4OTJMMTc1LjE1IDI3LjU4MjFMMTc1LjE3NCAyNy42NTNIMTYzLjE3OUwxNTQuNzI4IDAuNjU4MzUxTDE1NC43MjggMC4wMDAyNDQxNDFaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTE4Ljk3MjEgNC4yMjI4M2UtMTBIMFYyNy41ODg5TDIxLjM0MjYgMjcuNTg4OUMyMy44NTIxIDI3LjU4ODkgMjguMTQxNiAyNC42MjU3IDI4LjE0MTYgMjAuMjUxMUMyOC4xNDE2IDEzLjkzNiAyMi41ODQxIDEyLjU3NzYgMTkuOTg1NyAxMi42ODc4SDE5LjcxNDFDMjEuOTgzMiAxMi40MTg3IDI2LjI0NyAxMC42MTI1IDI2LjI0NyA2Ljc0NjM1QzI2LjI0NyAxLjExMzQyIDIxLjI3NDggLTIuNTA0MjRlLTA1IDE4Ljk3MjEgNC4yMjI4M2UtMTBaTTEyLjA2NjMgMC44NDcyODdIMTAuOTY3N1YxMi4zNDhIMTIuMDY2M0MxMi4zOTcxIDEyLjM0OCAxNS4zOTcyIDEyLjI4OTQgMTUuMzk3MiA2LjU5NzY3QzE1LjM5NzIgMC45MDU5NyAxMi4zOTcxIDAuODQ3Mjg3IDEyLjA2NjMgMC44NDcyODdaTTEwLjk2NzcgMTMuNjM3N1YyNi41MzExSDEyLjI0MzhDMTIuNjE0NiAyNi41MzExIDE1Ljk3OCAyNi40NjUzIDE1Ljk3OCAyMC4wODQ0QzE1Ljk3OCAxMy43MDM1IDEyLjYxNDYgMTMuNjM3NyAxMi4yNDM4IDEzLjYzNzdIMTAuOTY3N1oiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNMjkuNjcxOSAwLjAxNDUyNjRWMjcuNjAzNEg0MC42Mzk2VjIwLjc3NjhDNDIuMDUzMiAyMy4zNzQ5IDQ0LjA4MSAyNS43MDc4IDQ2LjIzODMgMjYuODM0OEM0OS4wMDM3IDI4LjI3OTYgNTIuODg1OCAyOC4wODE4IDU0LjQ4MTIgMjcuODAyM1YxNi41MTUzQzUyLjk1MjMgMTcuMzUzNyA0OS4xNjMyIDE4LjE5MjIgNDYuNzAzNyAxOC4xOTIyQzQ2LjYwOTMgMTguMTkyMiA0Ni41MTQ2IDE4LjE5MjQgNDYuNDE5OCAxOC4xOTI2QzQ1LjAyOCAxOC4xOTU0IDQzLjU4NDQgMTguMTk4MyA0Mi4yNTQ3IDE3LjYwMzhDNDUuODAxMSAxNy41Njg3IDQ5LjIyMjQgMTcuMTExNCA1MS43NTIzIDE1LjY4OTJDNTMuNzk4MyAxNC41NjggNTUuOTE4OSAxMi4zNTE1IDU1LjkxODkgOC44MDA2QzU1LjkxODkgMS40NjQ1OCA1MC45Njg4IDAuMDE0NTQ0NiA0OC42NDQgMC4wMTQ1MjY0SDI5LjY3MTlaTTQwLjYzOTYgMS4xMTc5OVYxNi4wOTU5SDQxLjczODJDNDIuMDY5IDE2LjA5NTkgNDUuMDY5MSAxNi4wMTk1IDQ1LjA2OTEgOC42MDY5N0M0NS4wNjkxIDEuMTk0NDEgNDIuMDY5IDEuMTE3OTkgNDEuNzM4MiAxLjExNzk5SDQwLjYzOTZaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K" alt="Brandiv" style="height:14px;opacity:0.5;"></a>
+  <div class="footer-copy">Built for designers, managers and founders</div>
+  <a href="builder.html" class="btn-cta" style="font-size:11px;padding:7px 16px;">Get started →</a>
 </footer>
 
 <script>
-  // Header scroll effect
-  const header = document.getElementById('site-header');
-  window.addEventListener('scroll', () => {
-    header.classList.toggle('scrolled', window.scrollY > 40);
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.who-col, .feature-item, .how-step').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(16px)';
+    el.style.transition = 'opacity .5s ease, transform .5s ease';
+    observer.observe(el);
   });
 </script>
-
 </body>
 </html>
