@@ -695,6 +695,90 @@ main { flex: 1; min-width: 0; padding: 44px 52px 100px; max-width: 800px; }
 }
 .inv-nothing-btn:hover { color: #5C5C58; }
 
+
+/* ── HOME DASHBOARD ─────────────────────────── */
+.dash-welcome {
+  font-family: 'Geist', system-ui, sans-serif;
+  font-size: clamp(22px, 3vw, 32px);
+  font-weight: 600; letter-spacing: -.02em;
+  color: #1A1A18; margin-bottom: 6px;
+}
+.dash-welcome em {
+  font-style: normal; color: #9C9C96; font-weight: 300;
+}
+.dash-sub {
+  font-size: 12px; color: #9C9C96;
+  font-family: 'DM Mono', monospace;
+  margin-bottom: 40px;
+}
+
+/* Progress cards */
+.dash-progress-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 12px; margin-bottom: 40px;
+}
+.dash-progress-card {
+  background: #FFFFFF; border: 1px solid rgba(26,26,24,0.08);
+  border-radius: 10px; padding: 20px 20px 16px;
+  cursor: pointer; transition: all .15s;
+}
+.dash-progress-card:hover {
+  border-color: rgba(26,26,24,0.2);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+.dash-progress-label {
+  font-size: 9px; letter-spacing: .14em; text-transform: uppercase;
+  color: #9C9C96; margin-bottom: 12px;
+  font-family: 'DM Mono', monospace;
+}
+.dash-progress-pct {
+  font-family: 'Geist', system-ui, sans-serif;
+  font-size: 28px; font-weight: 600; letter-spacing: -.02em;
+  color: #1A1A18; margin-bottom: 10px;
+}
+.dash-progress-bar-wrap {
+  height: 3px; background: rgba(26,26,24,0.08);
+  border-radius: 2px; overflow: hidden;
+}
+.dash-progress-bar-fill {
+  height: 100%; border-radius: 2px;
+  background: #1A1A18; transition: width .4s ease;
+}
+
+/* Next steps */
+.dash-next-label {
+  font-size: 9px; letter-spacing: .14em; text-transform: uppercase;
+  color: #9C9C96; margin-bottom: 14px;
+  font-family: 'DM Mono', monospace;
+}
+.dash-next-list {
+  display: flex; flex-direction: column; gap: 8px;
+}
+.dash-next-item {
+  display: flex; align-items: center; justify-content: space-between;
+  background: #FFFFFF; border: 1px solid rgba(26,26,24,0.08);
+  border-radius: 8px; padding: 12px 16px;
+  cursor: pointer; transition: all .15s;
+}
+.dash-next-item:hover {
+  border-color: rgba(26,26,24,0.2);
+}
+.dash-next-item-left {
+  display: flex; align-items: center; gap: 10px;
+}
+.dash-next-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: rgba(26,26,24,0.15); flex-shrink: 0;
+}
+.dash-next-dot.urgent { background: #E8A838; }
+.dash-next-text {
+  font-size: 12px; color: #1A1A18;
+  font-family: 'DM Mono', monospace;
+}
+.dash-next-arrow {
+  font-size: 11px; color: #9C9C96;
+}
+
 </style>
 </head>
 <body>
@@ -858,8 +942,11 @@ main { flex: 1; min-width: 0; padding: 44px 52px 100px; max-width: 800px; }
 <div class="app">
 <aside>
   <div class="nav-group">
+    <button class="nav-item" data-p="home" onclick="go('home')" style="font-weight:500;">⌂ Home</button>
+  </div>
+  <div class="nav-group">
     <div class="nav-group-label">Discovery</div>
-    <button class="nav-item active" data-p="discovery" onclick="go('discovery')"><span class="nav-num">◈</span>Brand Discovery<span class="nav-check" id="ck-discovery">✓</span></button>
+    <button class="nav-item" data-p="discovery" onclick="go('discovery')"><span class="nav-num">◈</span>Brand Discovery<span class="nav-check" id="ck-discovery">✓</span></button>
   </div>
   <div class="nav-group">
     <div class="nav-group-label">1 — Brand Strategy</div>
@@ -903,8 +990,45 @@ main { flex: 1; min-width: 0; padding: 44px 52px 100px; max-width: 800px; }
 
 <main>
 
+<!-- HOME DASHBOARD -->
+<div class="panel" id="panel-home">
+  <div class="dash-welcome">Welcome to <em id="dash-brand-name">your brand</em>.</div>
+  <div class="dash-sub" id="dash-sub-text">Here's where your brand stands today.</div>
+
+  <!-- Progress cards -->
+  <div class="dash-progress-grid">
+    <div class="dash-progress-card" onclick="go('essence')">
+      <div class="dash-progress-label">Strategy</div>
+      <div class="dash-progress-pct" id="dash-pct-strategy">0%</div>
+      <div class="dash-progress-bar-wrap">
+        <div class="dash-progress-bar-fill" id="dash-bar-strategy" style="width:0%"></div>
+      </div>
+    </div>
+    <div class="dash-progress-card" onclick="go('logo')">
+      <div class="dash-progress-label">Identity</div>
+      <div class="dash-progress-pct" id="dash-pct-identity">0%</div>
+      <div class="dash-progress-bar-wrap">
+        <div class="dash-progress-bar-fill" id="dash-bar-identity" style="width:0%"></div>
+      </div>
+    </div>
+    <div class="dash-progress-card" onclick="go('illustrations')">
+      <div class="dash-progress-label">Visual System</div>
+      <div class="dash-progress-pct" id="dash-pct-visual">0%</div>
+      <div class="dash-progress-bar-wrap">
+        <div class="dash-progress-bar-fill" id="dash-bar-visual" style="width:0%"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Next steps -->
+  <div class="dash-next-label">Next steps</div>
+  <div class="dash-next-list" id="dash-next-list">
+    <!-- Populated by JS -->
+  </div>
+</div>
+
 <!-- BRAND DISCOVERY -->
-<div class="panel active" id="panel-discovery">
+<div class="panel" id="panel-discovery">
   <div class="panel-eyebrow">Brand Discovery</div>
   <div class="panel-title">Let's build<br><em>your brand.</em></div>
   <div class="panel-desc" style="margin-bottom:32px;">Answer a few questions and we'll generate your complete brand strategy — values, personality, tone of voice, audience and more.</div>
@@ -1509,7 +1633,7 @@ const ARCHETYPES = [
   {id:'everyman',icon:'⬡',name:'Everyman',sub:'Belonging, community'},
 ];
 
-const PROGRESS = { discovery:2, strategy:5, intro:5, essence:13, values:21, personality:29, promises:37, voice:45, audience:53, logo:58, logo2:62, logodondos:65, colors:70, accents:74, logocolor:77, type1:81, type2:85, typehier:88, illustrations:91, layout:94, collateral:97, ai:98, generate:100 };
+const PROGRESS = { home:2, discovery:2, strategy:5, intro:5, essence:13, values:21, personality:29, promises:37, voice:45, audience:53, logo:58, logo2:62, logodondos:65, colors:70, accents:74, logocolor:77, type1:81, type2:85, typehier:88, illustrations:91, layout:94, collateral:97, ai:98, generate:100 };
 
 // ─────────────────────────────────────────────
 // INIT
@@ -4065,6 +4189,92 @@ function applyPalette(paletteId) {
   suggestions.forEach(el => el.style.opacity = '0.5');
 }
 
+
+// ── HOME DASHBOARD ─────────────────────────────
+function calcProgress() {
+  // Strategy: check key fields
+  const strategyFields = ['brand_essence','brand_diff','brand_promise_main','v_brand','p_weare'];
+  const strategyFilled = strategyFields.filter(id => {
+    const el = document.getElementById(id);
+    return el && el.value && el.value.trim().length > 0;
+  }).length;
+  const strategyPct = Math.round((strategyFilled / strategyFields.length) * 100);
+
+  // Also count if survey was completed
+  const hasSurveyAnswers = Object.keys(svAnswers).length > 3;
+  const strategyFinal = hasSurveyAnswers ? Math.max(strategyPct, 20) : strategyPct;
+
+  // Identity: check logo, colors, typography
+  const identityChecks = [
+    () => document.getElementById('logo_url')?.value?.length > 0 || window.logoUploaded,
+    () => primaryColors.filter(c => c.hex && c.hex !== '#000000').length > 0,
+    () => document.getElementById('t1_name')?.value?.length > 0,
+  ];
+  const identityFilled = identityChecks.filter(fn => { try { return fn(); } catch(e) { return false; } }).length;
+  const identityPct = Math.round((identityFilled / identityChecks.length) * 100);
+
+  // Visual system
+  const visualChecks = [
+    () => document.getElementById('ill_style')?.value?.length > 0,
+    () => document.getElementById('ill_refs')?.value?.length > 0,
+  ];
+  const visualFilled = visualChecks.filter(fn => { try { return fn(); } catch(e) { return false; } }).length;
+  const visualPct = Math.round((visualFilled / visualChecks.length) * 100);
+
+  return { strategy: strategyFinal, identity: identityPct, visual: visualPct };
+}
+
+function updateDashboard() {
+  const brandName = svAnswers['brand_name'] || document.getElementById('brand_name')?.value || '';
+  const nameEl = document.getElementById('dash-brand-name');
+  if (nameEl) nameEl.textContent = brandName || 'your brand';
+
+  const pcts = calcProgress();
+
+  // Update progress cards
+  ['strategy','identity','visual'].forEach(key => {
+    const pct = pcts[key];
+    const pctEl = document.getElementById('dash-pct-' + key);
+    const barEl = document.getElementById('dash-bar-' + key);
+    if (pctEl) pctEl.textContent = pct + '%';
+    if (barEl) barEl.style.width = pct + '%';
+  });
+
+  // Build next steps
+  const nextList = document.getElementById('dash-next-list');
+  if (!nextList) return;
+
+  const steps = [];
+
+  if (!svAnswers['brand_name']) {
+    steps.push({ text: 'Complete Brand Discovery survey', target: 'discovery', urgent: true });
+  } else if (pcts.strategy < 80) {
+    steps.push({ text: 'Complete your brand strategy', target: 'essence', urgent: true });
+  }
+  if (pcts.identity === 0) {
+    steps.push({ text: 'Upload your primary logo', target: 'logo', urgent: false });
+    steps.push({ text: 'Add your color palette', target: 'colors', urgent: false });
+  }
+  if (pcts.visual === 0) {
+    steps.push({ text: 'Document your visual system', target: 'illustrations', urgent: false });
+  }
+  if (steps.length === 0) {
+    steps.push({ text: 'Your brand is well documented ✓', target: 'essence', urgent: false });
+  }
+
+  nextList.innerHTML = steps.slice(0, 4).map(s => `
+    <div class="dash-next-item" onclick="go('${s.target}')">
+      <div class="dash-next-item-left">
+        <div class="dash-next-dot ${s.urgent ? 'urgent' : ''}"></div>
+        <div class="dash-next-text">${s.text}</div>
+      </div>
+      <div class="dash-next-arrow">→</div>
+    </div>`).join('');
+}
+
+// Update PROGRESS map to include home
+const PROGRESS_HOME = { home: 2, discovery: 2 };
+
 // ── Consolidated init ─────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
   try { initBuilder(); } catch(e) { console.warn('initBuilder:', e); }
@@ -4096,9 +4306,8 @@ function invNothingYet() {
   const header = document.querySelector('header');
   if (app) app.style.display = '';
   if (header) header.style.display = '';
-  go('discovery');
-  svStep = 0;
-  svRender();
+  go('home');
+  updateDashboard();
 }
 
 function invContinue() {
@@ -4124,8 +4333,9 @@ function invContinue() {
     svStep = 0;
     svRender();
   } else {
-    // Has strategy — go to builder
-    go('essence');
+    // Has strategy — go to home dashboard
+    go('home');
+    updateDashboard();
   }
 
   // Store inventory for later use
