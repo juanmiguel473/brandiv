@@ -9894,12 +9894,12 @@ function svRender() {
 
   if (step.type === 'text') {
     inputHtml = `<div class="text-area_wrapper">
-      <div class="form_heading"><h2 class="heading-style-h5">${step.label}</h2>${step.sub ? `<div class="text-size-regular" style="margin-top:8px;color:#5C5C58;">${step.sub}</div>` : ''}</div>
+      <div class="form_heading"><h2 class="heading-style-h5">${step.q}</h2>${step.sub ? `<div class="text-size-regular" style="margin-top:8px;color:#5C5C58;">${step.sub}</div>` : ''}</div>
       <input class="text-area w-input" id="sv-inp" type="text" placeholder="${step.placeholder||''}" value="${saved||''}" autofocus style="height:auto;padding:16px;">
     </div>`;
   } else if (step.type === 'textarea') {
     inputHtml = `<div class="text-area_wrapper">
-      <div class="form_heading"><h2 class="heading-style-h5">${step.label}</h2>${step.sub ? `<div class="text-size-regular" style="margin-top:8px;color:#5C5C58;">${step.sub}</div>` : ''}</div>
+      <div class="form_heading"><h2 class="heading-style-h5">${step.q}</h2>${step.sub ? `<div class="text-size-regular" style="margin-top:8px;color:#5C5C58;">${step.sub}</div>` : ''}</div>
       <textarea class="text-area large w-input" id="sv-inp" placeholder="${step.placeholder||''}" autofocus>${saved||''}</textarea>
     </div>`;
   } else if (step.type === 'dropdown') {
