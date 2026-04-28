@@ -10812,6 +10812,195 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 
+
+</script>
+<script>
+
+// ── 1. CHECKBOXES ─────────────────────────────────────
+document.querySelectorAll('.w-checkbox').forEach(wrapper => {
+  const input = wrapper.querySelector('input[type="checkbox"]');
+  const visual = wrapper.querySelector('.w-checkbox-input--inputType-custom');
+  if (!input || !visual) return;
+  // Sync initial state
+  visual.classList.toggle('w--redirected-checked', input.checked);
+  // Toggle on click anywhere on the label
+  wrapper.addEventListener('click', function(e) {
+    if (e.target === input) return; // let native handle it
+    e.preventDefault();
+    input.checked = !input.checked;
+    visual.classList.toggle('w--redirected-checked', input.checked);
+  });
+  input.addEventListener('change', function() {
+    visual.classList.toggle('w--redirected-checked', this.checked);
+  });
+});
+
+// ── 2. SPECTRUM / PROGRESS BARS ───────────────────────
+// Replace each spectrum bar row entirely
+document.querySelectorAll('.spectrum-bar_component').forEach(function(bar) {
+  const conceptsWrapper = bar.querySelector('.spectrum-bar_concepts-wrapper');
+  const progressWrapper = bar.querySelector('.progress-wrapper');
+  if (!progressWrapper) return;
+
+  // Get left/right labels
+  const labels = conceptsWrapper ? conceptsWrapper.querySelectorAll('div') : [];
+  const leftLabel = labels[0] ? labels[0].textContent.trim() : '';
+  const rightLabel = labels[1] ? labels[1].textContent.trim() : '';
+
+  // Remove existing dial elements and dividers inside progress-wrapper
+  progressWrapper.innerHTML = '';
+
+  // Single continuous track
+  const track = document.createElement('div');
+  track.style.cssText = 'flex:1;position:relative;height:3px;background:rgba(26,26,24,0.10);border-radius:2px;';
+
+  const fill = document.createElement('div');
+  fill.style.cssText = 'position:absolute;left:0;top:0;bottom:0;width:50%;background:#1A1A18;border-radius:2px;pointer-events:none;';
+
+  const thumb = document.createElement('div');
+  thumb.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:14px;height:14px;border-radius:50%;background:#1A1A18;border:2px solid #F5F3EE;box-shadow:0 1px 3px rgba(0,0,0,.2);pointer-events:none;cursor:grab;';
+
+  const input = document.createElement('input');
+  input.type = 'range';
+  input.min = 0;
+  input.max = 100;
+  input.value = 50;
+  input.style.cssText = 'position:absolute;inset:-14px 0;opacity:0;cursor:pointer;width:100%;height:calc(100% + 28px);margin:0;';
+
+  input.addEventListener('input', function() {
+    fill.style.width = this.value + '%';
+    thumb.style.left = this.value + '%';
+  });
+
+  track.appendChild(fill);
+  track.appendChild(thumb);
+  track.appendChild(input);
+  progressWrapper.appendChild(track);
+});
+
+// ── 3. COLOR PICKERS ──────────────────────────────────
+document.querySelectorAll('.color-picker').forEach(function(picker) {
+  // Find or create swatch trigger
+  let swatch = picker.querySelector('.color-swatch-trigger');
+  if (!swatch) {
+    // Try to find first colored div inside picker
+    swatch = picker.querySelector('[style*="background"]') || picker.querySelector('.color-swatch');
+  }
+  const hexInput = picker.querySelector('input[type="text"], .color-hex-display, input.text-area');
+
+  if (!swatch) return;
+
+  // Style swatch
+  swatch.style.cssText += 'cursor:pointer;min-width:40px;min-height:40px;border-radius:6px;border:1px solid rgba(26,26,24,.12);transition:transform .15s;display:inline-block;';
+  if (!swatch.style.background) swatch.style.background = '#1A1A18';
+
+  const ci = document.createElement('input');
+  ci.type = 'color';
+  ci.value = '#1A1A18';
+  ci.style.cssText = 'position:absolute;opacity:0;pointer-events:none;width:0;height:0;';
+  swatch.style.position = 'relative';
+  swatch.appendChild(ci);
+
+  swatch.addEventListener('click', () => ci.click());
+  swatch.addEventListener('mouseenter', () => swatch.style.transform = 'scale(1.05)');
+  swatch.addEventListener('mouseleave', () => swatch.style.transform = '');
+
+  ci.addEventListener('input', function() {
+    swatch.style.background = this.value;
+    if (hexInput) hexInput.value = this.value.toUpperCase();
+  });
+
+  if (hexInput) {
+    hexInput.addEventListener('change', function() {
+      const val = this.value.startsWith('#') ? this.value : '#' + this.value;
+      try {
+        ci.value = val;
+        swatch.style.background = val;
+      } catch(e) {}
+    });
+  }
+});
+
+// ── 4. AI HELP BUTTONS ────────────────────────────────
+document.querySelectorAll('.tag.black').forEach(function(btn) {
+  const label = btn.querySelector('.tagline');
+  if (!label || !label.textContent.toLowerCase().includes('ai help')) return;
+
+  btn.style.cursor = 'pointer';
+
+  btn.addEventListener('click', async function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    // Find the nearest textarea or text input
+    // Structure: .text-area_wrapper > .text-area_heading > .tag.black (btn)
+    //            .text-area_wrapper > textarea
+    const wrapper = btn.closest('.text-area_wrapper');
+    const textarea = wrapper ? wrapper.querySelector('textarea, input[type="text"]') : null;
+    const section = wrapper || btn.closest('.subsection, .section_content, .forms_wrapper');
+    const fieldLabel = wrapper ? (wrapper.querySelector('.tagline') || {}).textContent : '';
+    const panelHeading = document.querySelector('.heading-style-h4');
+    const sectionName = panelHeading ? panelHeading.textContent.trim() : 'Brand';
+
+    // Loading state
+    const originalHTML = btn.innerHTML;
+    btn.innerHTML = '<div style="width:12px;height:12px;border:2px solid rgba(255,255,255,.3);border-top-color:white;border-radius:50%;animation:sg-spin .7s linear infinite;display:inline-block;vertical-align:middle;margin-right:6px"></div><span class="tagline text-color-white">thinking...</span>';
+    btn.style.pointerEvents = 'none';
+
+    // Demo suggestions for stylesheet preview
+    const demoSuggestions = [
+      "We deliver clarity where others deliver complexity — every client leaves knowing exactly what their brand stands for and how to use it consistently.",
+      "Our process ensures brand decisions are never arbitrary. Every choice — from tone to color — is grounded in strategy that the team actually understands.",
+      "We build brand systems that work without us in the room. The documentation is clear enough that any team member can make on-brand decisions independently.",
+    ];
+    const demoText = demoSuggestions[Math.floor(Math.random() * demoSuggestions.length)];
+
+    await new Promise(r => setTimeout(r, 1200)); // simulate API delay
+
+    try {
+      if (textarea) {
+        textarea.value = '';
+        textarea.focus();
+        let i = 0;
+        const interval = setInterval(() => {
+          textarea.value += demoText[i] || '';
+          i++;
+          if (i >= demoText.length) clearInterval(interval);
+        }, 14);
+      }
+    } finally {
+      btn.innerHTML = originalHTML;
+      btn.style.pointerEvents = '';
+    }
+  });
+});
+
+function showAIResult(btn, text) {
+  document.querySelectorAll('.sg-ai-result').forEach(el => el.remove());
+  const popup = document.createElement('div');
+  popup.className = 'sg-ai-result';
+  popup.style.cssText = 'margin-top:12px;padding:14px 16px;background:rgba(26,26,24,.04);border:1px solid rgba(26,26,24,.12);border-radius:8px;font-family:DM Mono,monospace;font-size:13px;color:#1A1A18;line-height:1.6;';
+  popup.innerHTML = '<div style="font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#5C5C58;margin-bottom:8px;">◈ AI Suggestion</div><div>' + text + '</div>';
+  const parent = btn.closest('.subsection, .field_label, .section_content') || btn.parentNode;
+  parent.appendChild(popup);
+  setTimeout(() => popup.remove(), 20000);
+}
+
+// Prevent ALL href="#" links from jumping to top
+document.querySelectorAll('a[href="#"]').forEach(a => {
+  a.addEventListener('click', e => e.preventDefault());
+});
+
+// Nav smooth scroll
+document.querySelectorAll('.sg-nav a').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const id = a.getAttribute('href').slice(1);
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({behavior: 'smooth'});
+  });
+});
+
 </script>
 </body>
 </html>
