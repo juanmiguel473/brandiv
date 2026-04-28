@@ -6215,7 +6215,49 @@ h6 {
       </div>
 
     <main class="shell_wrapper" id="brandiv-main">
-      <div class="brandiv-panel brandiv-active" id="panel-home">
+      <div class="brandiv-panel" id="panel-discovery">
+        <div class="header_section">
+          <div class="tag">
+            <div class="icon-embed-xxsmall w-embed"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--iconoir" width="100%" height="100%" preserveaspectratio="xMidYMid meet" viewbox="0 0 24 24">
+                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12.25 5.5V18m0 0l-6-6m6 6l6-6"></path>
+              </svg></div>
+            <div class="tagline text-color-primary">Load brandiv demo</div>
+          </div>
+          <div class="tag is-secondary">
+            <div class="tagline text-color-primary">clear</div>
+          </div>
+        </div>
+        <div class="section_shell-layout">
+          <div class="container-large">
+            <div class="section_heading">
+              <div class="tagline">discovery</div>
+              <h2 class="heading-style-h4">Let&#x27;s build <br>your brand.</h2>
+              <div>Answer a few questions and we&#x27;ll generate your complete brand strategy — values, personality, tone of voice, audience and more.</div>
+            </div>
+            <div class="section_content">
+              <div class="progres-bar_component">
+                <div class="progress_bar">
+                  <div class="stat3_progress">
+                    <div class="stat3_progress-bar"></div>
+                  </div>
+                  <div class="tagline">Step 1 of 22</div>
+                </div>
+              </div>
+              <div class="form-block w-form">
+                <form id="email-form-2" name="email-form-2" data-name="Email Form 2" method="get" class="form" data-wf-page-id="69d3cb0e6485a64039a91be9" data-wf-element-id="680fbf98-a9a8-b571-fbea-0d4531f2fbae">
+                  <div id="sv-question-area"></div></form>
+                <div class="w-form-done">
+                  <div>Thank you! Your submission has been received!</div>
+                </div>
+                <div class="w-form-fail">
+                  <div>Oops! Something went wrong while submitting the form.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+<div class="brandiv-panel brandiv-active" id="panel-home">
         <div class="header_section">
           <div class="tag">
             <div class="icon-embed-xxsmall w-embed"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--iconoir" width="100%" height="100%" preserveaspectratio="xMidYMid meet" viewbox="0 0 24 24">
@@ -8134,29 +8176,8 @@ function initHome() {
 
 // ── Survey panel ─────────────────────────────────────
 function injectSurveyPanel() {
-  const main = document.getElementById('brandiv-main');
-  if (!main || document.getElementById('panel-discovery')) return;
-  const div = document.createElement('div');
-  div.className = 'brandiv-panel';
-  div.id = 'panel-discovery';
-  div.innerHTML = `
-    <div class="section_shell-layout">
-      <div class="container-large">
-        <div class="section_heading" style="margin-bottom:32px;">
-          <div class="tagline">BRAND DISCOVERY</div>
-          <h2 class="heading-style-h4">Let's build your brand.</h2>
-          <div class="heading-style-h6">Answer a few questions. We'll generate your complete brand strategy.</div>
-        </div>
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:28px;">
-          <div style="flex:1;height:2px;background:rgba(26,26,24,.08);border-radius:2px;overflow:hidden;">
-            <div id="sv-progress" style="height:100%;background:#1A1A18;width:0%;transition:width .4s ease;border-radius:2px;"></div>
-          </div>
-          <div id="sv-progress-label" style="font-size:9px;color:#9C9C96;font-family:DM Mono,monospace;letter-spacing:.08em;white-space:nowrap;">Step 1</div>
-        </div>
-        <div id="sv-content"></div>
-      </div>
-    </div>`;
-  main.prepend(div);
+  // Discovery panel is already in HTML from Webflow design
+  // Just wire the home button to start the survey
   document.querySelectorAll('.button-xl-action').forEach((btn, i) => {
     if (i === 0) btn.addEventListener('click', e => { e.preventDefault(); goPanel('discovery'); svRender(); });
   });
@@ -9832,15 +9853,21 @@ function svUpdateProgress() {
   const total = SURVEY_STEPS.filter(s => s.type !== 'summary' && s.type !== 'final').length;
   const current = svQuestionIndex();
   const pct = Math.round((current / total) * 100);
-  const fill = document.getElementById('sv-progress');
-  const label = document.getElementById('sv-progress-label');
+  // Webflow progress bar
+  const fill = document.querySelector('#panel-discovery .stat3_progress-bar');
+  const label = document.querySelector('#panel-discovery .progress_bar .tagline');
   if (fill) fill.style.width = pct + '%';
   if (label) label.textContent = `Step ${current} of ${total}`;
+  // Also update legacy elements if present
+  const fillLegacy = document.getElementById('sv-progress');
+  const labelLegacy = document.getElementById('sv-progress-label');
+  if (fillLegacy) fillLegacy.style.width = pct + '%';
+  if (labelLegacy) labelLegacy.textContent = `Step ${current} of ${total}`;
 }
 
 function svRender() {
   const step = SURVEY_STEPS[svStep];
-  const container = document.getElementById('sv-content');
+  const container = document.getElementById('sv-question-area');
   if (!container) { console.error('sv-content not found'); return; }
   if (!step) { console.error('No step at index', svStep); return; }
 
@@ -9857,19 +9884,24 @@ function svRender() {
 
   let blockHeaderHtml = '';
   if (showBlockHeader) {
-    blockHeaderHtml = `<div class="sv-block-header">
-      <div class="sv-block-name">Block ${step.block}</div>
-      <div class="sv-block-title">${step.blockTitle || ''}</div>
-      ${step.blockSub ? `<div class="sv-block-sub">${step.blockSub}</div>` : ''}
+    blockHeaderHtml = `<div class="section_heading small" style="margin-bottom:24px;">
+      <div class="tag is-secondary" style="margin-bottom:12px;"><div class="tagline text-color-primary">BLOCK ${step.block} · ${step.blockTitle || ''}</div></div>
+      ${step.blockSub ? `<div class="heading-style-h6">${step.blockSub}</div>` : ''}
     </div>`;
   }
 
   let inputHtml = '';
 
   if (step.type === 'text') {
-    inputHtml = `<input class="sv-input" id="sv-inp" type="text" placeholder="${step.placeholder||''}" value="${saved||''}" autofocus>`;
+    inputHtml = `<div class="text-area_wrapper">
+      <div class="form_heading"><h2 class="heading-style-h5">${step.label}</h2>${step.sub ? `<div class="text-size-regular" style="margin-top:8px;color:#5C5C58;">${step.sub}</div>` : ''}</div>
+      <input class="text-area w-input" id="sv-inp" type="text" placeholder="${step.placeholder||''}" value="${saved||''}" autofocus style="height:auto;padding:16px;">
+    </div>`;
   } else if (step.type === 'textarea') {
-    inputHtml = `<textarea class="sv-textarea" id="sv-inp" placeholder="${step.placeholder||''}" autofocus>${saved||''}</textarea>`;
+    inputHtml = `<div class="text-area_wrapper">
+      <div class="form_heading"><h2 class="heading-style-h5">${step.label}</h2>${step.sub ? `<div class="text-size-regular" style="margin-top:8px;color:#5C5C58;">${step.sub}</div>` : ''}</div>
+      <textarea class="text-area large w-input" id="sv-inp" placeholder="${step.placeholder||''}" autofocus>${saved||''}</textarea>
+    </div>`;
   } else if (step.type === 'dropdown') {
     const opts = step.options.map(o => `<option value="${o}" ${saved===o?'selected':''}>${o}</option>`).join('');
     inputHtml = `<select class="sv-select" id="sv-inp"><option value="">Select your industry...</option>${opts}</select>`;
