@@ -9940,8 +9940,8 @@ function svRender() {
     ${step.sub ? `<div class="sv-sub">${step.sub}</div>` : ''}
     ${inputHtml}
     <div class="sv-nav">
-      <button class="sv-btn-back" ${svStep===0?'style="visibility:hidden"':''} onclick="svBack()">← Back</button>
-      <button class="sv-btn-next" id="sv-btn-next" onclick="svNext()">
+      <button type="button" class="sv-btn-back" ${svStep===0?'style="visibility:hidden"':''} onclick="svBack()">← Back</button>
+      <button type="button" class="sv-btn-next" id="sv-btn-next" onclick="svNext()">
         <span class="spin" id="sv-next-spin" style="border-top-color:#0a0a09"></span>
         <span id="sv-next-txt">${svStep === SURVEY_STEPS.length-2 ? 'See my brand →' : 'Continue →'}</span>
       </button>
