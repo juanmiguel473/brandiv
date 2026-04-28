@@ -7967,10 +7967,8 @@ function initSetup() {
     // Set initial visual state from input
     if (input.checked) visual.classList.add('w--redirected-checked');
 
-    label.addEventListener('click', function(e) {
-      e.preventDefault();
-      input.checked = !input.checked;
-      visual.classList.toggle('w--redirected-checked', input.checked);
+    input.addEventListener('change', function() {
+      visual.classList.toggle('w--redirected-checked', this.checked);
     });
   });
 }
