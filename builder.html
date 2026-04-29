@@ -9863,6 +9863,32 @@ function svUpdateProgress() {
   if (labelLegacy) labelLegacy.textContent = `Step ${current} of ${total}`;
 }
 
+const SV_ARROW_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24" fill="none"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 12h12.5m0 0l-6-6m6 6l-6 6"></path></svg>`;
+
+function svContinueBtn(label) {
+  label = label || 'Continue';
+  return `<a href="#" class="button is-secondary-icon w-inline-block" onclick="event.preventDefault();svNext()">
+    <div>${label}</div>
+    <div class="icon-embed-xsmall black w-embed">${SV_ARROW_SVG}</div>
+  </a>`;
+}
+
+function svBackBtn() {
+  if (svStep === 0) return '';
+  return `<a href="#" class="button is-text w-button" onclick="event.preventDefault();svBack()">&lt;&lt; Back</a>`;
+}
+
+function svFooter(continueLabel) {
+  return `<div class="button-group_footer">${svBackBtn()}${svContinueBtn(continueLabel)}</div>`;
+}
+
+function svBlockHeaderHtml(step) {
+  if (step.block === null || step.block === currentBlockShown) return '';
+  currentBlockShown = step.block;
+  return `<div class="tag is-secondary" style="margin-bottom:12px;"><div class="tagline text-color-primary">BLOCK ${step.block} · ${step.blockTitle || ''}</div></div>
+    ${step.blockSub ? `<div class="heading-style-h6">${step.blockSub}</div>` : ''}`;
+}
+
 function svRender() {
   const step = SURVEY_STEPS[svStep];
   const container = document.getElementById('sv-question-area');
@@ -9874,89 +9900,116 @@ function svRender() {
   if (step.type === 'summary') { svRenderSummary(step, container); return; }
   if (step.type === 'final') { svRenderFinal(container); return; }
 
-  // Check if block header needed
-  const showBlockHeader = step.block !== null && step.block !== currentBlockShown;
-  if (showBlockHeader) currentBlockShown = step.block;
-
   const saved = svAnswers[step.id];
+  const blockHdr = svBlockHeaderHtml(step);
+  const subHtml = step.sub ? `<div class="text-size-small" style="color:#5C5C58;margin-top:4px;">${step.sub}</div>` : '';
 
-  let blockHeaderHtml = '';
-  if (showBlockHeader) {
-    blockHeaderHtml = `<div class="section_heading small" style="margin-bottom:24px;">
-      <div class="tag is-secondary" style="margin-bottom:12px;"><div class="tagline text-color-primary">BLOCK ${step.block} · ${step.blockTitle || ''}</div></div>
-      ${step.blockSub ? `<div class="heading-style-h6">${step.blockSub}</div>` : ''}
-    </div>`;
-  }
+  // ── text / textarea / dropdown ──────────────────────
+  if (step.type === 'text' || step.type === 'textarea' || step.type === 'dropdown') {
+    let inputEl;
+    if (step.type === 'dropdown') {
+      const opts = step.options.map(o => `<option value="${o}" ${saved===o?'selected':''}>${o}</option>`).join('');
+      inputEl = `<select class="text-area w-input" id="sv-inp" style="height:auto;padding:16px;"><option value="">Select your industry…</option>${opts}</select>`;
+    } else if (step.type === 'textarea') {
+      inputEl = `<textarea class="text-area large w-input" id="sv-inp" placeholder="${step.placeholder||''}" autofocus>${saved||''}</textarea>`;
+    } else {
+      inputEl = `<input class="text-area w-input" id="sv-inp" type="text" placeholder="${step.placeholder||''}" value="${saved||''}" autofocus style="height:auto;padding:16px;">`;
+    }
 
-  let inputHtml = '';
+    container.innerHTML = `<div class="section_content margin-top">
+      <div class="section_heading">${blockHdr}</div>
+      <div class="form-block w-form">
+        <form class="form">
+          <div class="text-area_heading">
+            <div class="tagline">${step.q}</div>
+            ${subHtml}
+          </div>
+          <div class="text-area_wrapper">${inputEl}</div>
+          ${svFooter(svStep === SURVEY_STEPS.length - 2 ? 'See my brand' : 'Continue')}
+        </form>
+      </div>
+    </div>`;
 
-  if (step.type === 'text') {
-    inputHtml = `<div class="text-area_wrapper">
-      <div class="form_heading"><h2 class="heading-style-h5">${step.q}</h2>${step.sub ? `<div class="text-size-regular" style="margin-top:8px;color:#5C5C58;">${step.sub}</div>` : ''}</div>
-      <input class="text-area w-input" id="sv-inp" type="text" placeholder="${step.placeholder||''}" value="${saved||''}" autofocus style="height:auto;padding:16px;">
+    setTimeout(() => { const inp = document.getElementById('sv-inp'); if (inp) inp.focus(); }, 100);
+    const inp = document.getElementById('sv-inp');
+    if (inp && step.type !== 'textarea') {
+      inp.addEventListener('keydown', e => { if (e.key === 'Enter') svNext(); });
+    }
+
+  // ── multiselect / valuegrid / wordgrid ──────────────
+  } else if (step.type === 'multiselect' || step.type === 'valuegrid' || step.type === 'wordgrid') {
+    const sel = saved || [];
+    let options, maxSel, countId;
+    if (step.type === 'valuegrid') {
+      options = VALUES_BANK; maxSel = 5; countId = 'sv-val-count';
+    } else if (step.type === 'wordgrid') {
+      options = PERSONALITY_WORDS; maxSel = 3; countId = 'sv-word-count';
+    } else {
+      options = step.options; maxSel = step.options.length; countId = 'sv-select-count';
+    }
+
+    container.innerHTML = `<div class="section_content margin-top">
+      <div class="section_heading small">
+        ${blockHdr}
+        <h2 class="heading-style-h5">${step.q}</h2>
+        ${subHtml}
+      </div>
+      <div class="selection_wrapper">
+        <div class="tagline text-color-alternate" id="${countId}">${sel.length}/${maxSel} selected</div>
+        <div class="selection_row" id="sv-options-container"></div>
+      </div>
+      ${svFooter()}
     </div>`;
-  } else if (step.type === 'textarea') {
-    inputHtml = `<div class="text-area_wrapper">
-      <div class="form_heading"><h2 class="heading-style-h5">${step.q}</h2>${step.sub ? `<div class="text-size-regular" style="margin-top:8px;color:#5C5C58;">${step.sub}</div>` : ''}</div>
-      <textarea class="text-area large w-input" id="sv-inp" placeholder="${step.placeholder||''}" autofocus>${saved||''}</textarea>
-    </div>`;
-  } else if (step.type === 'dropdown') {
-    const opts = step.options.map(o => `<option value="${o}" ${saved===o?'selected':''}>${o}</option>`).join('');
-    inputHtml = `<select class="sv-select" id="sv-inp"><option value="">Select your industry...</option>${opts}</select>`;
-  } else if (step.type === 'multiselect') {
-    const sel = saved || [];
-    const chips = step.options.map(o => `<button class="sv-chip ${sel.includes(o)?'sel':''}" onclick="svToggleChip('${o}',this,'sv-chips-${step.id}')">${o}</button>`).join('');
-    inputHtml = `<div class="sv-chips" id="sv-chips-${step.id}">${chips}</div>
-      <input class="sv-other-input ${sel.includes('Other')?'on':''}" id="sv-other-${step.id}" placeholder="Describe other..." value="${svAnswers[step.id+'_other']||''}">`;
-  } else if (step.type === 'valuegrid') {
-    const sel = saved || [];
-    const chips = VALUES_BANK.map(v => `<button class="sv-value-chip ${sel.includes(v)?'sel':''}" onclick="svToggleValue('${v}',this)">${v}</button>`).join('');
-    inputHtml = `<div class="sv-value-count" id="sv-val-count">${sel.length} / 5 selected</div>
-      <div class="sv-value-grid">${chips}</div>`;
-  } else if (step.type === 'wordgrid') {
-    const sel = saved || [];
-    const chips = PERSONALITY_WORDS.map(w => `<button class="sv-value-chip ${sel.includes(w)?'sel':''}" onclick="svToggleWord('${w}',this)">${w}</button>`).join('');
-    inputHtml = `<div class="sv-value-count" id="sv-word-count">${sel.length} / 3 selected</div>
-      <div class="sv-value-grid">${chips}</div>`;
+
+    const optContainer = document.getElementById('sv-options-container');
+    options.forEach(opt => {
+      const btn = document.createElement('a');
+      btn.href = '#';
+      btn.className = 'option w-button' + (sel.includes(opt) ? ' selected' : '');
+      btn.textContent = opt;
+      btn.addEventListener('click', e => { e.preventDefault(); svToggleOption(opt, btn, step, maxSel, countId); });
+      optContainer.appendChild(btn);
+    });
+
+  // ── sliders ─────────────────────────────────────────
   } else if (step.type === 'sliders') {
     const SLIDERS_DEF = [
-      { id:'serious', l:'Serious', r:'Playful' },
-      { id:'classic', l:'Classic', r:'Innovative' },
-      { id:'corporate', l:'Corporate', r:'Human' },
+      { id:'serious',   l:'Serious',   r:'Playful'    },
+      { id:'classic',   l:'Classic',   r:'Innovative' },
+      { id:'corporate', l:'Corporate', r:'Human'      },
     ];
     const sls = saved || {};
-    inputHtml = `<div class="sv-sliders">` + SLIDERS_DEF.map(s => `
-      <div class="sv-slider-row">
-        <div class="sv-slider-labels"><span class="sv-slider-l">${s.l}</span><span class="sv-slider-r">${s.r}</span></div>
-        <input type="range" class="sv-slider" id="sv-sl-${s.id}" min="1" max="10" value="${sls[s.id]||5}">
-      </div>`).join('') + `</div>`;
+    const slidersHtml = SLIDERS_DEF.map(s => `
+      <div style="margin-bottom:24px;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+          <span class="tagline">${s.l}</span><span class="tagline">${s.r}</span>
+        </div>
+        <input type="range" class="sv-slider" id="sv-sl-${s.id}" min="1" max="10" value="${sls[s.id]||5}" style="width:100%;">
+      </div>`).join('');
+
+    container.innerHTML = `<div class="section_content margin-top">
+      <div class="section_heading small">
+        ${blockHdr}
+        <h2 class="heading-style-h5">${step.q}</h2>
+      </div>
+      <div class="selection_wrapper">${slidersHtml}</div>
+      ${svFooter()}
+    </div>`;
   }
+}
 
-  container.innerHTML = `<div class="sv-card">
-    ${blockHeaderHtml}
-    <div class="sv-question">${step.q}</div>
-    ${step.sub ? `<div class="sv-sub">${step.sub}</div>` : ''}
-    ${inputHtml}
-    <div class="sv-nav">
-      <button type="button" class="sv-btn-back" ${svStep===0?'style="visibility:hidden"':''} onclick="svBack()">← Back</button>
-      <button type="button" class="sv-btn-next" id="sv-btn-next" onclick="svNext()">
-        <span class="spin" id="sv-next-spin" style="border-top-color:#0a0a09"></span>
-        <span id="sv-next-txt">${svStep === SURVEY_STEPS.length-2 ? 'See my brand →' : 'Continue →'}</span>
-      </button>
-    </div>
-  </div>`;
-
-  // Focus input
-  setTimeout(() => {
-    const inp = document.getElementById('sv-inp');
-    if (inp) inp.focus();
-  }, 100);
-
-  // Enter key advances
-  const inp = document.getElementById('sv-inp');
-  if (inp && (step.type === 'text' || step.type === 'dropdown')) {
-    inp.addEventListener('keydown', e => { if (e.key === 'Enter') svNext(); });
+function svToggleOption(val, el, step, maxSel, countId) {
+  if (!svAnswers[step.id]) svAnswers[step.id] = [];
+  const arr = svAnswers[step.id];
+  if (arr.includes(val)) {
+    svAnswers[step.id] = arr.filter(x => x !== val);
+    el.classList.remove('selected');
+  } else if (arr.length < maxSel) {
+    arr.push(val);
+    el.classList.add('selected');
   }
+  const countEl = document.getElementById(countId);
+  if (countEl) countEl.textContent = `${svAnswers[step.id].length}/${maxSel} selected`;
 }
 
 function svToggleChip(val, el, containerId) {
@@ -10097,14 +10150,22 @@ function svSummaryShell(blockNum, loading) {
     1: "What your brand does",
     2: "Your competitive landscape",
   };
-  return `<div class="sv-summary">
-    <div class="sv-summary-eyebrow">◈ Summary · Block ${blockNum}</div>
-    <div class="sv-summary-title">${titles[blockNum] || 'Summary'}</div>
-    <div id="sv-summary-cards"></div>
-    ${loading ? `<div class="sv-summary-loading"><div class="ai-dot"></div><span id="sv-summary-status">Researching...</span></div>` : ''}
-    <button class="sv-btn-continue" id="sv-continue-btn" onclick="svNext()" ${loading?'disabled':''}>
-      ${loading ? 'Analyzing...' : 'Continue →'}
-    </button>
+  const blockNames = { 0: 'CONTEXT', 1: 'PURPOSE', 2: 'DIFFERENTIATOR' };
+  const continueHtml = `<a href="#" class="button is-secondary-icon w-inline-block" id="sv-continue-btn"
+      onclick="event.preventDefault();svNext()"
+      style="${loading ? 'opacity:.5;pointer-events:none;' : ''}">
+    <div>${loading ? 'Analyzing…' : 'Continue'}</div>
+    <div class="icon-embed-xsmall black w-embed">${SV_ARROW_SVG}</div>
+  </a>`;
+  return `<div class="section_content margin-top">
+    <div class="section_heading">
+      <div class="tag"><div class="tagline text-color-primary">AI RESEARCH SUMMARY · ${blockNames[blockNum] || 'SUMMARY'}</div></div>
+      <h2 class="heading-style-h5">${titles[blockNum] || 'Summary'}</h2>
+    </div>
+    <div class="card_wrapper" id="sv-summary-cards">
+      ${loading ? `<div class="sv-summary-loading" style="padding:24px 0;display:flex;align-items:center;gap:8px;"><div class="ai-dot"></div><span id="sv-summary-status" class="text-size-small" style="color:#5C5C58;">Researching…</span></div>` : ''}
+    </div>
+    <div class="button-group_footer">${continueHtml}</div>
   </div>`;
 }
 
@@ -10190,28 +10251,33 @@ Search for these competitors briefly. Return JSON only:
 function svShowCachedSummary(blockNum, container) {
   const data = svSummaries[blockNum];
   const cardsEl = document.getElementById('sv-summary-cards');
+  const CARD_LABELS = {
+    stat:'Market insight', trend:'Current trend', opportunity:'The opportunity',
+    essence:'Brand essence', purpose:'Brand purpose', signal:'Strategic signal',
+    landscape:'Competitive landscape', gap:'The gap', position:'Your position'
+  };
 
-  if (!data || data.error) {
-    if (cardsEl) cardsEl.innerHTML = '';
-  } else {
-    const cards = Object.entries(data).map(([k, v]) => {
-      const labels = {
-        stat:'Market insight', trend:'Current trend', opportunity:'The opportunity',
-        essence:'Brand essence', purpose:'Brand purpose', signal:'Strategic signal',
-        landscape:'Competitive landscape', gap:'The gap', position:'Your position'
-      };
-      return `<div class="sv-summary-card">
-        <div class="sv-summary-card-label">${labels[k] || k}</div>
-        <div class="sv-summary-card-text">${v}</div>
-      </div>`;
-    }).join('');
-    if (cardsEl) cardsEl.innerHTML = cards;
+  if (cardsEl) {
+    if (data && !data.error) {
+      cardsEl.innerHTML = Object.entries(data).map(([k, v]) =>
+        `<div class="card-text_item">
+          <div class="tagline text-color-alternate">${CARD_LABELS[k] || k}</div>
+          <div class="text-size-regular" style="margin-top:6px;">${v}</div>
+        </div>`
+      ).join('');
+    } else {
+      cardsEl.innerHTML = '';
+    }
   }
 
   const loading = container.querySelector('.sv-summary-loading');
-  if (loading) loading.style.display = 'none';
+  if (loading) loading.remove();
   const btn = document.getElementById('sv-continue-btn');
-  if (btn) { btn.disabled = false; btn.textContent = 'Continue →'; }
+  if (btn) {
+    btn.style.opacity = '';
+    btn.style.pointerEvents = '';
+    btn.querySelector('div').textContent = 'Continue';
+  }
 }
 
 // ── FINAL SCREEN ──────────────────────────────
