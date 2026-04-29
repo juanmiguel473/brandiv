@@ -9897,6 +9897,9 @@ function svRender() {
 
   svUpdateProgress();
 
+  const discoveryHeading = document.querySelector('#panel-discovery .section_heading');
+  if (discoveryHeading) discoveryHeading.style.display = svStep === 0 ? '' : 'none';
+
   if (step.type === 'summary') { svRenderSummary(step, container); return; }
   if (step.type === 'final') { svRenderFinal(container); return; }
 
