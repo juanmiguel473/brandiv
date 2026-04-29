@@ -6006,6 +6006,12 @@ h6 {
 /* ── Stat bars ── */
 .stat3_progress-bar { transition: width .8s ease; }
 
+/* ── Survey overrides ── */
+input[type=range] { accent-color: #1A1A18; }
+.option { white-space: nowrap; }
+.selection_row { flex-wrap: wrap; gap: 8px; }
+.progres-bar_component { position: relative; z-index: 1; }
+
 </style>
 </head>
 <body>
@@ -9845,8 +9851,7 @@ function svFooter(continueLabel) {
 function svBlockHeaderHtml(step) {
   if (step.block === null || step.block === currentBlockShown) return '';
   currentBlockShown = step.block;
-  return `<div class="tag is-secondary" style="margin-bottom:12px;"><div class="tagline text-color-primary">BLOCK ${step.block} · ${step.blockTitle || ''}</div></div>
-    ${step.blockSub ? `<div class="heading-style-h6">${step.blockSub}</div>` : ''}`;
+  return `<div class="tag is-secondary" style="margin-bottom:12px;"><div class="tagline text-color-primary">BLOCK ${step.block} · ${step.blockTitle || ''}</div></div>`;
 }
 
 function svRender() {
@@ -9865,7 +9870,10 @@ function svRender() {
 
   const saved = svAnswers[step.id];
   const blockHdr = svBlockHeaderHtml(step);
-  const subHtml = step.sub ? `<div class="text-size-small" style="color:#5C5C58;margin-top:4px;">${step.sub}</div>` : '';
+  const subHtml = step.sub
+    ? `<div class="text-size-regular" style="color:#5C5C58;margin-top:8px;margin-bottom:32px;">${step.sub}</div>`
+    : '';
+  const isLast = svStep === SURVEY_STEPS.length - 2;
 
   // ── text / textarea / dropdown ──────────────────────
   if (step.type === 'text' || step.type === 'textarea' || step.type === 'dropdown') {
@@ -9878,17 +9886,23 @@ function svRender() {
     } else {
       inputEl = `<input class="text-area w-input" id="sv-inp" type="text" placeholder="${step.placeholder||''}" value="${saved||''}" autofocus style="height:auto;padding:16px;">`;
     }
+    const fieldLabel = step.id.replace(/_/g, ' ').toUpperCase();
+    const fieldLabelRow = `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+      <div class="tagline">${fieldLabel}</div>
+      <div class="tag black"><div class="tagline text-color-white">AI help</div></div>
+    </div>`;
 
     container.innerHTML = `<div class="section_content margin-top">
-      <div class="section_heading">${blockHdr}</div>
+      ${blockHdr}
+      <h2 class="heading-style-h4">${step.q}</h2>
+      ${subHtml}
       <div class="form-block w-form">
         <form class="form">
-          <div class="text-area_heading">
-            <div class="tagline">${step.q}</div>
-            ${subHtml}
+          <div class="text-area_wrapper">
+            ${fieldLabelRow}
+            ${inputEl}
           </div>
-          <div class="text-area_wrapper">${inputEl}</div>
-          ${svFooter(svStep === SURVEY_STEPS.length - 2 ? 'See my brand' : 'Continue')}
+          ${svFooter(isLast ? 'See my brand' : 'Continue')}
         </form>
       </div>
     </div>`;
@@ -9908,20 +9922,18 @@ function svRender() {
     } else if (step.type === 'wordgrid') {
       options = PERSONALITY_WORDS; maxSel = 3; countId = 'sv-word-count';
     } else {
-      options = step.options; maxSel = step.options.length; countId = 'sv-select-count';
+      options = step.options; maxSel = 3; countId = 'sv-select-count';
     }
 
     container.innerHTML = `<div class="section_content margin-top">
-      <div class="section_heading small">
-        ${blockHdr}
-        <h2 class="heading-style-h5">${step.q}</h2>
-        ${subHtml}
-      </div>
+      ${blockHdr}
+      <h2 class="heading-style-h4">${step.q}</h2>
+      ${subHtml}
       <div class="selection_wrapper">
         <div class="tagline text-color-alternate" id="${countId}">${sel.length}/${maxSel} selected</div>
         <div class="selection_row" id="sv-options-container"></div>
       </div>
-      ${svFooter()}
+      ${svFooter(isLast ? 'See my brand' : 'Continue')}
     </div>`;
 
     const optContainer = document.getElementById('sv-options-container');
@@ -9951,12 +9963,10 @@ function svRender() {
       </div>`).join('');
 
     container.innerHTML = `<div class="section_content margin-top">
-      <div class="section_heading small">
-        ${blockHdr}
-        <h2 class="heading-style-h5">${step.q}</h2>
-      </div>
-      <div class="selection_wrapper">${slidersHtml}</div>
-      ${svFooter()}
+      ${blockHdr}
+      <h2 class="heading-style-h4">${step.q}</h2>
+      <div class="selection_wrapper" style="margin-top:32px;">${slidersHtml}</div>
+      ${svFooter(isLast ? 'See my brand' : 'Continue')}
     </div>`;
   }
 }
