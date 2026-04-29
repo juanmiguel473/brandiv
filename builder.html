@@ -6085,18 +6085,6 @@ h6 {
                       <div class="text-size-regular">Brand Promise</div>
                     </div>
                   </a>
-                  <a href="#" class="sidebar_link w-inline-block" onclick="event.preventDefault();goPanel('voice')" data-panel="voice">
-                    <div class="sidebar_link-wrapper">
-                      <div class="tagline">1.5 </div>
-                      <div class="text-size-regular">Tone of voice</div>
-                    </div>
-                  </a>
-                  <a href="#" class="sidebar_link w-inline-block" onclick="event.preventDefault();goPanel('audience')" data-panel="audience">
-                    <div class="sidebar_link-wrapper">
-                      <div class="tagline">1.6 </div>
-                      <div class="text-size-regular">Audience</div>
-                    </div>
-                  </a>
                 </div>
                 <div class="sidenav_section">
                   <div href="#" class="sidebar_section-title">
@@ -6120,24 +6108,6 @@ h6 {
                     <div class="sidebar_link-wrapper">
                       <div class="tagline">2.3 </div>
                       <div class="text-size-regular">Typography</div>
-                    </div>
-                  </a>
-                  <a href="#" class="sidebar_link w-inline-block" onclick="event.preventDefault();goPanel('photography')" data-panel="photography">
-                    <div class="sidebar_link-wrapper">
-                      <div class="tagline">2.4 </div>
-                      <div class="text-size-regular">Photography</div>
-                    </div>
-                  </a>
-                  <a href="#" class="sidebar_link w-inline-block" onclick="event.preventDefault();goPanel('video')" data-panel="video">
-                    <div class="sidebar_link-wrapper">
-                      <div class="tagline">2.5 </div>
-                      <div class="text-size-regular">Video &amp; Motion</div>
-                    </div>
-                  </a>
-                  <a href="#" class="sidebar_link w-inline-block" onclick="event.preventDefault();goPanel('composition')" data-panel="composition">
-                    <div class="sidebar_link-wrapper">
-                      <div class="tagline">2.6 </div>
-                      <div class="text-size-regular">Composition</div>
                     </div>
                   </a>
                 </div>
@@ -6906,7 +6876,7 @@ h6 {
           </div>
         </div>
       </div>
-<div class="brandiv-panel" id="panel-voice">
+<div class="brandiv-panel" id="panel-voice" style="display:none">
         <div class="header_section">
           <div class="tag">
             <div class="icon-embed-xxsmall w-embed"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--iconoir" width="100%" height="100%" preserveaspectratio="xMidYMid meet" viewbox="0 0 24 24">
@@ -7084,7 +7054,7 @@ h6 {
           </div>
         </div>
       </div>
-<div class="brandiv-panel" id="panel-audience">
+<div class="brandiv-panel" id="panel-audience" style="display:none">
         <div class="header_section">
           <div class="tag">
             <div class="icon-embed-xxsmall w-embed"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--iconoir" width="100%" height="100%" preserveaspectratio="xMidYMid meet" viewbox="0 0 24 24">
@@ -9791,29 +9761,20 @@ const SURVEY_STEPS = [
   // BLOCK 0
   { id:'brand_name', block:null, q:"What's your brand name?", type:'text', placeholder:'e.g. Brandiv', required:true },
   { id:'industry', block:null, q:'What industry are you in?', type:'dropdown', options: INDUSTRIES, required:true },
-  { id:'niche', block:null, q:'Any sub-industry or niche?', sub:'Optional — be as specific as you want.', type:'text', placeholder:'e.g. AI tools for independent designers', required:false },
-  { id:'summary_0', type:'summary', block_num:0 },
 
   // BLOCK 1 — Purpose
   { id:'what_do', block:1, blockTitle:'Purpose', blockSub:"Why does this brand exist beyond making money?", q:'What does your product or service actually do?', type:'textarea', placeholder:'Describe it simply, as if to a friend.', required:true },
-  { id:'obsession', block:1, q:'What problem are you obsessed with solving?', type:'textarea', placeholder:'The thing that keeps you up at night.', required:true },
   { id:'life_change', block:1, q:"What changes in someone's life after using it?", type:'textarea', placeholder:'Before vs. after. What shifts?', required:true },
-  { id:'disappeared', block:1, q:'If this brand disappeared tomorrow, what would be lost?', type:'textarea', placeholder:"What gap would it leave in the world?", required:true },
-  { id:'summary_1', type:'summary', block_num:1 },
 
   // BLOCK 2 — Differentiator
   { id:'competitors', block:2, blockTitle:'Differentiator', blockSub:"What makes you the only option? Be honest — this is the hardest question in strategy, and the most important one.", q:'Who are your main competitors or references?', sub:'List 2-4 brands your audience might also consider.', type:'textarea', placeholder:'e.g. Notion, Linear, Figma', required:true },
   { id:'they_fail', block:2, q:'What do they consistently fail to deliver?', type:'multiselect', options: FAIL_OPTIONS, required:true },
   { id:'differentiator', block:2, q:'What can you claim that none of them can?', type:'multiselect', options: DIFF_OPTIONS, required:true },
-  { id:'summary_2', type:'summary', block_num:2 },
 
   // BLOCK 3 — Audience
   { id:'audience_who', block:3, blockTitle:'Audience', blockSub:"Who is this really for? The more specific, the stronger the strategy.", q:'Who is the one person that needs this the most?', sub:'Job title, life stage, mindset — whatever feels most defining.', type:'textarea', placeholder:'e.g. A freelance designer who just landed their first big client', required:true },
-  { id:'audience_not', block:3, q:'Who is it NOT for?', sub:"Knowing your boundaries makes your positioning sharper.", type:'textarea', placeholder:'e.g. Large enterprises with procurement departments', required:true },
   { id:'audience_pain', block:3, q:'What keeps them up at night?', type:'textarea', placeholder:'Their real frustration, not the surface problem.', required:true },
-  { id:'audience_emotional', block:3, q:'What emotional need sits behind that problem?', type:'textarea', placeholder:'Fear of failure? Need for recognition? Desire for control?', required:true },
   { id:'audience_goal', block:3, q:"What do they want to achieve that they can't right now?", type:'textarea', placeholder:'The outcome they dream about.', required:true },
-  { id:'audience_where', block:3, q:'Where do they look for solutions today?', type:'textarea', placeholder:'Google, Reddit, Twitter, word of mouth, consultants...', required:true },
 
   // BLOCK 4 — Values
   { id:'values', block:4, blockTitle:'Values', blockSub:"What do you choose, even when it's hard?", q:'Select 3–5 values that feel genuinely true.', sub:'Not aspirational, not generic — actually yours.', type:'valuegrid', required:true },
@@ -9824,7 +9785,6 @@ const SURVEY_STEPS = [
 
   // BLOCK 6 — Promise
   { id:'promise_functional', block:6, blockTitle:'Promise', blockSub:"What can your audience always count on you for?", q:"What's the one thing you always deliver?", sub:'Functional — concrete, measurable, real.', type:'textarea', placeholder:'e.g. A response within 24 hours. A design system in 2 weeks.', required:true },
-  { id:'promise_emotion', block:6, q:'What emotional feeling do you leave people with?', type:'multiselect', options: EMOTION_OPTIONS, required:true },
   { id:'promise_sentence', block:6, q:'How would a happy customer describe you in one sentence?', type:'textarea', placeholder:"Imagine them telling a friend. What do they say?", required:true },
 
   { id:'final', type:'final' },
