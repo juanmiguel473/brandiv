@@ -1,35 +1,28 @@
 /* ============================================================
-   BRANDIV — Discovery Survey Engine
-   Integrates on top of Webflow-exported HTML
+   BRANDIV — Discovery Survey Engine v2
    ============================================================ */
 
 (function () {
+
+  const TOTAL_STEPS = 18;
 
   // ──────────────────────────────────────────────
   // 1. SURVEY DEFINITION
   // ──────────────────────────────────────────────
 
-  const TOTAL_STEPS = 18;
-
   const steps = [
-    // ── BLOQUE 0: Contexto ──
     {
-      id: 1,
-      block: "Block 1 of 5 — Context",
+      id: 1, block: "Block 1 of 5 — Context",
       title: "Let's start with the basics.",
       description: "This helps us tailor every insight to your brand's real world.",
-      component: "comp_short-text",
-      field: "brand_name",
-      label: "What's your brand name?",
-      placeholder: "e.g. Brandiv",
+      component: "comp_short-text", field: "brand_name",
+      label: "What's your brand name?", placeholder: "e.g. Brandiv",
     },
     {
-      id: 2,
-      block: "Block 1 of 5 — Context",
+      id: 2, block: "Block 1 of 5 — Context",
       title: "What space does your brand operate in?",
       description: "Don't overthink it. A rough category is enough.",
-      component: "comp_dropdown",
-      field: "industry",
+      component: "comp_dropdown", field: "industry",
       label: "Select your industry",
       options: [
         { value: "", label: "Select..." },
@@ -48,47 +41,35 @@
         { value: "other", label: "Other" },
       ],
     },
-
-    // ── BLOQUE 1: El problema ──
     {
-      id: 3,
-      block: "Block 2 of 5 — The Problem",
+      id: 3, block: "Block 2 of 5 — The Problem",
       title: "In one sentence — what does your brand do?",
       description: "No buzzwords. No mission statement. Just what it actually does.",
-      component: "comp_short-text",
-      field: "what_you_do",
+      component: "comp_short-text", field: "what_you_do",
       label: "What does your brand do?",
       placeholder: "e.g. We help independent designers build brand books without code.",
     },
     {
-      id: 4,
-      block: "Block 2 of 5 — The Problem",
+      id: 4, block: "Block 2 of 5 — The Problem",
       title: "What problem are you solving, and for whom?",
       description: "Be specific. A good answer names a real frustration a real person has.",
-      component: "comp_long-text",
-      field: "problem",
+      component: "comp_long-text", field: "problem",
       label: "Describe the problem",
       placeholder: "e.g. Designers spend hours building brand books in Notion or PDFs that clients ignore. We fix that.",
     },
     {
-      id: 5,
-      block: "Block 2 of 5 — The Problem",
+      id: 5, block: "Block 2 of 5 — The Problem",
       title: "Why isn't this problem well solved today?",
       description: "What do existing options get wrong? What do they ignore?",
-      component: "comp_long-text-ai",
-      field: "problem_gap",
+      component: "comp_long-text-ai", field: "problem_gap",
       label: "Why isn't this problem well solved today?",
       placeholder: "e.g. Most tools are either too complex for small teams or too generic to feel like a real brand document.",
     },
-
-    // ── BLOQUE 2: La audiencia ──
     {
-      id: 6,
-      block: "Block 3 of 5 — Your Audience",
+      id: 6, block: "Block 3 of 5 — Your Audience",
       title: "Where does your brand operate?",
       description: "Scale and geography shape how a brand speaks.",
-      component: "comp_dropdown",
-      field: "geo_scope",
+      component: "comp_dropdown", field: "geo_scope",
       label: "Select your reach",
       options: [
         { value: "", label: "Select..." },
@@ -101,32 +82,29 @@
       ],
     },
     {
-      id: 7,
-      block: "Block 3 of 5 — Your Audience",
+      // FIX 1: Multi-line options → use story-card style via comp_story-cards
+      id: 7, block: "Block 3 of 5 — Your Audience",
       title: "When does someone reach for your brand?",
       description: "Pick the moments that feel most true. You can select more than one.",
-      component: "comp_multiselect",
-      field: "consumption_moment",
-      label: "Select all that apply",
+      component: "comp_story-cards", field: "consumption_moment",
       maxSelect: 3,
-      options: [
-        "At work, solving a problem",
-        "During a moment of change",
-        "As a daily ritual",
-        "When making an important decision",
-        "After something failed",
-        "When looking for inspiration",
-        "To signal identity or taste",
-        "When building something new",
+      _isConsumption: true,
+      storyData: [
+        { num: "01", title: "At Work", desc: "Solving a problem in the flow of their job." },
+        { num: "02", title: "Moment of Change", desc: "During a transition — new role, new direction." },
+        { num: "03", title: "Daily Ritual", desc: "Part of a consistent, repeated routine." },
+        { num: "04", title: "Big Decision", desc: "When something important is on the line." },
+        { num: "05", title: "After Failure", desc: "When something broke and they need a fix." },
+        { num: "06", title: "Seeking Inspiration", desc: "Looking for ideas, not just solutions." },
+        { num: "07", title: "Building Something", desc: "Creating from scratch, needs solid foundations." },
       ],
     },
     {
-      id: 8,
-      block: "Block 3 of 5 — Your Audience",
+      // FIX 2: Brand references — use comp_multiselect with flex-wrap
+      id: 8, block: "Block 3 of 5 — Your Audience",
       title: "Which brands would your audience have in their world?",
       description: "Not competitors — brands that share a cultural space with yours.",
-      component: "comp_multiselect",
-      field: "brand_references",
+      component: "comp_multiselect", field: "brand_references",
       label: "Select all that feel right",
       maxSelect: 6,
       options: [
@@ -137,65 +115,46 @@
       ],
     },
     {
-      id: 9,
-      block: "Block 3 of 5 — Your Audience",
+      id: 9, block: "Block 3 of 5 — Your Audience",
       title: "What does your audience value most?",
       description: "What would make them choose you — even if you cost more?",
-      component: "comp_multiselect",
-      field: "audience_values",
+      component: "comp_multiselect", field: "audience_values",
       label: "Pick up to 3",
       maxSelect: 3,
       options: [
-        "Aesthetics & craft",
-        "Functionality & reliability",
-        "Community & belonging",
-        "Status & recognition",
-        "Purpose & ethics",
-        "Simplicity",
-        "Exclusivity",
-        "Transparency",
+        "Aesthetics & craft", "Functionality & reliability", "Community & belonging",
+        "Status & recognition", "Purpose & ethics", "Simplicity",
+        "Exclusivity", "Transparency",
       ],
     },
-
-    // ── BLOQUE 3: La diferencia ──
     {
-      id: 10,
-      block: "Block 4 of 5 — Your Difference",
+      id: 10, block: "Block 4 of 5 — Your Difference",
       title: "Why would someone choose you over the alternatives?",
       description: "Not what you wish were true — what's actually true.",
-      component: "comp_long-text",
-      field: "differentiator",
+      component: "comp_long-text", field: "differentiator",
       label: "Your honest differentiator",
       placeholder: "e.g. We're the only tool that lets a designer hand over a living brand book, not a PDF that gets forgotten.",
     },
     {
-      id: 11,
-      block: "Block 4 of 5 — Your Difference",
+      id: 11, block: "Block 4 of 5 — Your Difference",
       title: "What do your competitors get wrong or ignore?",
       description: "Where is the gap in the market you're walking into?",
-      component: "comp_long-text-ai",
-      field: "competitor_gap",
+      component: "comp_long-text-ai", field: "competitor_gap",
       label: "The gap you're filling",
       placeholder: "e.g. Everyone builds document tools. Nobody builds brand infrastructure.",
     },
     {
-      id: 12,
-      block: "Block 4 of 5 — Your Difference",
+      id: 12, block: "Block 4 of 5 — Your Difference",
       title: "How does your brand show up vs. how it doesn't?",
       description: "This helps define your edges — the lines you don't cross.",
-      component: "comp_comparison",
-      field: "we_are",
-      fieldB: "we_are_not",
+      component: "comp_comparison", field: "we_are", fieldB: "we_are_not",
     },
-
-    // ── BLOQUE 4: El tono ──
     {
-      id: 13,
-      block: "Block 5 of 5 — Voice & Story",
+      // FIX 3: Sliders — rebuilt with proper range input
+      id: 13, block: "Block 5 of 5 — Voice & Story",
       title: "Where does your brand sit on these spectrums?",
       description: "Move each dial to where your brand naturally lives.",
-      component: "comp_slider-spectrum",
-      field: "tone_sliders",
+      component: "comp_slider-spectrum", field: "tone_sliders",
       spectrums: [
         { id: "spectrum-bar_1", left: "Formal", right: "Casual" },
         { id: "spectrum-bar_2", left: "Serious", right: "Playful" },
@@ -203,55 +162,42 @@
       ],
     },
     {
-      id: 14,
-      block: "Block 5 of 5 — Voice & Story",
+      // FIX 4: Tone choice — generate 5 phrases from AI based on slider values
+      id: 14, block: "Block 5 of 5 — Voice & Story",
       title: "Which of these sounds most like your brand?",
       description: "Same idea, five different voices. Pick the one that feels right.",
-      component: "comp_multiselect",
-      field: "tone_choice",
+      component: "comp_multiselect", field: "tone_choice",
       maxSelect: 1,
-      options: [], // populated dynamically after step 13
+      options: [],
       _isToneChoice: true,
     },
-
-    // ── BLOQUE 5: La historia ──
     {
-      id: 15,
-      block: "Block 5 of 5 — Voice & Story",
+      id: 15, block: "Block 5 of 5 — Voice & Story",
       title: "What kind of story does your brand tell?",
       description: "Every brand is a narrative. Pick the one that's yours.",
-      component: "comp_story-cards",
-      field: "story_archetype",
-      maxSelect: 2,
+      component: "comp_story-cards", field: "story_archetype", maxSelect: 2,
     },
     {
-      id: 16,
-      block: "Block 5 of 5 — Voice & Story",
+      id: 16, block: "Block 5 of 5 — Voice & Story",
       title: "What was the moment — or the reason — this brand started?",
       description: "Origin stories are rarely dramatic. But they're always specific.",
-      component: "comp_long-text-ai",
-      field: "origin",
+      component: "comp_long-text-ai", field: "origin",
       label: "The origin",
       placeholder: "e.g. I built this after watching a client's brand manual get ignored for the third time in a row.",
     },
     {
-      id: 17,
-      block: "Block 5 of 5 — Voice & Story",
+      id: 17, block: "Block 5 of 5 — Voice & Story",
       title: "How do you want to be remembered in 5 years?",
       description: "Not your revenue goal. What mark do you want to leave?",
-      component: "comp_long-text",
-      field: "legacy",
+      component: "comp_long-text", field: "legacy",
       label: "Your legacy",
       placeholder: "e.g. The tool that made brand consistency accessible to every small team.",
     },
     {
-      id: 18,
-      block: "Block 5 of 5 — Voice & Story",
+      id: 18, block: "Block 5 of 5 — Voice & Story",
       title: "Here's what we found.",
       description: "Based on your answers, here are three things worth paying attention to.",
-      component: "comp_market-insight",
-      field: null,
-      _isInsight: true,
+      component: "comp_market-insight", field: null, _isInsight: true,
     },
   ];
 
@@ -261,22 +207,15 @@
 
   let currentStep = 0;
   const answers = {};
-  const sliderValues = { "spectrum-bar_1": 50, "spectrum-bar_2": 50, "spectrum-bar_3": 50 };
 
   // ──────────────────────────────────────────────
   // 3. DOM REFERENCES
   // ──────────────────────────────────────────────
 
   const allComponents = [
-    "comp_market-insight",
-    "comp_short-text",
-    "comp_long-text",
-    "comp_dropdown",
-    "comp_slider-spectrum",
-    "comp_multiselect",
-    "comp_comparison",
-    "comp_story-cards",
-    "comp_long-text-ai",
+    "comp_market-insight", "comp_short-text", "comp_long-text",
+    "comp_dropdown", "comp_slider-spectrum", "comp_multiselect",
+    "comp_comparison", "comp_story-cards", "comp_long-text-ai",
   ];
 
   const $progressBar = document.querySelector(".stat3_progress-bar");
@@ -284,8 +223,6 @@
   const $blockTag = document.querySelector("#tag .tagline");
   const $title = document.querySelector(".heading-style-h5");
   const $description = document.querySelector(".header-main .text-size-regular");
-
-  // Main nav buttons (outside component_wrapper)
   const $backBtn = document.querySelector(".section_content > .button-group_footer .button.is-text");
   const $nextBtn = document.querySelector(".section_content > .button-group_footer .button.is-secondary-icon");
 
@@ -294,7 +231,7 @@
   // ──────────────────────────────────────────────
 
   function hideAllComponents() {
-    allComponents.forEach((id) => {
+    allComponents.forEach(id => {
       const el = document.getElementById(id);
       if (el) el.classList.add("hide");
     });
@@ -325,11 +262,7 @@
     const label = document.querySelector("#comp_short-text .text-area_heading .tagline");
     const textarea = document.querySelector("#comp_short-text textarea");
     if (label) label.textContent = step.label || "";
-    if (textarea) {
-      textarea.placeholder = step.placeholder || "";
-      textarea.value = answers[step.field] || "";
-    }
-    // hide inner nav buttons — we use the outer ones
+    if (textarea) { textarea.placeholder = step.placeholder || ""; textarea.value = answers[step.field] || ""; }
     const inner = document.querySelector("#comp_short-text .button-group_footer");
     if (inner) inner.style.display = "none";
   }
@@ -338,10 +271,7 @@
     const label = document.querySelector("#comp_long-text .text-area_heading .tagline");
     const textarea = document.querySelector("#comp_long-text textarea");
     if (label) label.textContent = step.label || "";
-    if (textarea) {
-      textarea.placeholder = step.placeholder || "";
-      textarea.value = answers[step.field] || "";
-    }
+    if (textarea) { textarea.placeholder = step.placeholder || ""; textarea.value = answers[step.field] || ""; }
     const inner = document.querySelector("#comp_long-text .button-group_footer");
     if (inner) inner.style.display = "none";
   }
@@ -350,10 +280,7 @@
     const label = document.querySelector("#comp_long-text-ai .tagline");
     const textarea = document.querySelector("#comp_long-text-ai textarea");
     if (label) label.textContent = step.label || "";
-    if (textarea) {
-      textarea.placeholder = step.placeholder || "";
-      textarea.value = answers[step.field] || "";
-    }
+    if (textarea) { textarea.placeholder = step.placeholder || ""; textarea.value = answers[step.field] || ""; }
   }
 
   function populateDropdown(step) {
@@ -361,9 +288,7 @@
     const select = document.querySelector("#comp_dropdown select");
     if (label) label.textContent = step.label || "";
     if (select && step.options) {
-      select.innerHTML = step.options
-        .map((o) => `<option value="${o.value}">${o.label}</option>`)
-        .join("");
+      select.innerHTML = step.options.map(o => `<option value="${o.value}">${o.label}</option>`).join("");
       select.value = answers[step.field] || "";
     }
     const inner = document.querySelector("#comp_dropdown .button-group_footer");
@@ -379,47 +304,145 @@
 
     const saved = answers[step.field] || [];
     const max = step.maxSelect || 99;
-
-    // Rebuild chips
-    const rows = container.querySelectorAll(".selection_row");
-    rows.forEach((r) => r.remove());
-
     const counter = container.querySelector(".tagline.text-color-alternate");
 
+    // Clear existing rows
+    container.querySelectorAll(".selection_row").forEach(r => r.remove());
+
+    // FIX 2: Single wrapping row with flex-wrap so pills stay within container
     const row = document.createElement("div");
     row.className = "selection_row";
-    step.options.forEach((opt) => {
+    row.style.cssText = "flex-wrap: wrap; align-items: flex-start;";
+
+    step.options.forEach(opt => {
       const btn = document.createElement("a");
       btn.href = "#";
       btn.className = "option w-button" + (saved.includes(opt) ? " is-selected" : "");
       btn.textContent = opt;
-      btn.addEventListener("click", (e) => {
+      btn.style.whiteSpace = "normal";
+      btn.style.textAlign = "center";
+      btn.addEventListener("click", e => {
         e.preventDefault();
         const current = answers[step.field] || [];
         if (current.includes(opt)) {
-          answers[step.field] = current.filter((o) => o !== opt);
+          answers[step.field] = current.filter(o => o !== opt);
           btn.classList.remove("is-selected");
         } else if (current.length < max) {
           answers[step.field] = [...current, opt];
           btn.classList.add("is-selected");
         }
-        const count = (answers[step.field] || []).length;
-        if (counter) counter.textContent = `${count}/${max} selected`;
+        if (counter) counter.textContent = `${(answers[step.field] || []).length}/${max} selected`;
       });
       row.appendChild(btn);
     });
-    container.appendChild(row);
 
-    const count = saved.length;
-    if (counter) counter.textContent = `${count}/${max} selected`;
+    container.appendChild(row);
+    if (counter) counter.textContent = `${saved.length}/${max} selected`;
   }
 
+  // FIX 4: Generate 5 tone phrases via AI based on slider values
+  async function generateTonePhrases() {
+    const sliders = answers["tone_sliders"] || {};
+    const formal = sliders["spectrum-bar_1"] || 50;
+    const serious = sliders["spectrum-bar_2"] || 50;
+    const technical = sliders["spectrum-bar_3"] || 50;
+    const brandName = answers["brand_name"] || "this brand";
+
+    const formalLabel = formal < 33 ? "formal" : formal > 66 ? "casual" : "balanced formal-casual";
+    const seriousLabel = serious < 33 ? "serious" : serious > 66 ? "playful" : "balanced serious-playful";
+    const technicalLabel = technical < 33 ? "technical" : technical > 66 ? "accessible" : "balanced technical-accessible";
+
+    const prompt = `Generate exactly 5 different ways to say the same thing, each representing a distinct brand tone of voice. The brand "${brandName}" has these tone settings: ${formalLabel}, ${seriousLabel}, ${technicalLabel}.
+
+The core message is: "We help you build something that lasts."
+
+Write 5 versions of this message, each with a clearly different voice — from most formal/serious to most casual/playful, ranging across the spectrum. Each version should be 1-2 sentences maximum.
+
+Return ONLY a JSON array of 5 strings, no markdown, no labels:
+["version 1", "version 2", "version 3", "version 4", "version 5"]`;
+
+    try {
+      const response = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: "claude-sonnet-4-20250514",
+          max_tokens: 500,
+          messages: [{ role: "user", content: prompt }],
+        }),
+      });
+      const data = await response.json();
+      const text = data.content.filter(b => b.type === "text").map(b => b.text).join("").trim();
+      const clean = text.replace(/```json|```/g, "").trim();
+      return JSON.parse(clean);
+    } catch (e) {
+      // Fallback phrases if API fails
+      return [
+        "We provide organizations with the strategic infrastructure necessary to achieve sustainable brand consistency.",
+        "We give you the tools to build a brand that actually works — and keeps working.",
+        "Your brand, built right. Built to last.",
+        "We help you build something that sticks around — and means something when it does.",
+        "Forget the chaos. Let's build a brand that works while you sleep.",
+      ];
+    }
+  }
+
+  async function populateToneChoice() {
+    const label = document.querySelector("#comp_multiselect .text-area_heading .tagline");
+    const container = document.querySelector("#comp_multiselect .multi-select");
+    if (!container) return;
+
+    const counter = container.querySelector(".tagline.text-color-alternate");
+    container.querySelectorAll(".selection_row").forEach(r => r.remove());
+
+    // Show loading state
+    if (label) label.textContent = "Generating options based on your tone settings...";
+    const loadingRow = document.createElement("div");
+    loadingRow.className = "selection_row";
+    loadingRow.id = "tone-loading";
+    loadingRow.style.cssText = "padding: 16px 0; color: var(--text-color--text-alternate); font-size: var(--_typography---text-size--tagline); letter-spacing: 1px;";
+    loadingRow.textContent = "GENERATING TONE OPTIONS...";
+    container.appendChild(loadingRow);
+
+    const phrases = await generateTonePhrases();
+
+    // Remove loading
+    const loading = document.getElementById("tone-loading");
+    if (loading) loading.remove();
+    if (label) label.textContent = "Select the one that feels most like your brand";
+    if (counter) counter.textContent = "0/1 selected";
+
+    // Render as vertical list of option buttons (multi-line friendly)
+    const row = document.createElement("div");
+    row.className = "selection_row";
+    row.style.cssText = "flex-direction: column; align-items: flex-start; gap: 8px;";
+
+    phrases.forEach((phrase, i) => {
+      const btn = document.createElement("a");
+      btn.href = "#";
+      btn.className = "option w-button";
+      btn.style.cssText = "border-radius: var(--_system---border-radious--main); white-space: normal; text-align: left; height: auto; padding: 12px 16px; width: 100%; justify-content: flex-start;";
+      btn.textContent = phrase;
+      btn.addEventListener("click", e => {
+        e.preventDefault();
+        container.querySelectorAll(".option").forEach(b => b.classList.remove("is-selected"));
+        btn.classList.add("is-selected");
+        answers["tone_choice"] = phrase;
+        if (counter) counter.textContent = "1/1 selected";
+      });
+      row.appendChild(btn);
+    });
+
+    container.appendChild(row);
+  }
+
+  // FIX 1 & 5: Story cards — handles both consumption_moment and story_archetype
   function populateStoryCards(step) {
     const cards = document.querySelectorAll("#comp_story-cards .story-card_item");
     const saved = answers[step.field] || [];
     const max = step.maxSelect || 2;
 
-    const storyData = [
+    const storyData = step.storyData || [
       { num: "01", title: "Rebellion", desc: "We exist to break what's broken. The status quo is the problem." },
       { num: "02", title: "Underdog", desc: "We started with nothing. Our limitations became our edge." },
       { num: "03", title: "Community", desc: "We didn't build a product. We built a place where people recognize each other." },
@@ -431,97 +454,89 @@
 
     cards.forEach((card, i) => {
       const data = storyData[i];
-      if (!data) return;
+      if (!data) { card.style.display = "none"; return; }
+      card.style.display = "";
 
-      // Update content
       const headings = card.querySelectorAll(".story-card_heading .tagline");
       if (headings[0]) headings[0].textContent = data.num;
       if (headings[1]) headings[1].textContent = data.title;
       const desc = card.querySelector(".text-size-regular");
       if (desc) desc.textContent = data.desc;
 
-      // Selection state
-      card.classList.toggle("is-selected", saved.includes(data.title));
+      // FIX 5: Selected state matches hover state (border-color + background)
+      const isSelected = saved.includes(data.title);
+      card.classList.toggle("is-story-selected", isSelected);
+      applyStoryCardState(card, isSelected);
 
-      card.onclick = (e) => {
+      card.onclick = e => {
         e.preventDefault();
         const current = answers[step.field] || [];
         if (current.includes(data.title)) {
-          answers[step.field] = current.filter((t) => t !== data.title);
-          card.classList.remove("is-selected");
+          answers[step.field] = current.filter(t => t !== data.title);
+          card.classList.remove("is-story-selected");
+          applyStoryCardState(card, false);
         } else if (current.length < max) {
           answers[step.field] = [...current, data.title];
-          card.classList.add("is-selected");
+          card.classList.add("is-story-selected");
+          applyStoryCardState(card, true);
         }
       };
     });
   }
 
-  function populateSliders(step) {
-    const label = document.querySelector("#comp_slider-spectrum .text-area_heading .tagline");
-    if (label) label.textContent = step.description || "";
-
-    step.spectrums.forEach((spec) => {
-      const bar = document.getElementById(spec.id);
-      if (!bar) return;
-
-      const labels = bar.querySelectorAll(".spectrum-bar_concepts-wrapper div");
-      if (labels[0]) labels[0].textContent = spec.left;
-      if (labels[1]) labels[1].textContent = spec.right;
-
-      const dial = bar.querySelector(".dial_progress");
-      if (!dial) return;
-
-      const saved = (answers["tone_sliders"] || {})[spec.id] || 50;
-      sliderValues[spec.id] = saved;
-      dial.style.left = saved + "%";
-
-      // Make draggable
-      makeDraggable(dial, spec.id, bar);
-    });
+  function applyStoryCardState(card, selected) {
+    if (selected) {
+      // FIX 5: Match hover styles exactly
+      card.style.borderColor = "var(--border-color--border-secondary)";
+      card.style.backgroundColor = "var(--background-color--background-tertiary)";
+    } else {
+      card.style.borderColor = "";
+      card.style.backgroundColor = "";
+    }
   }
 
-  function makeDraggable(dial, barId, container) {
-    // Remove old listeners by cloning
-    const newDial = dial.cloneNode(true);
-    dial.parentNode.replaceChild(newDial, dial);
+  // FIX 3: Sliders — rebuilt from scratch with proper range inputs
+  function populateSliders(step) {
+    const label = document.querySelector("#comp_slider-spectrum .text-area_heading .tagline");
+    if (label) label.textContent = "Move each dial to where your brand naturally lives.";
 
-    let dragging = false;
+    const spectrumWrapper = document.querySelector("#comp_slider-spectrum .spectrum_wrapper");
+    if (!spectrumWrapper) return;
 
-    const getPercent = (e, track) => {
-      const rect = track.getBoundingClientRect();
-      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-      let pct = ((clientX - rect.left) / rect.width) * 100;
-      return Math.min(100, Math.max(0, Math.round(pct)));
-    };
+    // Rebuild all spectrum bars
+    spectrumWrapper.innerHTML = "";
 
-    const track = container.querySelector(".progress-wrapper");
+    step.spectrums.forEach((spec, i) => {
+      const savedVal = (answers["tone_sliders"] || {})[spec.id] || 50;
 
-    const onMove = (e) => {
-      if (!dragging) return;
-      const pct = getPercent(e, track);
-      newDial.style.left = pct + "%";
-      sliderValues[barId] = pct;
-      if (!answers["tone_sliders"]) answers["tone_sliders"] = {};
-      answers["tone_sliders"][barId] = pct;
-    };
+      const barEl = document.createElement("div");
+      barEl.id = spec.id;
+      barEl.className = "spectrum-bar_component";
 
-    newDial.addEventListener("mousedown", () => { dragging = true; });
-    newDial.addEventListener("touchstart", () => { dragging = true; }, { passive: true });
-    document.addEventListener("mousemove", onMove);
-    document.addEventListener("touchmove", onMove, { passive: true });
-    document.addEventListener("mouseup", () => { dragging = false; });
-    document.addEventListener("touchend", () => { dragging = false; });
+      barEl.innerHTML = `
+        <div class="spectrum-bar_concepts-wrapper">
+          <div>${spec.left}</div>
+          <div>${spec.right}</div>
+        </div>
+        <div class="spectrum-slider-wrapper" style="position:relative; width:100%; height:20px; display:flex; align-items:center; cursor:pointer; margin-bottom: var(--_spacing---spacing--small);">
+          <div class="spectrum-track-bg" style="position:absolute; left:0; right:0; height:2px; background: rgba(26,26,24,0.15); border-radius:2px;"></div>
+          <div class="spectrum-track-fill" id="sfill-${i}" style="position:absolute; left:0; width:${savedVal}%; height:2px; background: var(--base-color-neutral--neutral-darker); border-radius:2px; pointer-events:none;"></div>
+          <div class="spectrum-thumb" id="sthumb-${i}" style="position:absolute; left:${savedVal}%; transform:translateX(-50%); width:14px; height:14px; border-radius:50%; background: var(--base-color-neutral--neutral-darker); border:2px solid var(--background-color--background-primary); box-shadow:0 1px 4px rgba(0,0,0,.15); pointer-events:none; transition: left 0s;"></div>
+          <input type="range" min="0" max="100" value="${savedVal}" style="position:absolute; left:0; right:0; width:100%; opacity:0; cursor:pointer; height:100%; margin:0;" 
+            oninput="(function(v){ 
+              document.getElementById('sfill-${i}').style.width=v+'%'; 
+              document.getElementById('sthumb-${i}').style.left=v+'%';
+              var ts=window._brandivAnswers&&window._brandivAnswers['tone_sliders']||{};
+              ts['${spec.id}']=parseInt(v);
+              if(window._brandivAnswers)window._brandivAnswers['tone_sliders']=ts;
+            })(this.value)">
+        </div>`;
 
-    // Also allow click on track
-    track.addEventListener("click", (e) => {
-      if (e.target === newDial) return;
-      const pct = getPercent(e, track);
-      newDial.style.left = pct + "%";
-      sliderValues[barId] = pct;
-      if (!answers["tone_sliders"]) answers["tone_sliders"] = {};
-      answers["tone_sliders"][barId] = pct;
+      spectrumWrapper.appendChild(barEl);
     });
+
+    // Expose answers ref so inline handlers can write to it
+    window._brandivAnswers = answers;
   }
 
   function populateComparison(step) {
@@ -532,11 +547,9 @@
   }
 
   function populateInsight() {
-    // Generate insights from answers
     const insights = generateInsights();
     const cards = ["market-insight_1", "market-insight_2", "market-insight_3"];
     const labels = ["Pattern", "Tension", "Opportunity"];
-
     cards.forEach((id, i) => {
       const card = document.getElementById(id);
       if (!card) return;
@@ -549,43 +562,32 @@
 
   function generateInsights() {
     const ins = [];
-
-    // Insight 1: Pattern from brand references
     const refs = answers["brand_references"] || [];
-    if (refs.length > 0) {
-      ins.push(`Your brand references — ${refs.slice(0, 3).join(", ")} — signal an audience that values craft and intentionality over noise. That's a positioning opportunity, not just an aesthetic choice.`);
-    } else {
-      ins.push("You haven't selected brand references yet. This makes it harder to triangulate your audience's cultural world.");
-    }
-
-    // Insight 2: Tension between values and differentiator
+    ins.push(refs.length > 0
+      ? `Your brand references — ${refs.slice(0, 3).join(", ")} — signal an audience that values craft and intentionality over noise. That's a positioning opportunity, not just an aesthetic choice.`
+      : "You haven't selected brand references yet. This makes it harder to triangulate your audience's cultural world."
+    );
     const diff = answers["differentiator"] || "";
     const vals = answers["audience_values"] || [];
-    if (diff && vals.length > 0) {
-      ins.push(`There's a productive tension between your differentiator and what your audience values most (${vals[0]}). Make sure your messaging resolves that tension explicitly — or it becomes a gap competitors can exploit.`);
-    } else {
-      ins.push("Your differentiator and audience values haven't fully emerged yet. The clearest brands know exactly who they're NOT for.");
-    }
-
-    // Insight 3: Story archetype opportunity
+    ins.push(diff && vals.length > 0
+      ? `There's a productive tension between your differentiator and what your audience values most (${vals[0]}). Make sure your messaging resolves that tension explicitly — or it becomes a gap competitors can exploit.`
+      : "Your differentiator and audience values haven't fully emerged yet. The clearest brands know exactly who they're NOT for."
+    );
     const story = answers["story_archetype"] || [];
-    if (story.length > 0) {
-      ins.push(`A "${story[0]}" narrative works best when it's specific and earned — not claimed. Your origin story will be the proof. Make it concrete.`);
-    } else {
-      ins.push("Your narrative archetype is still undefined. The most memorable brands don't just have a product — they have a story with stakes.");
-    }
-
+    ins.push(story.length > 0
+      ? `A "${story[0]}" narrative works best when it's specific and earned — not claimed. Your origin story will be the proof. Make it concrete.`
+      : "Your narrative archetype is still undefined. The most memorable brands don't just have a product — they have a story with stakes."
+    );
     return ins;
   }
 
   // ──────────────────────────────────────────────
-  // 6. SAVE CURRENT STEP ANSWERS
+  // 6. SAVE CURRENT STEP
   // ──────────────────────────────────────────────
 
   function saveCurrentStep() {
     const step = steps[currentStep];
     const comp = step.component;
-
     if (comp === "comp_short-text") {
       const ta = document.querySelector("#comp_short-text textarea");
       if (ta) answers[step.field] = ta.value;
@@ -603,41 +605,41 @@
       const taB = document.querySelector("#Personality-We-are-not");
       if (taA) answers[step.field] = taA.value;
       if (taB) answers[step.fieldB] = taB.value;
+    } else if (comp === "comp_slider-spectrum") {
+      // Sliders write to answers via window._brandivAnswers inline handler
     }
-    // multiselect, sliders, story-cards update answers on interaction
   }
 
   // ──────────────────────────────────────────────
   // 7. RENDER STEP
   // ──────────────────────────────────────────────
 
-  function renderStep(index) {
+  async function renderStep(index) {
     const step = steps[index];
-
     updateProgress(index);
     updateHeader(step);
     hideAllComponents();
     showComponent(step.component);
 
-    // Populate based on component type
     switch (step.component) {
       case "comp_short-text":     populateShortText(step); break;
       case "comp_long-text":      populateLongText(step); break;
       case "comp_long-text-ai":   populateLongTextAI(step); break;
       case "comp_dropdown":       populateDropdown(step); break;
-      case "comp_multiselect":    populateMultiselect(step); break;
+      case "comp_multiselect":
+        if (step._isToneChoice) {
+          await populateToneChoice();
+        } else {
+          populateMultiselect(step);
+        }
+        break;
       case "comp_story-cards":    populateStoryCards(step); break;
       case "comp_slider-spectrum": populateSliders(step); break;
       case "comp_comparison":     populateComparison(step); break;
       case "comp_market-insight": populateInsight(); break;
     }
 
-    // Back button visibility
-    if ($backBtn) {
-      $backBtn.style.visibility = index === 0 ? "hidden" : "visible";
-    }
-
-    // Next button label on last step
+    if ($backBtn) $backBtn.style.visibility = index === 0 ? "hidden" : "visible";
     if ($nextBtn) {
       const label = $nextBtn.querySelector("div:first-child");
       if (label) label.textContent = index === TOTAL_STEPS - 1 ? "Finish" : "Next";
@@ -648,14 +650,13 @@
   // 8. NAVIGATION
   // ──────────────────────────────────────────────
 
-  function goNext() {
+  async function goNext() {
     saveCurrentStep();
     if (currentStep < TOTAL_STEPS - 1) {
       currentStep++;
-      renderStep(currentStep);
+      await renderStep(currentStep);
       window.scrollTo({ top: 0, behavior: "smooth" });
     } else {
-      // Last step — could trigger export/save
       console.log("Survey complete", answers);
       alert("Survey complete! Brand book generation coming soon.");
     }
@@ -671,57 +672,36 @@
   }
 
   // ──────────────────────────────────────────────
-  // 9. BIND NAVIGATION BUTTONS
+  // 9. BIND NAVIGATION
   // ──────────────────────────────────────────────
 
-  if ($backBtn) {
-    $backBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      goBack();
-    });
-  }
+  if ($backBtn) $backBtn.addEventListener("click", e => { e.preventDefault(); goBack(); });
+  if ($nextBtn) $nextBtn.addEventListener("click", e => { e.preventDefault(); goNext(); });
 
-  if ($nextBtn) {
-    $nextBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      goNext();
-    });
-  }
-
-  // Also disable inner next/back buttons inside components
-  document.querySelectorAll(".component_wrapper .button-group_footer").forEach((el) => {
+  document.querySelectorAll(".component_wrapper .button-group_footer").forEach(el => {
     el.style.display = "none";
   });
 
   // ──────────────────────────────────────────────
-  // 10. SELECTED STATE CSS (injected)
+  // 10. SELECTED STATE CSS
   // ──────────────────────────────────────────────
 
   const style = document.createElement("style");
   style.textContent = `
     .option.is-selected {
-      background-color: var(--color-text-primary, #fff);
-      color: var(--color-background-primary, #000);
+      background-color: var(--base-color-neutral--neutral-darker, #1a1a18) !important;
+      color: var(--background-color--background-primary, #f5f3ee) !important;
+      border-color: var(--base-color-neutral--neutral-darker, #1a1a18) !important;
     }
-    .story-card_item {
-      cursor: pointer;
-      transition: border-color 0.15s;
+    .selection_row {
+      flex-wrap: wrap;
     }
-    .story-card_item.is-selected {
-      border-color: var(--color-text-primary, #fff);
-      background: rgba(255,255,255,0.05);
+    .spectrum-slider-wrapper input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 0; height: 0;
     }
-    .dial_progress {
-      position: relative;
-      cursor: grab;
-      user-select: none;
-    }
-    .dial_progress:active {
-      cursor: grabbing;
-    }
-    .progress-wrapper {
-      position: relative;
-      cursor: pointer;
+    .spectrum-slider-wrapper input[type=range]::-moz-range-thumb {
+      width: 0; height: 0; border: none; background: none;
     }
   `;
   document.head.appendChild(style);
