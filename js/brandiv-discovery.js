@@ -1,5 +1,6 @@
 /* ============================================================
-   BRANDIV — Discovery Survey Engine v3
+   BRANDIV — Discovery Survey Engine v4
+   Built against exact Webflow HTML structure
    ============================================================ */
 
 (function () {
@@ -78,7 +79,6 @@
       ],
     },
     {
-      // Multi-word options → comp_text-cards
       id: 7, block: "Block 3 of 5 — Your Audience",
       title: "When does someone reach for your brand?",
       description: "Pick the moments that feel most true. You can select more than one.",
@@ -95,21 +95,15 @@
       ],
     },
     {
-      // Single-word options → comp_multiselect (pills)
       id: 8, block: "Block 3 of 5 — Your Audience",
       title: "Which brands would your audience have in their world?",
       description: "Not competitors — brands that share a cultural space with yours.",
       component: "comp_multiselect", field: "brand_references",
       label: "Select all that feel right",
       maxSelect: 6,
-      options: [
-        "Apple", "Muji", "Notion", "Moleskine",
-        "Patagonia", "Nike", "Beats", "Airbnb",
-        "Oatly", "Rolex", "Figma", "Stripe", "Linear",
-      ],
+      options: ["Apple", "Muji", "Notion", "Moleskine", "Patagonia", "Nike", "Beats", "Airbnb", "Oatly", "Rolex", "Figma", "Stripe", "Linear"],
     },
     {
-      // Multi-word options → comp_text-cards
       id: 9, block: "Block 3 of 5 — Your Audience",
       title: "What does your audience value most?",
       description: "What would make them choose you — even if you cost more?",
@@ -199,7 +193,6 @@
   // ── STATE ──────────────────────────────────────────
   let currentStep = 0;
   const answers = {};
-  window._brandivAnswers = answers;
 
   // ── DOM ────────────────────────────────────────────
   const allComponents = [
@@ -209,13 +202,13 @@
     "comp_text-cards",
   ];
 
-  const $progressBar  = document.querySelector(".stat3_progress-bar");
+  const $progressBar   = document.querySelector(".stat3_progress-bar");
   const $progressLabel = document.querySelector("#progres-bar .tagline");
-  const $blockTag     = document.querySelector("#tag .tagline");
-  const $title        = document.querySelector(".heading-style-h5");
-  const $description  = document.querySelector(".header-main .text-size-regular");
-  const $backBtn      = document.querySelector(".section_content > .button-group_footer .button.is-text");
-  const $nextBtn      = document.querySelector(".section_content > .button-group_footer .button.is-secondary-icon");
+  const $blockTag      = document.querySelector("#tag .tagline");
+  const $title         = document.querySelector(".heading-style-h5");
+  const $description   = document.querySelector(".header-main .text-size-regular");
+  const $backBtn       = document.querySelector(".section_content > .button-group_footer .button.is-text");
+  const $nextBtn       = document.querySelector(".section_content > .button-group_footer .button.is-secondary-icon");
 
   // ── HELPERS ────────────────────────────────────────
   function hideAllComponents() {
@@ -232,7 +225,7 @@
 
   function updateProgress(i) {
     const pct = ((i + 1) / TOTAL_STEPS) * 100;
-    if ($progressBar) $progressBar.style.width = pct + "%";
+    if ($progressBar)  $progressBar.style.width = pct + "%";
     if ($progressLabel) $progressLabel.textContent = `Step ${i + 1} of ${TOTAL_STEPS}`;
   }
 
@@ -242,31 +235,36 @@
     if ($description) $description.textContent = step.description;
   }
 
+  function cardSelectedStyle(el, selected) {
+    el.style.borderColor     = selected ? "var(--border-color--border-secondary)" : "";
+    el.style.backgroundColor = selected ? "var(--background-color--background-tertiary)" : "";
+  }
+
   // ── POPULATORS ─────────────────────────────────────
 
   function populateShortText(step) {
-    const label   = document.querySelector("#comp_short-text .text-area_heading .tagline");
+    const label    = document.querySelector("#comp_short-text .text-area_heading .tagline");
     const textarea = document.querySelector("#comp_short-text textarea");
-    if (label)   label.textContent     = step.label || "";
-    if (textarea){ textarea.placeholder = step.placeholder || ""; textarea.value = answers[step.field] || ""; }
+    if (label)    label.textContent     = step.label || "";
+    if (textarea) { textarea.placeholder = step.placeholder || ""; textarea.value = answers[step.field] || ""; }
     const inner = document.querySelector("#comp_short-text .button-group_footer");
     if (inner) inner.style.display = "none";
   }
 
   function populateLongText(step) {
-    const label   = document.querySelector("#comp_long-text .text-area_heading .tagline");
+    const label    = document.querySelector("#comp_long-text .text-area_heading .tagline");
     const textarea = document.querySelector("#comp_long-text textarea");
-    if (label)   label.textContent     = step.label || "";
-    if (textarea){ textarea.placeholder = step.placeholder || ""; textarea.value = answers[step.field] || ""; }
+    if (label)    label.textContent     = step.label || "";
+    if (textarea) { textarea.placeholder = step.placeholder || ""; textarea.value = answers[step.field] || ""; }
     const inner = document.querySelector("#comp_long-text .button-group_footer");
     if (inner) inner.style.display = "none";
   }
 
   function populateLongTextAI(step) {
-    const label   = document.querySelector("#comp_long-text-ai .tagline");
+    const label    = document.querySelector("#comp_long-text-ai .tagline");
     const textarea = document.querySelector("#comp_long-text-ai textarea");
-    if (label)   label.textContent     = step.label || "";
-    if (textarea){ textarea.placeholder = step.placeholder || ""; textarea.value = answers[step.field] || ""; }
+    if (label)    label.textContent     = step.label || "";
+    if (textarea) { textarea.placeholder = step.placeholder || ""; textarea.value = answers[step.field] || ""; }
   }
 
   function populateDropdown(step) {
@@ -281,22 +279,23 @@
     if (inner) inner.style.display = "none";
   }
 
-  // comp_multiselect — single-word pills (flex-wrap)
+  // comp_multiselect — pills, rebuilds selection_row
   function populateMultiselect(step) {
-    const label   = document.querySelector("#comp_multiselect .text-area_heading .tagline");
-    const container = document.querySelector("#comp_multiselect .multi-select");
-    if (!container) return;
-    if (label) label.textContent = step.label || "";
+    const heading   = document.querySelector("#comp_multiselect .text-area_heading .tagline");
+    const multiWrap = document.querySelector("#comp_multiselect .multi-select");
+    if (!multiWrap) return;
+    if (heading) heading.textContent = step.label || "";
 
     const saved   = answers[step.field] || [];
     const max     = step.maxSelect || 99;
-    const counter = container.querySelector(".tagline.text-color-alternate");
+    const counter = multiWrap.querySelector(".tagline.text-color-alternate");
 
-    container.querySelectorAll(".selection_row").forEach(r => r.remove());
+    // Remove existing rows
+    multiWrap.querySelectorAll(".selection_row").forEach(r => r.remove());
 
     const row = document.createElement("div");
     row.className = "selection_row";
-    row.style.cssText = "flex-wrap: wrap; align-items: flex-start;";
+    row.style.flexWrap = "wrap";
 
     step.options.forEach(opt => {
       const btn = document.createElement("a");
@@ -305,24 +304,24 @@
       btn.textContent = opt;
       btn.addEventListener("click", e => {
         e.preventDefault();
-        const current = answers[step.field] || [];
-        if (current.includes(opt)) {
-          answers[step.field] = current.filter(o => o !== opt);
+        const cur = answers[step.field] || [];
+        if (cur.includes(opt)) {
+          answers[step.field] = cur.filter(o => o !== opt);
           btn.classList.remove("is-selected");
-        } else if (current.length < max) {
-          answers[step.field] = [...current, opt];
+        } else if (cur.length < max) {
+          answers[step.field] = [...cur, opt];
           btn.classList.add("is-selected");
         }
-        if (counter) counter.textContent = `${(answers[step.field] || []).length}/${max} selected`;
+        if (counter) counter.textContent = `${(answers[step.field]||[]).length}/${max} selected`;
       });
       row.appendChild(btn);
     });
 
-    container.appendChild(row);
+    multiWrap.appendChild(row);
     if (counter) counter.textContent = `${saved.length}/${max} selected`;
   }
 
-  // comp_text-cards — multi-word options as grid cards
+  // comp_text-cards — uses text-short-cards_item (exact Webflow class)
   function populateTextCards(step) {
     const wrapper = document.querySelector("#comp_text-cards .text-short-cards_wrapper");
     if (!wrapper) return;
@@ -336,96 +335,86 @@
       const item = document.createElement("div");
       item.className = "text-short-cards_item";
       item.innerHTML = `<div class="tagline">${opt}</div>`;
-
-      const isSelected = saved.includes(opt);
-      if (isSelected) applyTextCardState(item, true);
-
       item.style.cursor = "pointer";
+
+      cardSelectedStyle(item, saved.includes(opt));
+
       item.addEventListener("click", () => {
-        const current = answers[step.field] || [];
-        if (current.includes(opt)) {
-          answers[step.field] = current.filter(o => o !== opt);
-          applyTextCardState(item, false);
-        } else if (current.length < max) {
-          answers[step.field] = [...current, opt];
-          applyTextCardState(item, true);
+        const cur = answers[step.field] || [];
+        if (cur.includes(opt)) {
+          answers[step.field] = cur.filter(o => o !== opt);
+          cardSelectedStyle(item, false);
+        } else if (cur.length < max) {
+          answers[step.field] = [...cur, opt];
+          cardSelectedStyle(item, true);
         }
       });
-
       wrapper.appendChild(item);
     });
   }
 
-  function applyTextCardState(item, selected) {
-    if (selected) {
-      item.style.borderColor       = "var(--border-color--border-secondary)";
-      item.style.backgroundColor   = "var(--background-color--background-tertiary)";
-    } else {
-      item.style.borderColor     = "";
-      item.style.backgroundColor = "";
-    }
-  }
-
-  // comp_story-cards — title + description cards
+  // comp_story-cards — uses text-short-cards_item (exact Webflow class)
   function populateStoryCards(step) {
-    const cards = document.querySelectorAll("#comp_story-cards .story-card_item");
+    const wrapper = document.querySelector("#comp_story-cards .text-short-cards_wrapper");
+    if (!wrapper) return;
+
     const saved = answers[step.field] || [];
     const max   = step.maxSelect || 2;
 
     const storyData = [
-      { num: "01", title: "Rebellion",         desc: "We exist to break what's broken. The status quo is the problem." },
-      { num: "02", title: "Underdog",           desc: "We started with nothing. Our limitations became our edge." },
-      { num: "03", title: "Community",          desc: "We didn't build a product. We built a place where people recognize each other." },
-      { num: "04", title: "Overcoming",         desc: "We help people cross a threshold. There's a before and after us." },
-      { num: "05", title: "Legacy",             desc: "We build to last. What we do today matters in 20 years." },
-      { num: "06", title: "Silent Revolution",  desc: "We changed everything without making noise. The work speaks, we don't." },
-      { num: "07", title: "Empowerment",        desc: "We give others what they need to become more than they are." },
+      { num: "01", title: "Rebellion",        desc: "We exist to break what's broken. The status quo is the problem." },
+      { num: "02", title: "Underdog",          desc: "We started with nothing. Our limitations became our edge." },
+      { num: "03", title: "Community",         desc: "We didn't build a product. We built a place where people recognize each other." },
+      { num: "04", title: "Overcoming",        desc: "We help people cross a threshold. There's a before and after us." },
+      { num: "05", title: "Legacy",            desc: "We build to last. What we do today matters in 20 years." },
+      { num: "06", title: "Silent Revolution", desc: "We changed everything without making noise. The work speaks, we don't." },
+      { num: "07", title: "Empowerment",       desc: "We give others what they need to become more than they are." },
     ];
 
-    cards.forEach((card, i) => {
+    // Update existing items in place — don't rebuild, just update content & wire clicks
+    const items = wrapper.querySelectorAll(".text-short-cards_item");
+    items.forEach((item, i) => {
       const data = storyData[i];
-      if (!data) { card.style.display = "none"; return; }
-      card.style.display = "";
+      if (!data) return;
 
-      const headings = card.querySelectorAll(".story-card_heading .tagline");
+      // Update content
+      const headings = item.querySelectorAll(".story-card_heading .tagline");
       if (headings[0]) headings[0].textContent = data.num;
       if (headings[1]) headings[1].textContent = data.title;
-      const desc = card.querySelector(".text-size-regular");
-      if (desc) desc.textContent = data.desc;
+      const desc = item.querySelector(".text-size-regular");
+      if (desc) desc.innerHTML = data.desc;
 
-      const isSelected = saved.includes(data.title);
-      applyStoryCardState(card, isSelected);
+      item.style.cursor = "pointer";
+      cardSelectedStyle(item, saved.includes(data.title));
 
-      card.style.cursor = "pointer";
-      card.onclick = e => {
-        e.preventDefault();
-        const current = answers[step.field] || [];
-        if (current.includes(data.title)) {
-          answers[step.field] = current.filter(t => t !== data.title);
-          applyStoryCardState(card, false);
-        } else if (current.length < max) {
-          answers[step.field] = [...current, data.title];
-          applyStoryCardState(card, true);
+      // Replace onclick to avoid duplicates
+      const newItem = item.cloneNode(true);
+      item.parentNode.replaceChild(newItem, item);
+
+      // Re-query heading after clone
+      const newHeadings = newItem.querySelectorAll(".story-card_heading .tagline");
+      if (newHeadings[0]) newHeadings[0].textContent = data.num;
+      if (newHeadings[1]) newHeadings[1].textContent = data.title;
+      const newDesc = newItem.querySelector(".text-size-regular");
+      if (newDesc) newDesc.innerHTML = data.desc;
+      newItem.style.cursor = "pointer";
+      cardSelectedStyle(newItem, saved.includes(data.title));
+
+      newItem.addEventListener("click", () => {
+        const cur = answers[step.field] || [];
+        if (cur.includes(data.title)) {
+          answers[step.field] = cur.filter(t => t !== data.title);
+          cardSelectedStyle(newItem, false);
+        } else if (cur.length < max) {
+          answers[step.field] = [...cur, data.title];
+          cardSelectedStyle(newItem, true);
         }
-      };
+      });
     });
   }
 
-  function applyStoryCardState(card, selected) {
-    if (selected) {
-      card.style.borderColor     = "var(--border-color--border-secondary)";
-      card.style.backgroundColor = "var(--background-color--background-tertiary)";
-    } else {
-      card.style.borderColor     = "";
-      card.style.backgroundColor = "";
-    }
-  }
-
-  // comp_slider-spectrum — rebuilt range inputs
+  // comp_slider-spectrum — rebuilds spectrum bars
   function populateSliders(step) {
-    const label = document.querySelector("#comp_slider-spectrum .text-area_heading .tagline");
-    if (label) label.textContent = "Move each dial to where your brand naturally lives.";
-
     const spectrumWrapper = document.querySelector("#comp_slider-spectrum .spectrum_wrapper");
     if (!spectrumWrapper) return;
 
@@ -442,64 +431,62 @@
           <div>${spec.left}</div>
           <div>${spec.right}</div>
         </div>
-        <div style="position:relative;width:100%;height:20px;display:flex;align-items:center;cursor:pointer;margin-bottom:var(--_spacing---spacing--small);">
-          <div style="position:absolute;left:0;right:0;height:2px;background:rgba(26,26,24,0.15);border-radius:2px;"></div>
+        <div style="position:relative;width:100%;height:20px;display:flex;align-items:center;margin-bottom:var(--_spacing---spacing--small);">
+          <div style="position:absolute;left:0;right:0;height:2px;background:rgba(26,26,24,0.15);border-radius:2px;pointer-events:none;"></div>
           <div id="sfill-${i}" style="position:absolute;left:0;width:${savedVal}%;height:2px;background:var(--base-color-neutral--neutral-darker);border-radius:2px;pointer-events:none;"></div>
           <div id="sthumb-${i}" style="position:absolute;left:${savedVal}%;transform:translateX(-50%);width:14px;height:14px;border-radius:50%;background:var(--base-color-neutral--neutral-darker);border:2px solid var(--background-color--background-primary);box-shadow:0 1px 4px rgba(0,0,0,.15);pointer-events:none;"></div>
-          <input type="range" min="0" max="100" value="${savedVal}"
-            data-spec-id="${spec.id}" data-idx="${i}"
-            style="position:absolute;left:0;right:0;width:100%;opacity:0;cursor:pointer;height:100%;margin:0;">
+          <input type="range" min="0" max="100" value="${savedVal}" style="position:absolute;left:0;right:0;width:100%;opacity:0;cursor:pointer;height:100%;margin:0;">
         </div>`;
 
       spectrumWrapper.appendChild(barEl);
 
-      // Wire range input after DOM insert
       const input = barEl.querySelector("input[type=range]");
       input.addEventListener("input", function() {
         const v = this.value;
-        document.getElementById(`sfill-${i}`).style.width  = v + "%";
-        document.getElementById(`sthumb-${i}`).style.left  = v + "%";
+        document.getElementById(`sfill-${i}`).style.width = v + "%";
+        document.getElementById(`sthumb-${i}`).style.left = v + "%";
         if (!answers["tone_sliders"]) answers["tone_sliders"] = {};
         answers["tone_sliders"][spec.id] = parseInt(v);
       });
     });
   }
 
-  // comp_multiselect tone choice — AI-generated phrases
+  // comp_multiselect tone choice — AI phrases, vertical list
   async function populateToneChoice() {
-    const label   = document.querySelector("#comp_multiselect .text-area_heading .tagline");
-    const container = document.querySelector("#comp_multiselect .multi-select");
-    if (!container) return;
+    const heading   = document.querySelector("#comp_multiselect .text-area_heading .tagline");
+    const multiWrap = document.querySelector("#comp_multiselect .multi-select");
+    if (!multiWrap) return;
 
-    const counter = container.querySelector(".tagline.text-color-alternate");
-    container.querySelectorAll(".selection_row").forEach(r => r.remove());
+    const counter = multiWrap.querySelector(".tagline.text-color-alternate");
+    multiWrap.querySelectorAll(".selection_row").forEach(r => r.remove());
 
-    if (label) label.textContent = "Generating options based on your tone settings...";
+    if (heading) heading.textContent = "Generating options based on your tone settings...";
+
     const loadRow = document.createElement("div");
     loadRow.id = "tone-loading";
     loadRow.style.cssText = "padding:16px 0;color:var(--text-color--text-alternate);font-size:var(--_typography---text-size--tagline);letter-spacing:1px;";
     loadRow.textContent = "GENERATING TONE OPTIONS...";
-    container.appendChild(loadRow);
+    multiWrap.appendChild(loadRow);
 
     const phrases = await generateTonePhrases();
 
     document.getElementById("tone-loading")?.remove();
-    if (label) label.textContent = "Select the one that feels most like your brand";
+    if (heading) heading.textContent = "Select the one that feels most like your brand";
     if (counter) counter.textContent = "0/1 selected";
 
     const row = document.createElement("div");
     row.className = "selection_row";
-    row.style.cssText = "flex-direction:column;align-items:flex-start;gap:8px;";
+    row.style.cssText = "flex-direction:column;align-items:stretch;gap:8px;";
 
     phrases.forEach(phrase => {
       const btn = document.createElement("a");
       btn.href = "#";
       btn.className = "option w-button";
-      btn.style.cssText = "border-radius:var(--_system---border-radious--main);white-space:normal;text-align:left;height:auto;padding:12px 16px;width:100%;justify-content:flex-start;";
+      btn.style.cssText = "border-radius:var(--_system---border-radious--main);white-space:normal;text-align:left;height:auto;padding:12px 16px;width:100%;justify-content:flex-start;text-transform:none;letter-spacing:0;font-size:var(--_typography---text-size--regular);";
       btn.textContent = phrase;
       btn.addEventListener("click", e => {
         e.preventDefault();
-        container.querySelectorAll(".option").forEach(b => b.classList.remove("is-selected"));
+        multiWrap.querySelectorAll(".option").forEach(b => b.classList.remove("is-selected"));
         btn.classList.add("is-selected");
         answers["tone_choice"] = phrase;
         if (counter) counter.textContent = "1/1 selected";
@@ -507,34 +494,34 @@
       row.appendChild(btn);
     });
 
-    container.appendChild(row);
+    multiWrap.appendChild(row);
   }
 
   async function generateTonePhrases() {
-    const sliders    = answers["tone_sliders"] || {};
-    const formal     = sliders["spectrum-bar_1"] || 50;
-    const serious    = sliders["spectrum-bar_2"] || 50;
-    const technical  = sliders["spectrum-bar_3"] || 50;
-    const brandName  = answers["brand_name"] || "this brand";
+    const sliders   = answers["tone_sliders"] || {};
+    const formal    = sliders["spectrum-bar_1"] || 50;
+    const serious   = sliders["spectrum-bar_2"] || 50;
+    const technical = sliders["spectrum-bar_3"] || 50;
+    const brandName = answers["brand_name"] || "this brand";
 
-    const formalLabel   = formal    < 33 ? "formal"    : formal    > 66 ? "casual"      : "balanced formal-casual";
-    const seriousLabel  = serious   < 33 ? "serious"   : serious   > 66 ? "playful"     : "balanced serious-playful";
-    const techLabel     = technical < 33 ? "technical" : technical > 66 ? "accessible"  : "balanced technical-accessible";
+    const fL = formal    < 33 ? "formal"    : formal    > 66 ? "casual"     : "balanced formal-casual";
+    const sL = serious   < 33 ? "serious"   : serious   > 66 ? "playful"    : "balanced serious-playful";
+    const tL = technical < 33 ? "technical" : technical > 66 ? "accessible" : "balanced technical-accessible";
 
-    const prompt = `Generate exactly 5 different ways to say the same thing for brand "${brandName}", each with a clearly distinct tone of voice: ${formalLabel}, ${seriousLabel}, ${techLabel}. Core message: "We help you build something that lasts." Each version 1-2 sentences max, ranging from most formal/serious to most casual/playful. Return ONLY a JSON array of 5 strings, no markdown: ["v1","v2","v3","v4","v5"]`;
+    const prompt = `Generate exactly 5 different ways to say the same thing for brand "${brandName}". Tone settings: ${fL}, ${sL}, ${tL}. Core message: "We help you build something that lasts." Range from most formal/serious to most casual/playful. Each version 1-2 sentences max. Return ONLY a JSON array of 5 strings, no markdown: ["v1","v2","v3","v4","v5"]`;
 
     try {
       const res = await fetch("https://api.anthropic.com/v1/messages", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ model: "claude-sonnet-4-20250514", max_tokens: 500, messages: [{ role: "user", content: prompt }] }),
+        body: JSON.stringify({ model: "claude-sonnet-4-20250514", max_tokens: 400, messages: [{ role: "user", content: prompt }] }),
       });
       const data = await res.json();
       const text = data.content.filter(b => b.type === "text").map(b => b.text).join("").replace(/```json|```/g, "").trim();
       return JSON.parse(text);
     } catch {
       return [
-        "We provide organizations with the strategic infrastructure necessary to achieve sustainable brand consistency.",
+        "We provide the strategic infrastructure necessary to achieve sustainable brand consistency.",
         "We give you the tools to build a brand that actually works — and keeps working.",
         "Your brand, built right. Built to last.",
         "We help you build something that sticks around — and means something when it does.",
@@ -553,12 +540,12 @@
   function populateInsight() {
     const insights = [
       (answers["brand_references"] || []).length > 0
-        ? `Your brand references — ${(answers["brand_references"] || []).slice(0,3).join(", ")} — signal an audience that values craft and intentionality over noise. That's a positioning opportunity, not just an aesthetic choice.`
+        ? `Your brand references — ${(answers["brand_references"]||[]).slice(0,3).join(", ")} — signal an audience that values craft and intentionality over noise. That's a positioning opportunity, not just an aesthetic choice.`
         : "You haven't selected brand references yet. This makes it harder to triangulate your audience's cultural world.",
-      (answers["differentiator"] && (answers["audience_values"] || []).length > 0)
+      answers["differentiator"] && (answers["audience_values"]||[]).length > 0
         ? `There's a productive tension between your differentiator and what your audience values most (${answers["audience_values"][0]}). Make sure your messaging resolves that tension — or it becomes a gap competitors can exploit.`
         : "Your differentiator and audience values haven't fully emerged yet. The clearest brands know exactly who they're NOT for.",
-      (answers["story_archetype"] || []).length > 0
+      (answers["story_archetype"]||[]).length > 0
         ? `A "${answers["story_archetype"][0]}" narrative works best when it's specific and earned — not claimed. Your origin story will be the proof. Make it concrete.`
         : "Your narrative archetype is still undefined. The most memorable brands don't just have a product — they have a story with stakes.",
     ];
@@ -615,11 +602,11 @@
       case "comp_long-text-ai":    populateLongTextAI(step);   break;
       case "comp_dropdown":        populateDropdown(step);     break;
       case "comp_text-cards":      populateTextCards(step);    break;
+      case "comp_story-cards":     populateStoryCards(step);   break;
       case "comp_multiselect":
         if (step._isToneChoice) await populateToneChoice();
         else populateMultiselect(step);
         break;
-      case "comp_story-cards":     populateStoryCards(step);   break;
       case "comp_slider-spectrum": populateSliders(step);      break;
       case "comp_comparison":      populateComparison(step);   break;
       case "comp_market-insight":  populateInsight();          break;
@@ -655,7 +642,7 @@
 
   document.querySelectorAll(".component_wrapper .button-group_footer").forEach(el => { el.style.display = "none"; });
 
-  // ── SELECTED STATE CSS ─────────────────────────────
+  // ── CSS ────────────────────────────────────────────
   const style = document.createElement("style");
   style.textContent = `
     .option.is-selected {
