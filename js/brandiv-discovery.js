@@ -1,6 +1,7 @@
 /* ============================================================
-   BRANDIV — Discovery Survey Engine v5
-   NO DOM reconstruction — only text updates + state on existing elements
+   BRANDIV — Discovery Survey Engine v6
+   Changes: tone choice → comp_text-cards, unified hover/select,
+   AI Help via /api/chat, AI insights on step 18
    ============================================================ */
 
 (function () {
@@ -79,7 +80,6 @@
       ],
     },
     {
-      // comp_text-cards: updates tagline text in existing items, no rebuild
       id: 7, block: "Block 3 of 5 — Your Audience",
       title: "When does someone reach for your brand?",
       description: "Pick the moments that feel most true. You can select more than one.",
@@ -104,7 +104,6 @@
       options: ["Apple", "Muji", "Notion", "Moleskine", "Patagonia", "Nike", "Beats", "Airbnb", "Oatly", "Rolex", "Figma", "Stripe", "Linear"],
     },
     {
-      // comp_text-cards: updates tagline text in existing items, no rebuild
       id: 9, block: "Block 3 of 5 — Your Audience",
       title: "What does your audience value most?",
       description: "What would make them choose you — even if you cost more?",
@@ -155,14 +154,14 @@
       ],
     },
     {
+      // CHANGE 1: tone choice now uses comp_text-cards, options populated by AI
       id: 14, block: "Block 5 of 5 — Voice & Story",
       title: "Which of these sounds most like your brand?",
       description: "Same idea, five different voices. Pick the one that feels right.",
-      component: "comp_multiselect", field: "tone_choice",
+      component: "comp_text-cards", field: "tone_choice",
       maxSelect: 1, options: [], _isToneChoice: true,
     },
     {
-      // comp_story-cards: updates existing items text only, no rebuild
       id: 15, block: "Block 5 of 5 — Voice & Story",
       title: "What kind of story does your brand tell?",
       description: "Every brand is a narrative. Pick the one that's yours.",
@@ -232,11 +231,31 @@
     if ($title)       $title.textContent       = step.title;
     if ($description) $description.textContent = step.description;
   }
+
+  // CHANGE 2: unified selected state = Webflow hover state exactly
   function setCardSelected(el, selected) {
-    // Match Webflow hover styles exactly — no class needed
     el.style.borderColor     = selected ? "var(--border-color--border-secondary)" : "";
     el.style.backgroundColor = selected ? "var(--background-color--background-tertiary)" : "";
     el.style.cursor = "pointer";
+  }
+
+  // ── API HELPER ─────────────────────────────────────
+  // CHANGE 3: all AI calls go through /api/chat (fixes CORS)
+  async function callAI(prompt, systemPrompt) {
+    const body = {
+      model: "claude-sonnet-4-20250514",
+      max_tokens: 600,
+      messages: [{ role: "user", content: prompt }],
+    };
+    if (systemPrompt) body.system = systemPrompt;
+
+    const res = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    const data = await res.json();
+    return (data.content || []).filter(b => b.type === "text").map(b => b.text).join("").trim();
   }
 
   // ── POPULATORS ─────────────────────────────────────
@@ -264,6 +283,40 @@
     const textarea = document.querySelector("#comp_long-text-ai textarea");
     if (label)    label.textContent     = step.label || "";
     if (textarea) { textarea.placeholder = step.placeholder || ""; textarea.value = answers[step.field] || ""; }
+
+    // CHANGE 4: wire AI Help button via /api/chat
+    const aiBtn = document.querySelector("#comp_long-text-ai .tag.black");
+    if (aiBtn && !aiBtn._wired) {
+      aiBtn._wired = true;
+      aiBtn.style.cursor = "pointer";
+      aiBtn.addEventListener("click", async () => {
+        const originalHTML = aiBtn.innerHTML;
+        aiBtn.innerHTML = `<div class="tagline text-color-white">thinking...</div>`;
+        aiBtn.style.pointerEvents = "none";
+        try {
+          const fieldContext = Object.entries(answers)
+            .filter(([k, v]) => v && k !== step.field)
+            .map(([k, v]) => `${k}: ${Array.isArray(v) ? v.join(", ") : v}`)
+            .join("\n");
+          const prompt = `You are a brand strategist. Based on this brand context, write a concise, specific answer for the field "${step.label}". 2-3 sentences max. No preamble, just the answer.\n\nBrand context:\n${fieldContext}\n\nCurrent field: ${step.label}`;
+          const result = await callAI(prompt);
+          if (textarea) {
+            textarea.value = "";
+            let i = 0;
+            const interval = setInterval(() => {
+              textarea.value += result[i] || "";
+              i++;
+              if (i >= result.length) clearInterval(interval);
+            }, 12);
+          }
+        } catch (e) {
+          console.error("AI Help error:", e);
+        } finally {
+          aiBtn.innerHTML = originalHTML;
+          aiBtn.style.pointerEvents = "";
+        }
+      });
+    }
   }
 
   function populateDropdown(step) {
@@ -278,7 +331,7 @@
     if (inner) inner.style.display = "none";
   }
 
-  // comp_text-cards: update text in existing items, wire clicks
+  // comp_text-cards: update existing items, wire clicks, no cloning
   function populateTextCards(step) {
     const items = document.querySelectorAll("#comp_text-cards .text-short-cards_item");
     const saved = answers[step.field] || [];
@@ -286,38 +339,101 @@
 
     items.forEach((item, i) => {
       const opt = step.options[i];
-      if (!opt) return;
+      if (!opt) { item.style.display = "none"; return; }
+      item.style.display = "";
 
-      // Update text only — don't touch structure
       const tagline = item.querySelector(".tagline");
       if (tagline) tagline.textContent = opt;
 
-      // Apply saved state
       setCardSelected(item, saved.includes(opt));
 
-      // Remove old listener by cloning
-      const fresh = item.cloneNode(true);
-      item.parentNode.replaceChild(fresh, item);
-
-      // Re-apply text and state on clone
-      const freshTagline = fresh.querySelector(".tagline");
-      if (freshTagline) freshTagline.textContent = opt;
-      setCardSelected(fresh, saved.includes(opt));
-
-      fresh.addEventListener("click", () => {
-        const cur = answers[step.field] || [];
-        if (cur.includes(opt)) {
-          answers[step.field] = cur.filter(o => o !== opt);
-          setCardSelected(fresh, false);
-        } else if (cur.length < max) {
-          answers[step.field] = [...cur, opt];
-          setCardSelected(fresh, true);
-        }
-      });
+      // Use data attribute to avoid duplicate listeners
+      if (!item._brandivWired) {
+        item._brandivWired = true;
+        item.addEventListener("click", () => {
+          const currentOpt = item.querySelector(".tagline")?.textContent;
+          if (!currentOpt) return;
+          const cur = answers[step.field] || [];
+          if (cur.includes(currentOpt)) {
+            answers[step.field] = cur.filter(o => o !== currentOpt);
+            setCardSelected(item, false);
+          } else if (cur.length < max) {
+            answers[step.field] = [...cur, currentOpt];
+            setCardSelected(item, true);
+          }
+        });
+      }
     });
   }
 
-  // comp_story-cards: update text in existing items, wire clicks
+  // CHANGE 1: tone choice uses comp_text-cards with AI-generated options
+  async function populateToneChoice(step) {
+    const items = document.querySelectorAll("#comp_text-cards .text-short-cards_item");
+
+    // Show loading state in first item
+    items.forEach((item, i) => {
+      item.style.display = i === 0 ? "" : "none";
+      const tagline = item.querySelector(".tagline");
+      if (i === 0 && tagline) tagline.textContent = "Generating tone options...";
+      setCardSelected(item, false);
+    });
+
+    const phrases = await generateTonePhrases();
+
+    items.forEach((item, i) => {
+      const phrase = phrases[i];
+      if (!phrase) { item.style.display = "none"; return; }
+      item.style.display = "";
+
+      const tagline = item.querySelector(".tagline");
+      if (tagline) tagline.textContent = phrase;
+
+      const saved = answers[step.field];
+      setCardSelected(item, saved === phrase);
+
+      if (!item._toneWired) {
+        item._toneWired = true;
+        item.addEventListener("click", () => {
+          const currentPhrase = item.querySelector(".tagline")?.textContent;
+          if (!currentPhrase || currentPhrase === "Generating tone options...") return;
+          // Deselect all
+          items.forEach(it => setCardSelected(it, false));
+          // Select this one
+          answers[step.field] = currentPhrase;
+          setCardSelected(item, true);
+        });
+      }
+    });
+  }
+
+  async function generateTonePhrases() {
+    const sl   = answers["tone_sliders"] || {};
+    const f    = sl["spectrum-bar_1"] || 50;
+    const s    = sl["spectrum-bar_2"] || 50;
+    const t    = sl["spectrum-bar_3"] || 50;
+    const name = answers["brand_name"] || "this brand";
+    const fL   = f < 33 ? "formal" : f > 66 ? "casual" : "balanced";
+    const sL   = s < 33 ? "serious" : s > 66 ? "playful" : "balanced";
+    const tL   = t < 33 ? "technical" : t > 66 ? "accessible" : "balanced";
+
+    const prompt = `Generate exactly 5 different ways to say the same thing for brand "${name}". Tone settings: ${fL} formality, ${sL} seriousness, ${tL} complexity. Core message: "We help you build something that lasts." Range from most formal/serious to most casual/playful. 1-2 sentences each. Return ONLY a JSON array of 5 strings, no markdown: ["v1","v2","v3","v4","v5"]`;
+
+    try {
+      const text = await callAI(prompt);
+      const clean = text.replace(/```json|```/g, "").trim();
+      return JSON.parse(clean);
+    } catch {
+      return [
+        "We provide the strategic infrastructure necessary to achieve sustainable brand consistency.",
+        "We give you the tools to build a brand that actually works — and keeps working.",
+        "Your brand, built right. Built to last.",
+        "We help you build something that sticks around — and means something when it does.",
+        "Forget the chaos. Let's build a brand that works while you sleep.",
+      ];
+    }
+  }
+
+  // comp_story-cards: update existing items, wire clicks, no cloning
   function populateStoryCards(step) {
     const items = document.querySelectorAll("#comp_story-cards .text-short-cards_item");
     const saved = answers[step.field] || [];
@@ -337,42 +453,33 @@
       const data = storyData[i];
       if (!data) return;
 
-      // Update text only
       const headings = item.querySelectorAll(".story-card_heading .tagline");
       if (headings[0]) headings[0].textContent = data.num;
       if (headings[1]) headings[1].textContent = data.title;
       const desc = item.querySelector(".text-size-regular");
       if (desc) desc.textContent = data.desc;
 
-      // Apply saved state
       setCardSelected(item, saved.includes(data.title));
 
-      // Remove old listener by cloning
-      const fresh = item.cloneNode(true);
-      item.parentNode.replaceChild(fresh, item);
-
-      // Re-apply text and state on clone
-      const freshH = fresh.querySelectorAll(".story-card_heading .tagline");
-      if (freshH[0]) freshH[0].textContent = data.num;
-      if (freshH[1]) freshH[1].textContent = data.title;
-      const freshDesc = fresh.querySelector(".text-size-regular");
-      if (freshDesc) freshDesc.textContent = data.desc;
-      setCardSelected(fresh, saved.includes(data.title));
-
-      fresh.addEventListener("click", () => {
-        const cur = answers[step.field] || [];
-        if (cur.includes(data.title)) {
-          answers[step.field] = cur.filter(t => t !== data.title);
-          setCardSelected(fresh, false);
-        } else if (cur.length < max) {
-          answers[step.field] = [...cur, data.title];
-          setCardSelected(fresh, true);
-        }
-      });
+      if (!item._storyWired) {
+        item._storyWired = true;
+        item.addEventListener("click", () => {
+          const title = item.querySelectorAll(".story-card_heading .tagline")[1]?.textContent;
+          if (!title) return;
+          const cur = answers[step.field] || [];
+          if (cur.includes(title)) {
+            answers[step.field] = cur.filter(t => t !== title);
+            setCardSelected(item, false);
+          } else if (cur.length < max) {
+            answers[step.field] = [...cur, title];
+            setCardSelected(item, true);
+          }
+        });
+      }
     });
   }
 
-  // comp_multiselect: rebuild pills inside existing .multi-select
+  // comp_multiselect: pills for single-word options
   function populateMultiselect(step) {
     const heading   = document.querySelector("#comp_multiselect .text-area_heading .tagline");
     const multiWrap = document.querySelector("#comp_multiselect .multi-select");
@@ -413,7 +520,7 @@
     if (counter) counter.textContent = `${saved.length}/${max} selected`;
   }
 
-  // comp_slider-spectrum: rebuild slider bars inside existing wrapper
+  // comp_slider-spectrum: rebuild inside existing wrapper
   function populateSliders(step) {
     const wrapper = document.querySelector("#comp_slider-spectrum .spectrum_wrapper");
     if (!wrapper) return;
@@ -442,87 +549,12 @@
 
       bar.querySelector("input").addEventListener("input", function() {
         const v = this.value;
-        document.getElementById(`sfill-${i}`).style.width = v + "%";
-        document.getElementById(`sthumb-${i}`).style.left = v + "%";
+        document.getElementById(`sfill-${i}`).style.width  = v + "%";
+        document.getElementById(`sthumb-${i}`).style.left  = v + "%";
         if (!answers["tone_sliders"]) answers["tone_sliders"] = {};
         answers["tone_sliders"][spec.id] = parseInt(v);
       });
     });
-  }
-
-  // comp_multiselect tone choice: AI-generated phrases
-  async function populateToneChoice() {
-    const heading   = document.querySelector("#comp_multiselect .text-area_heading .tagline");
-    const multiWrap = document.querySelector("#comp_multiselect .multi-select");
-    if (!multiWrap) return;
-
-    const counter = multiWrap.querySelector(".tagline.text-color-alternate");
-    multiWrap.querySelectorAll(".selection_row").forEach(r => r.remove());
-
-    if (heading) heading.textContent = "Generating options based on your tone...";
-
-    const loader = document.createElement("div");
-    loader.id = "tone-loader";
-    loader.style.cssText = "padding:16px 0;color:var(--text-color--text-alternate);font-size:var(--_typography---text-size--tagline);letter-spacing:1px;";
-    loader.textContent = "GENERATING TONE OPTIONS...";
-    multiWrap.appendChild(loader);
-
-    const phrases = await generateTonePhrases();
-    document.getElementById("tone-loader")?.remove();
-
-    if (heading) heading.textContent = "Select the one that feels most like your brand";
-    if (counter) counter.textContent = "0/1 selected";
-
-    const row = document.createElement("div");
-    row.className = "selection_row";
-    row.style.cssText = "flex-direction:column;align-items:stretch;gap:8px;";
-
-    phrases.forEach(phrase => {
-      const btn = document.createElement("a");
-      btn.href = "#";
-      btn.className = "option w-button";
-      btn.style.cssText = "border-radius:var(--_system---border-radious--main);white-space:normal;text-align:left;height:auto;padding:12px 16px;width:100%;justify-content:flex-start;text-transform:none;letter-spacing:0;font-size:var(--_typography---text-size--regular);";
-      btn.textContent = phrase;
-      btn.addEventListener("click", e => {
-        e.preventDefault();
-        multiWrap.querySelectorAll(".option").forEach(b => b.classList.remove("is-selected"));
-        btn.classList.add("is-selected");
-        answers["tone_choice"] = phrase;
-        if (counter) counter.textContent = "1/1 selected";
-      });
-      row.appendChild(btn);
-    });
-    multiWrap.appendChild(row);
-  }
-
-  async function generateTonePhrases() {
-    const sl = answers["tone_sliders"] || {};
-    const f  = sl["spectrum-bar_1"] || 50;
-    const s  = sl["spectrum-bar_2"] || 50;
-    const t  = sl["spectrum-bar_3"] || 50;
-    const name = answers["brand_name"] || "this brand";
-    const fL = f < 33 ? "formal" : f > 66 ? "casual" : "balanced";
-    const sL = s < 33 ? "serious" : s > 66 ? "playful" : "balanced";
-    const tL = t < 33 ? "technical" : t > 66 ? "accessible" : "balanced";
-    const prompt = `Generate exactly 5 different ways to say the same thing for brand "${name}". Tone: ${fL}, ${sL}, ${tL}. Message: "We help you build something that lasts." Range from most formal to most casual. 1-2 sentences each. Return ONLY a JSON array: ["v1","v2","v3","v4","v5"]`;
-    try {
-      const res = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ model: "claude-sonnet-4-20250514", max_tokens: 400, messages: [{ role: "user", content: prompt }] }),
-      });
-      const data = await res.json();
-      const text = data.content.filter(b => b.type === "text").map(b => b.text).join("").replace(/```json|```/g, "").trim();
-      return JSON.parse(text);
-    } catch {
-      return [
-        "We provide the strategic infrastructure necessary to achieve sustainable brand consistency.",
-        "We give you the tools to build a brand that actually works — and keeps working.",
-        "Your brand, built right. Built to last.",
-        "We help you build something that sticks around — and means something when it does.",
-        "Forget the chaos. Let's build a brand that works while you sleep.",
-      ];
-    }
   }
 
   function populateComparison(step) {
@@ -532,29 +564,72 @@
     if (taB) taB.value = answers[step.fieldB] || "";
   }
 
-  function populateInsight() {
-    const refs  = answers["brand_references"] || [];
-    const vals  = answers["audience_values"]  || [];
-    const story = answers["story_archetype"]  || [];
-    const insights = [
-      refs.length > 0
-        ? `Your references — ${refs.slice(0,3).join(", ")} — signal an audience that values craft over noise. That's a positioning opportunity, not just an aesthetic choice.`
-        : "No brand references selected yet. This makes it harder to triangulate your audience's cultural world.",
-      answers["differentiator"] && vals.length > 0
-        ? `There's a productive tension between your differentiator and what your audience values most (${vals[0]}). Resolve that tension in your messaging before competitors exploit it.`
-        : "Your differentiator and audience values haven't fully emerged. The clearest brands know exactly who they're NOT for.",
-      story.length > 0
-        ? `A "${story[0]}" narrative works best when specific and earned — not claimed. Your origin story is the proof. Make it concrete.`
-        : "Your narrative archetype is still undefined. The most memorable brands don't just have a product — they have a story with stakes.",
-    ];
-    ["market-insight_1","market-insight_2","market-insight_3"].forEach((id, i) => {
+  // CHANGE 4: AI-powered insights via /api/chat
+  async function populateInsight() {
+    const cards = ["market-insight_1", "market-insight_2", "market-insight_3"];
+    const labels = ["Pattern", "Tension", "Opportunity"];
+
+    // Show loading state
+    cards.forEach((id, i) => {
       const card = document.getElementById(id);
       if (!card) return;
       const lbl = card.querySelector(".tagline");
       const txt = card.querySelector(".text-size-medium");
-      if (lbl) lbl.textContent = ["Pattern","Tension","Opportunity"][i];
-      if (txt) txt.textContent = insights[i];
+      if (lbl) lbl.textContent = labels[i];
+      if (txt) txt.textContent = "Analyzing your answers...";
     });
+
+    const summary = Object.entries(answers)
+      .filter(([k, v]) => v && (typeof v === "string" ? v.trim() : v.length > 0))
+      .map(([k, v]) => `${k}: ${Array.isArray(v) ? v.join(", ") : v}`)
+      .join("\n");
+
+    const prompt = `You are a senior brand strategist. Based on these brand discovery answers, generate exactly 3 insights. Each insight should be specific, actionable, and non-generic — something this particular brand should pay attention to.
+
+ANSWERS:
+${summary}
+
+Return ONLY a JSON array of exactly 3 strings. Each string is 2-3 sentences. No markdown:
+["pattern insight", "tension insight", "opportunity insight"]`;
+
+    try {
+      const text = await callAI(prompt);
+      const clean = text.replace(/```json|```/g, "").trim();
+      const insights = JSON.parse(clean);
+
+      cards.forEach((id, i) => {
+        const card = document.getElementById(id);
+        if (!card) return;
+        const lbl = card.querySelector(".tagline");
+        const txt = card.querySelector(".text-size-medium");
+        if (lbl) lbl.textContent = labels[i];
+        if (txt) txt.textContent = insights[i] || "—";
+      });
+    } catch {
+      // Fallback to rule-based insights
+      const refs  = answers["brand_references"] || [];
+      const vals  = answers["audience_values"]  || [];
+      const story = answers["story_archetype"]  || [];
+      const fallback = [
+        refs.length > 0
+          ? `Your references — ${refs.slice(0,3).join(", ")} — signal an audience that values craft over noise. That's a positioning opportunity, not just an aesthetic choice.`
+          : "No brand references selected. This makes it harder to triangulate your audience's cultural world.",
+        answers["differentiator"] && vals.length > 0
+          ? `There's a productive tension between your differentiator and what your audience values most (${vals[0]}). Resolve that tension in your messaging before competitors exploit it.`
+          : "Your differentiator and audience values haven't fully emerged. The clearest brands know exactly who they're NOT for.",
+        story.length > 0
+          ? `A "${story[0]}" narrative works best when specific and earned — not claimed. Your origin story is the proof. Make it concrete.`
+          : "Your narrative archetype is still undefined. The most memorable brands have a story with stakes, not just a product.",
+      ];
+      cards.forEach((id, i) => {
+        const card = document.getElementById(id);
+        if (!card) return;
+        const lbl = card.querySelector(".tagline");
+        const txt = card.querySelector(".text-size-medium");
+        if (lbl) lbl.textContent = labels[i];
+        if (txt) txt.textContent = fallback[i];
+      });
+    }
   }
 
   // ── SAVE ───────────────────────────────────────────
@@ -587,15 +662,15 @@
       case "comp_long-text":       populateLongText(step);     break;
       case "comp_long-text-ai":    populateLongTextAI(step);   break;
       case "comp_dropdown":        populateDropdown(step);     break;
-      case "comp_text-cards":      populateTextCards(step);    break;
-      case "comp_story-cards":     populateStoryCards(step);   break;
-      case "comp_multiselect":
-        if (step._isToneChoice) await populateToneChoice();
-        else populateMultiselect(step);
+      case "comp_text-cards":
+        if (step._isToneChoice) await populateToneChoice(step);
+        else populateTextCards(step);
         break;
+      case "comp_story-cards":     populateStoryCards(step);   break;
+      case "comp_multiselect":     populateMultiselect(step);  break;
       case "comp_slider-spectrum": populateSliders(step);      break;
       case "comp_comparison":      populateComparison(step);   break;
-      case "comp_market-insight":  populateInsight();          break;
+      case "comp_market-insight":  await populateInsight();    break;
     }
 
     if ($backBtn) $backBtn.style.visibility = index === 0 ? "hidden" : "visible";
@@ -629,6 +704,7 @@
   document.querySelectorAll(".component_wrapper .button-group_footer").forEach(el => { el.style.display = "none"; });
 
   // ── CSS ────────────────────────────────────────────
+  // CHANGE 2: padding for text-cards, unified selected = hover
   const style = document.createElement("style");
   style.textContent = `
     .option.is-selected {
@@ -639,6 +715,9 @@
     .selection_row { flex-wrap: wrap; }
     input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:0; height:0; }
     input[type=range]::-moz-range-thumb { width:0; height:0; border:none; background:none; }
+    #comp_text-cards .text-short-cards_item {
+      padding: 0.5rem 1rem;
+    }
   `;
   document.head.appendChild(style);
 
