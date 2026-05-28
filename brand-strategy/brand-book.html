@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Brandiv — Brand Book</title>
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <link href="./css/normalize.css" rel="stylesheet" type="text/css">
+  <link href="./css/webflow.css" rel="stylesheet" type="text/css">
+  <link href="./css/brandivos.webflow.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" type="text/javascript"></script>
+  <script type="text/javascript">WebFont.load({ google: { families: ["DM Mono:300,400,500,600,700","Geist:300,400,500,600,700"] }});</script>
+  <style>
+    /* ── Layout ── */
+    .bb-layout {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .bb-sidebar {
+      width: 19.5rem;
+      min-width: 19.5rem;
+      height: 100vh;
+      position: sticky;
+      top: 0;
+      border-right: var(--_system---stroke-size--main) solid var(--border-color--border-primary);
+      background-color: var(--background-color--background-primary);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      padding-top: 1.5rem;
+      padding-bottom: 1.5rem;
+    }
+
+    .bb-main {
+      flex: 1;
+      max-width: 52rem;
+      padding: 4rem 4rem 8rem;
+    }
+
+    /* ── Nav ── */
+    .bb-nav-logo {
+      padding: 0 1.5rem 1.5rem;
+      margin-bottom: 1rem;
+      border-bottom: var(--_system---stroke-size--main) solid var(--border-color--border-primary);
+    }
+
+    .bb-nav-logo img { width: 120px; }
+
+    /* ── Sections ── */
+    .bb-section {
+      padding-bottom: 4rem;
+      border-bottom: var(--_system---stroke-size--main) solid var(--border-color--border-primary);
+      margin-bottom: 4rem;
+    }
+
+    .bb-section:last-child {
+      border-bottom: none;
+    }
+
+    /* ── Essence quote ── */
+    .bb-quote {
+      padding: 2rem;
+      background: var(--base-color-neutral--neutral-darker);
+      color: var(--base-color-neutral--white);
+      border-radius: var(--_system---border-radious--main);
+      margin-bottom: 2rem;
+      font-size: var(--_typography---text-size--large);
+      font-family: var(--_typography---font-family--alt);
+      line-height: 1.5;
+      font-weight: 300;
+    }
+
+    /* ── Values grid ── */
+    .bb-values-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border-color--border-primary);
+      border: 1px solid var(--border-color--border-primary);
+      border-radius: var(--_system---border-radious--main);
+      overflow: hidden;
+      margin-top: 1rem;
+    }
+
+    .bb-value-item {
+      background: var(--background-color--background-primary);
+      padding: 1.25rem;
+    }
+
+    .bb-value-over {
+      color: var(--text-color--text-alternate);
+      margin-top: 0.25rem;
+    }
+
+    /* ── We are grid ── */
+    .bb-weare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    /* ── Spectrums ── */
+    .bb-spectrum-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .bb-spectrum-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.4rem;
+    }
+
+    .bb-spectrum-track {
+      height: 2px;
+      background: var(--border-color--border-primary);
+      border-radius: 2px;
+      position: relative;
+    }
+
+    .bb-spectrum-fill {
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      background: var(--base-color-neutral--neutral-darker);
+      border-radius: 2px;
+    }
+
+    .bb-spectrum-thumb {
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--base-color-neutral--neutral-darker);
+      border: 2px solid var(--background-color--background-primary);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+
+    /* ── Promise ── */
+    .bb-promise-statement {
+      border-left: 2px solid var(--base-color-neutral--neutral-darker);
+      padding-left: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .bb-promise-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    /* ── Do/Dont ── */
+    .bb-dodont-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    /* ── Archetype card ── */
+    .bb-archetype {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 0.75rem;
+      padding: 1rem 1.5rem;
+      border: 1px solid var(--base-color-neutral--neutral-darker);
+      border-radius: var(--_system---border-radious--main);
+      margin-bottom: 1rem;
+    }
+
+    /* ── Insights ── */
+    .bb-insights-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    /* ── Tags ── */
+    .bb-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .bb-tag-striked {
+      opacity: 0.4;
+      text-decoration: line-through;
+    }
+
+    /* ── Scroll highlight ── */
+    .sidebar_link.bb-active {
+      border-left: var(--_system---stroke-size--alt) solid var(--border-color--border-secondary);
+      background-color: var(--background-color--background-deep);
+    }
+  </style>
+</head>
+<body>
+<div class="page-wrapper">
+<div class="bb-layout">
+
+  <!-- SIDEBAR -->
+  <nav class="bb-sidebar">
+    <div class="bb-nav-logo sidebar_logo-link">
+      <img src="./images/Logo.svg" alt="Brandiv">
+    </div>
+    <div class="sidebar_menu-wrapper" style="position:relative">
+      <div class="sidebar_menu-top">
+        <div class="sidenav_section">
+          <div class="sidebar_section-title">
+            <div class="sidebar_link-wrapper">
+              <div class="tagline">Strategy</div>
+            </div>
+          </div>
+          <a href="#essence" class="sidebar_link w-inline-block bb-nav">
+            <div class="sidebar_link-wrapper">
+              <div class="tagline">1.1</div>
+              <div class="text-size-regular">Brand Essence</div>
+            </div>
+          </a>
+          <a href="#values" class="sidebar_link w-inline-block bb-nav">
+            <div class="sidebar_link-wrapper">
+              <div class="tagline">1.2</div>
+              <div class="text-size-regular">Values</div>
+            </div>
+          </a>
+          <a href="#personality" class="sidebar_link w-inline-block bb-nav">
+            <div class="sidebar_link-wrapper">
+              <div class="tagline">1.3</div>
+              <div class="text-size-regular">Personality</div>
+            </div>
+          </a>
+          <a href="#promise" class="sidebar_link w-inline-block bb-nav">
+            <div class="sidebar_link-wrapper">
+              <div class="tagline">1.4</div>
+              <div class="text-size-regular">Brand Promise</div>
+            </div>
+          </a>
+          <a href="#voice" class="sidebar_link w-inline-block bb-nav">
+            <div class="sidebar_link-wrapper">
+              <div class="tagline">1.5</div>
+              <div class="text-size-regular">Tone of Voice</div>
+            </div>
+          </a>
+          <a href="#audience" class="sidebar_link w-inline-block bb-nav">
+            <div class="sidebar_link-wrapper">
+              <div class="tagline">1.6</div>
+              <div class="text-size-regular">Audience</div>
+            </div>
+          </a>
+          <a href="#story" class="sidebar_link w-inline-block bb-nav">
+            <div class="sidebar_link-wrapper">
+              <div class="tagline">1.7</div>
+              <div class="text-size-regular">Story</div>
+            </div>
+          </a>
+        </div>
+        <div class="sidenav_section">
+          <div class="sidebar_section-title">
+            <div class="sidebar_link-wrapper">
+              <div class="tagline">Insights</div>
+            </div>
+          </div>
+          <a href="#insights" class="sidebar_link w-inline-block bb-nav">
+            <div class="sidebar_link-wrapper">
+              <div class="tagline">◈</div>
+              <div class="text-size-regular">Key Findings</div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="bb-main">
+
+    <!-- 1.1 Brand Essence -->
+    <section class="bb-section" id="essence">
+      <div class="section_heading small">
+        <div class="tagline">Brand Strategy · 1.1</div>
+        <h2 class="heading-style-h4">Brand Essence</h2>
+        <div class="text-size-regular" style="color:var(--text-color--text-secondary)">The central idea of the brand. Everything else derives from this.</div>
+      </div>
+
+      <div class="bb-quote">
+        "We help designers and agencies build professional brand books without code — and make them actually usable after the project ends."
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-heading_wrapper no-divider">
+          <div class="tagline">Purpose</div>
+          <div class="divider"></div>
+        </div>
+        <p class="text-size-regular" style="color:var(--text-color--text-secondary);max-width:36rem;margin-top:0.75rem">We believe brand consistency shouldn't require an agency retainer. Brandiv exists to give designers the infrastructure to hand over a brand that lives — not a PDF that gets ignored.</p>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-heading_wrapper no-divider">
+          <div class="tagline">Mission</div>
+          <div class="divider"></div>
+        </div>
+        <p class="text-size-regular" style="color:var(--text-color--text-secondary);max-width:36rem;margin-top:0.75rem">Simplify the creation and documentation of brand systems so any designer or brand manager can build a powerful, consistent identity — without code, without complexity.</p>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-heading_wrapper no-divider">
+          <div class="tagline">Differentiator</div>
+          <div class="divider"></div>
+        </div>
+        <p class="text-size-regular" style="color:var(--text-color--text-secondary);max-width:36rem;margin-top:0.75rem">The only tool built specifically for the designer–client handoff. Not a generic doc tool — a focused system that turns brand strategy into a living document any team member can actually use.</p>
+      </div>
+    </section>
+
+    <!-- 1.2 Values -->
+    <section class="bb-section" id="values">
+      <div class="section_heading small">
+        <div class="tagline">Brand Strategy · 1.2</div>
+        <h2 class="heading-style-h4">Values</h2>
+        <div class="text-size-regular" style="color:var(--text-color--text-secondary)">The principles behind every decision — what this brand stands for in practice.</div>
+      </div>
+
+      <div class="bb-values-grid">
+        <div class="bb-value-item">
+          <div class="text-size-regular" style="font-weight:500">Clarity</div>
+          <div class="tagline bb-value-over">We choose this over cleverness</div>
+        </div>
+        <div class="bb-value-item">
+          <div class="text-size-regular" style="font-weight:500">Craft</div>
+          <div class="tagline bb-value-over">We choose this over speed</div>
+        </div>
+        <div class="bb-value-item">
+          <div class="text-size-regular" style="font-weight:500">Empowerment</div>
+          <div class="tagline bb-value-over">We choose this over dependency</div>
+        </div>
+        <div class="bb-value-item">
+          <div class="text-size-regular" style="font-weight:500">Honesty</div>
+          <div class="tagline bb-value-over">We choose this over polish</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 1.3 Personality -->
+    <section class="bb-section" id="personality">
+      <div class="section_heading small">
+        <div class="tagline">Brand Strategy · 1.3</div>
+        <h2 class="heading-style-h4">Personality</h2>
+        <div class="text-size-regular" style="color:var(--text-color--text-secondary)">The character that defines how the brand feels.</div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-heading_wrapper no-divider">
+          <div class="tagline">Character</div>
+          <div class="divider"></div>
+        </div>
+        <div class="bb-weare-grid" style="margin-top:1rem">
+          <div class="card-linear_item" style="padding:1.25rem">
+            <div class="tagline" style="margin-bottom:0.75rem;color:var(--text-color--text-alternate)">We are</div>
+            <div class="bb-tags">
+              <a class="option w-button">Clear</a>
+              <a class="option w-button">Opinionated</a>
+              <a class="option w-button">Focused</a>
+              <a class="option w-button">Honest</a>
+            </div>
+          </div>
+          <div class="card-linear_item" style="padding:1.25rem">
+            <div class="tagline" style="margin-bottom:0.75rem;color:var(--text-color--text-alternate)">We are not</div>
+            <div class="bb-tags">
+              <a class="option w-button bb-tag-striked">Generic</a>
+              <a class="option w-button bb-tag-striked">Bloated</a>
+              <a class="option w-button bb-tag-striked">Corporate</a>
+              <a class="option w-button bb-tag-striked">Passive</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-heading_wrapper no-divider">
+          <div class="tagline">Tone Spectrums</div>
+          <div class="divider"></div>
+        </div>
+        <div class="bb-spectrum-list" style="margin-top:1rem;max-width:32rem">
+          <div>
+            <div class="bb-spectrum-labels">
+              <span class="tagline">Formal</span><span class="tagline">Casual</span>
+            </div>
+            <div class="bb-spectrum-track">
+              <div class="bb-spectrum-fill" style="width:65%"></div>
+              <div class="bb-spectrum-thumb" style="left:65%"></div>
+            </div>
+          </div>
+          <div>
+            <div class="bb-spectrum-labels">
+              <span class="tagline">Serious</span><span class="tagline">Playful</span>
+            </div>
+            <div class="bb-spectrum-track">
+              <div class="bb-spectrum-fill" style="width:40%"></div>
+              <div class="bb-spectrum-thumb" style="left:40%"></div>
+            </div>
+          </div>
+          <div>
+            <div class="bb-spectrum-labels">
+              <span class="tagline">Technical</span><span class="tagline">Accessible</span>
+            </div>
+            <div class="bb-spectrum-track">
+              <div class="bb-spectrum-fill" style="width:70%"></div>
+              <div class="bb-spectrum-thumb" style="left:70%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 1.4 Promise -->
+    <section class="bb-section" id="promise">
+      <div class="section_heading small">
+        <div class="tagline">Brand Strategy · 1.4</div>
+        <h2 class="heading-style-h4">Brand Promise</h2>
+        <div class="text-size-regular" style="color:var(--text-color--text-secondary)">What the brand commits to deliver — consistently, to every person it serves.</div>
+      </div>
+
+      <div class="bb-promise-statement">
+        <p class="text-size-regular" style="font-weight:400;max-width:32rem">"Your brand, documented and activated in a system your team can use and the AI can understand."</p>
+      </div>
+
+      <div class="bb-promise-grid">
+        <div class="card-text_item">
+          <div class="steps_text-wrapper-copy">
+            <div class="tagline">Functional</div>
+            <div class="text-size-regular" style="color:var(--text-color--text-secondary)">A brand book that actually gets used — not filed away after the first review.</div>
+          </div>
+        </div>
+        <div class="card-text_item">
+          <div class="steps_text-wrapper-copy">
+            <div class="tagline">Emotional</div>
+            <div class="text-size-regular" style="color:var(--text-color--text-secondary)">Confidence. Every team member knows what the brand is and how to apply it.</div>
+          </div>
+        </div>
+        <div class="card-text_item">
+          <div class="steps_text-wrapper-copy">
+            <div class="tagline">Proof</div>
+            <div class="text-size-regular" style="color:var(--text-color--text-secondary)">The system updates when the brand evolves. It never goes stale.</div>
+          </div>
+        </div>
+        <div class="card-text_item">
+          <div class="steps_text-wrapper-copy">
+            <div class="tagline">What clients say</div>
+            <div class="text-size-regular" style="color:var(--text-color--text-secondary)">"They gave us something we could actually use without calling them every time."</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 1.5 Tone of Voice -->
+    <section class="bb-section" id="voice">
+      <div class="section_heading small">
+        <div class="tagline">Brand Strategy · 1.5</div>
+        <h2 class="heading-style-h4">Tone of Voice</h2>
+        <div class="text-size-regular" style="color:var(--text-color--text-secondary)">How the brand communicates — always, across every channel.</div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-heading_wrapper no-divider">
+          <div class="tagline">Voice</div>
+          <div class="divider"></div>
+        </div>
+        <p class="text-size-regular" style="color:var(--text-color--text-secondary);max-width:36rem;margin-top:0.75rem">Direct and warm. We communicate with clarity and openness, making complex branding concepts accessible without dumbing them down. We sound like a sharp friend who happens to be an expert. Never like a textbook.</p>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-heading_wrapper no-divider">
+          <div class="tagline">Always / Never</div>
+          <div class="divider"></div>
+        </div>
+        <div class="bb-dodont-grid" style="margin-top:1rem">
+          <div class="card-linear_item" style="padding:1.25rem">
+            <div class="tagline" style="margin-bottom:0.75rem">Always</div>
+            <div class="steps_text-wrapper-copy">
+              <div class="text-size-regular" style="color:var(--text-color--text-secondary)">Direct, actionable phrases</div>
+              <div class="text-size-regular" style="color:var(--text-color--text-secondary)">Active voice</div>
+              <div class="text-size-regular" style="color:var(--text-color--text-secondary)">Concrete examples</div>
+              <div class="text-size-regular" style="color:var(--text-color--text-secondary)">Questions that invite reflection</div>
+            </div>
+          </div>
+          <div class="card-linear_item" style="padding:1.25rem;opacity:0.6">
+            <div class="tagline" style="margin-bottom:0.75rem">Never</div>
+            <div class="steps_text-wrapper-copy">
+              <div class="text-size-regular" style="color:var(--text-color--text-secondary);text-decoration:line-through">Corporate jargon</div>
+              <div class="text-size-regular" style="color:var(--text-color--text-secondary);text-decoration:line-through">"World-class solutions"</div>
+              <div class="text-size-regular" style="color:var(--text-color--text-secondary);text-decoration:line-through">Condescending language</div>
+              <div class="text-size-regular" style="color:var(--text-color--text-secondary);text-decoration:line-through">Over-promising</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 1.6 Audience -->
+    <section class="bb-section" id="audience">
+      <div class="section_heading small">
+        <div class="tagline">Brand Strategy · 1.6</div>
+        <h2 class="heading-style-h4">Audience</h2>
+        <div class="text-size-regular" style="color:var(--text-color--text-secondary)">Who the brand speaks to — a qualitative portrait.</div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-heading_wrapper no-divider">
+          <div class="tagline">Primary Audience</div>
+          <div class="divider"></div>
+        </div>
+        <div class="card-text_item" style="margin-top:1rem;max-width:36rem">
+          <p class="text-size-regular" style="color:var(--text-color--text-secondary)">Independent designers and small branding studios who just landed their first serious client. They do brilliant work but it lives in a PDF nobody opens. They need infrastructure, not just aesthetics. They reach for Brandiv when something failed or when they're building something new and want to do it right from the start.</p>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-heading_wrapper no-divider">
+          <div class="tagline">Cultural References</div>
+          <div class="divider"></div>
+        </div>
+        <div class="bb-tags" style="margin-top:1rem">
+          <a class="option w-button">Notion</a>
+          <a class="option w-button">Figma</a>
+          <a class="option w-button">Linear</a>
+          <a class="option w-button">Moleskine</a>
+          <a class="option w-button">Stripe</a>
+          <a class="option w-button">Muji</a>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-heading_wrapper no-divider">
+          <div class="tagline">Key Insight</div>
+          <div class="divider"></div>
+        </div>
+        <div class="card-text_item" style="margin-top:1rem;max-width:36rem">
+          <div class="steps_text-wrapper-copy">
+            <div class="tagline">◈ What most brands miss</div>
+            <p class="text-size-regular" style="color:var(--text-color--text-secondary)">Designers don't want another tool. They want a better handoff. The frustration isn't creating the brand — it's watching it get ignored after delivery. Brandiv solves the moment after the project ends, not the project itself.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 1.7 Story -->
+    <section class="bb-section" id="story">
+      <div class="section_heading small">
+        <div class="tagline">Brand Strategy · 1.7</div>
+        <h2 class="heading-style-h4">Brand Story</h2>
+        <div class="text-size-regular" style="color:var(--text-color--text-secondary)">The narrative the brand tells — and how it earned the right to tell it.</div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-heading_wrapper no-divider">
+          <div class="tagline">Narrative Archetype</div>
+          <div class="divider"></div>
+        </div>
+        <div class="bb-archetype" style="margin-top:1rem">
+          <span class="tagline">06</span>
+          <span class="heading-style-h4" style="margin:0;font-size:1.25rem">Silent Revolution</span>
+        </div>
+        <p class="text-size-regular" style="color:var(--text-color--text-secondary);max-width:36rem">We changed everything without making noise. No big launch, no hype. Just a tool that quietly makes brand consistency accessible to every studio that couldn't afford the enterprise alternative.</p>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-heading_wrapper no-divider">
+          <div class="tagline">Origin</div>
+          <div class="divider"></div>
+        </div>
+        <p class="text-size-regular" style="color:var(--text-color--text-secondary);max-width:36rem;margin-top:0.75rem">Built after watching a client's brand manual get ignored for the third time in a row. The designer had done brilliant work — strategy, identity, the whole system. But it lived in a PDF nobody opened. The brand drifted within months. Brandiv exists because that shouldn't happen.</p>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-heading_wrapper no-divider">
+          <div class="tagline">Legacy</div>
+          <div class="divider"></div>
+        </div>
+        <p class="text-size-regular" style="color:var(--text-color--text-secondary);max-width:36rem;margin-top:0.75rem">The tool that made brand consistency accessible to every small studio and independent designer — not just the ones with enterprise budgets.</p>
+      </div>
+    </section>
+
+    <!-- Insights -->
+    <section class="bb-section" id="insights">
+      <div class="section_heading small">
+        <div class="tagline">Key Findings</div>
+        <h2 class="heading-style-h4">What we found.</h2>
+        <div class="text-size-regular" style="color:var(--text-color--text-secondary)">Three things worth paying attention to based on your brand discovery.</div>
+      </div>
+
+      <div class="bb-insights-grid">
+        <div class="card-text_item">
+          <div class="steps_text-wrapper-copy">
+            <div class="tagline">Pattern</div>
+            <div class="text-size-regular" style="color:var(--text-color--text-secondary)">Your brand references — Notion, Figma, Linear, Moleskine — signal an audience that values craft and intentionality over noise. That's a positioning opportunity, not just an aesthetic choice.</div>
+          </div>
+        </div>
+        <div class="card-text_item">
+          <div class="steps_text-wrapper-copy">
+            <div class="tagline">Tension</div>
+            <div class="text-size-regular" style="color:var(--text-color--text-secondary)">There's a productive tension between your differentiator (the handoff moment) and what your audience values most (aesthetics & craft). Your messaging needs to resolve this explicitly.</div>
+          </div>
+        </div>
+        <div class="card-text_item">
+          <div class="steps_text-wrapper-copy">
+            <div class="tagline">Opportunity</div>
+            <div class="text-size-regular" style="color:var(--text-color--text-secondary)">A "Silent Revolution" narrative works best when specific and earned — not claimed. Your origin story is the proof. Lead with that story, not the features.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+</div>
+
+<script>
+  // Scroll-based nav highlight
+  const sections = document.querySelectorAll('.bb-section');
+  const navLinks = document.querySelectorAll('.bb-nav');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        navLinks.forEach(link => {
+          const isActive = link.getAttribute('href') === '#' + id;
+          link.classList.toggle('bb-active', isActive);
+        });
+      }
+    });
+  }, { rootMargin: '-10% 0px -70% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
